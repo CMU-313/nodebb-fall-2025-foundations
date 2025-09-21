@@ -42,6 +42,9 @@ categoriesController.list = async function (req, res) {
 		selectCategoryLabel: '[[pages:categories]]',
 		categories: tree,
 		pagination: pagination.create(page, pageCount, req.query),
+
+		// shows "new category" button
+		allowCategoryCreation: await privileges.global.can('category:create', req.uid),
 	};
 
 	data.categories.forEach((category) => {

@@ -32,6 +32,8 @@ define('forum/topic/events', [
 		'event:topic_moved': onTopicMoved,
 
 		'event:post_edited': onPostEdited,
+		'event:post_pinned': onPostPinned,
+		'event:post_unpinned': onPostUnpinned,
 		'event:post_purged': onPostPurged,
 
 		'event:post_deleted': togglePostDeleteState,
@@ -226,6 +228,36 @@ define('forum/topic/events', [
 				}
 			});
 		}
+	}
+
+	function onPostPinned(data) {
+		if (!data || String(data.tid) !== String(ajaxify.data.tid)) {
+			return;
+		}
+		const postEl = components.get('post', 'pid', data.pid);
+		if (!postEl.length) {
+			return;
+		}
+		postEl.addClass('pinned-post');
+		postEl.find('[component="post/pin"]').toggleClass('hidden', true).parent().attr('hidden', '');
+		postEl.find('[component="post/unpin"]').toggleClass('hidden', false).parent().attr('hidden', null);
+		if (!postEl.find('[component="post/pinned"]').length) {
+			postEl.find('[component="post/header"]').append('<span component="post/pinned" class="badge bg-secondary ms-2"><i class="fa fa-thumb-tack"></i></span>');
+		}
+	}
+
+	function onPostUnpinned(data) {
+		if (!data || String(data.tid) !== String(ajaxify.data.tid)) {
+			return;
+		}
+		const postEl = components.get('post', 'pid', data.pid);
+		if (!postEl.length) {
+			return;
+		}
+		postEl.removeClass('pinned-post');
+		postEl.find('[component="post/pin"]').toggleClass('hidden', false).parent().attr('hidden', null);
+		postEl.find('[component="post/unpin"]').toggleClass('hidden', true).parent().attr('hidden', '');
+		postEl.find('[component="post/pinned"]').remove();
 	}
 
 	function togglePostBookmark(data) {

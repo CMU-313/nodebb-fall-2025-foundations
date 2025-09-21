@@ -72,6 +72,9 @@ function modifyPost(post, fields) {
 		}
 		if (post.hasOwnProperty('resolved')) {
 			post.resolved = parseInt(post.resolved, 10) === 1;
+		} else {
+			// Default to false for posts that don't have the resolved field yet
+			post.resolved = false;
 		}
 	}
 }

@@ -8,6 +8,7 @@
   <div class="d-flex align-items-center justify-content-between mb-2">
 
 	<!-- CONCERN: Not supported for multiple langs -->
+	<!-- SOURCE: Chatgpt -->
 	<h3 class="fw-semibold mb-0">Categories</h3> 
     {{{ if allowCategoryCreation }}}
     <button id="btn-new-category" class="btn btn-primary btn-sm text-nowrap">

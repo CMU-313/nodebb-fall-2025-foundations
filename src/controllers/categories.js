@@ -43,7 +43,7 @@ categoriesController.list = async function (req, res) {
 		categories: tree,
 		pagination: pagination.create(page, pageCount, req.query),
 
-		// shows "new category" button
+		// source: ChatGPT
 		allowCategoryCreation: await privileges.global.can('category:create', req.uid),
 	};
 

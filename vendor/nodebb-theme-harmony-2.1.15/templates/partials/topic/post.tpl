@@ -56,6 +56,12 @@
 				<span class="badge bg-danger rounded-1">[[user:banned]]</span>
 				{{{ end }}}
 
+				{{{ if posts.resolved }}}
+				<span class="badge bg-success rounded-1" title="[[topic:question-resolved]]">
+					<i class="fa fa-check-circle"></i> [[topic:resolved]]
+				</span>
+				{{{ end }}}
+
 				<div class="d-flex gap-1 align-items-center">
 					<span class="text-muted">{generateWrote(@value, config.timeagoCutoff)}</span>
 

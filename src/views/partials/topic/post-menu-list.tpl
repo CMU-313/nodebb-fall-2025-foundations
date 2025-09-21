@@ -48,6 +48,17 @@
 </li>
 {{{ end }}}
 
+{{{ if posts.display_resolved_tools }}}
+<li>
+	<a class="dropdown-item rounded-1 d-flex align-items-center gap-2" component="post/resolved" role="menuitem" href="#" data-resolved="{posts.resolved}">
+		<span class="menu-icon">
+			<i component="post/resolved/icon" class="fa fa-fw text-secondary {{{ if posts.resolved }}}fa-check-circle text-success{{{ else }}}fa-question-circle text-warning{{{ end }}}"></i>
+		</span>
+		<span component="post/resolved/text">{{{ if posts.resolved }}}[[topic:mark-unresolved]]{{{ else }}}[[topic:mark-resolved]]{{{ end }}}</span>
+	</a>
+</li>
+{{{ end }}}
+
 {{{ if posts.ip }}}
 <li>
 	<a class="dropdown-item rounded-1 d-flex align-items-center gap-2" component="post/copy-ip" role="menuitem" href="#" data-clipboard-text="{posts.ip}">

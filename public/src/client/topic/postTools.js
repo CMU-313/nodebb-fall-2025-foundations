@@ -276,6 +276,48 @@ define('forum/topic/postTools', [
 			});
 		});
 
+		postContainer.on('click', '[component="post/resolved"]', function () {
+			const btn = $(this);
+			const pid = getData(btn, 'data-pid');
+			const currentResolved = btn.attr('data-resolved') === 'true';
+			const newResolved = !currentResolved;
+			
+			api.put(`/posts/${pid}/resolved`, { resolved: newResolved })
+				.then(() => {
+					// Update the button state
+					btn.attr('data-resolved', newResolved);
+					const icon = btn.find('[component="post/resolved/icon"]');
+					const text = btn.find('[component="post/resolved/text"]');
+					
+					if (newResolved) {
+						icon.removeClass('fa-question-circle text-warning')
+							.addClass('fa-check-circle text-success');
+						text.text(translator.unescapeEntities(translator.translate('[[topic:mark-unresolved]]')));
+					} else {
+						icon.removeClass('fa-check-circle text-success')
+							.addClass('fa-question-circle text-warning');
+						text.text(translator.unescapeEntities(translator.translate('[[topic:mark-resolved]]')));
+					}
+					
+					// Update the resolved badge in the post header
+					const postEl = btn.parents('[data-pid]');
+					const resolvedBadge = postEl.find('.badge:contains("[[topic:resolved]]")');
+					if (newResolved) {
+						if (resolvedBadge.length === 0) {
+							// Add resolved badge
+							const badgeHtml = '<span class="badge bg-success rounded-1" title="[[topic:question-resolved]]"><i class="fa fa-check-circle"></i> [[topic:resolved]]</span>';
+							postEl.find('.post-header .d-flex.gap-1.flex-wrap.align-items-center').append(badgeHtml);
+						}
+					} else {
+						// Remove resolved badge
+						resolvedBadge.remove();
+					}
+					
+					alerts.success(newResolved ? '[[topic:question-marked-resolved]]' : '[[topic:question-marked-unresolved]]');
+				})
+				.catch(alerts.error);
+		});
+
 		postContainer.on('click', '[component="post/ban-ip"]', function () {
 			const ip = $(this).attr('data-ip');
 			socket.emit('blacklist.addRule', ip, function (err) {

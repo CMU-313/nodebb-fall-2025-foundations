@@ -210,3 +210,11 @@ Posts.notifyQueuedPostOwner = async (req, res) => {
 	await api.posts.notifyQueuedPostOwner(req, { id, message: req.body.message });
 	helpers.formatApiResponse(200, res);
 };
+
+Posts.setResolved = async (req, res) => {
+	const result = await api.posts.setResolved(req, {
+		pid: req.params.pid,
+		resolved: req.body.resolved,
+	});
+	helpers.formatApiResponse(200, res, result);
+};

@@ -60,7 +60,6 @@ module.exports = function (Posts) {
 					if (!tag.name.endsWith(':')) {
 						tag.name = `${tag.name}:`;
 					}
-
 					postData.content = postData.content.replace(new RegExp(tag.name, 'g'), `<img class="not-responsive emoji" src="${tag.icon.url}" title="${tag.name}" />`);
 				});
 		}

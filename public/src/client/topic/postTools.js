@@ -292,28 +292,14 @@ define('forum/topic/postTools', [
 					if (newResolved) {
 						icon.removeClass('fa-question-circle text-warning')
 							.addClass('fa-check-circle text-success');
-						text.text(translator.unescapeEntities(translator.translate('[[topic:mark-unresolved]]')));
+						text.text('Mark as Unresolved');
 					} else {
 						icon.removeClass('fa-check-circle text-success')
 							.addClass('fa-question-circle text-warning');
-						text.text(translator.unescapeEntities(translator.translate('[[topic:mark-resolved]]')));
-					}
-					
-					// Update the resolved badge in the post header
-					const postEl = btn.parents('[data-pid]');
-					const resolvedBadge = postEl.find('.badge:contains("[[topic:resolved]]")');
-					if (newResolved) {
-						if (resolvedBadge.length === 0) {
-							// Add resolved badge
-							const badgeHtml = '<span class="badge bg-success rounded-1" title="[[topic:question-resolved]]"><i class="fa fa-check-circle"></i> [[topic:resolved]]</span>';
-							postEl.find('.post-header .d-flex.gap-1.flex-wrap.align-items-center').append(badgeHtml);
-						}
-					} else {
-						// Remove resolved badge
-						resolvedBadge.remove();
-					}
-					
-					alerts.success(newResolved ? '[[topic:question-marked-resolved]]' : '[[topic:question-marked-unresolved]]');
+						text.text('Mark as Resolved');
+					}		
+
+					alerts.success(newResolved ? 'Marked as resolved' : 'Marked as unresolved');
 				})
 				.catch(alerts.error);
 		});
@@ -615,5 +601,47 @@ define('forum/topic/postTools', [
 		}
 	}
 
-	return PostTools;
-});
+		// Show/hide resolved button based on category
+		$(document).ready(function() {
+			if (ajaxify.data && ajaxify.data.category) {
+				// Handle HTML entities in category name
+				const categoryName = ajaxify.data.category.name.replace(/&amp;/g, '&');
+				if (categoryName === 'Comments & Feedback') {
+					$('.resolved-tools').show();
+				} else {
+					$('.resolved-tools').hide();
+				}
+			}
+		});
+
+		// Handle topic-level resolved button
+		$(document).on('click', '[component="topic/resolved"]', function () {
+			const btn = $(this);
+			const mainPid = ajaxify.data.mainPid;
+			const currentResolved = btn.attr('data-resolved') === 'true';
+			const newResolved = !currentResolved;
+
+			api.put(`/posts/${mainPid}/resolved`, { resolved: newResolved })
+				.then(() => {
+					// Update the button state
+					btn.attr('data-resolved', newResolved);
+					const icon = btn.find('[component="topic/resolved/icon"]');
+					const text = btn.find('[component="topic/resolved/text"]');
+
+					if (newResolved) {
+						icon.removeClass('fa-question-circle text-warning')
+							.addClass('fa-check-circle text-success');
+						text.text('Mark as Unresolved');
+					} else {
+						icon.removeClass('fa-check-circle text-success')
+							.addClass('fa-question-circle text-warning');
+						text.text('Mark as Resolved');
+					}
+
+					alerts.success(newResolved ? 'Marked as resolved' : 'Marked as unresolved');
+				})
+				.catch(alerts.error);
+		});
+
+		return PostTools;
+	});

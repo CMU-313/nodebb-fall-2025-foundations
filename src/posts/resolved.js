@@ -43,9 +43,9 @@ module.exports = function (Posts) {
 
 	Posts.canResolve = async function (pid, uid) {
 		// Only allow moderators, administrators, or course instructors to resolve posts
-		const [isAdmin, isModerator, postData] = await Promise.all([
+		const [isAdmin, isGlobalModerator, postData] = await Promise.all([
 			user.isAdministrator(uid),
-			user.isModerator(uid),
+			user.isGlobalModerator(uid),
 			Posts.getPostData(pid),
 		]);
 
@@ -53,11 +53,25 @@ module.exports = function (Posts) {
 			return false;
 		}
 
+		// Get category data to check if it's "Comments & Feedback"
+		const topics = require('../topics');
+		const topicData = await topics.getTopicData(postData.tid);
+		const cid = topicData ? topicData.cid : null;
+		
+		const db = require('../database');
+		const categoryData = await db.getObject(`category:${cid}`);
+		
+		// Only allow resolved functionality in "Comments & Feedback" category
+		const categoryName = categoryData ? categoryData.name.replace(/&amp;/g, '&') : '';
+		if (!categoryData || categoryName !== 'Comments & Feedback') {
+			return false;
+		}
+
 		// Check if user is moderator of the category
-		const isCategoryModerator = await user.isModerator(uid, postData.cid);
+		const isCategoryModerator = await user.isModerator(uid, cid);
 
 		// Allow if user is admin, global moderator, or category moderator
-		return isAdmin || isModerator || isCategoryModerator;
+		return isAdmin || isGlobalModerator || isCategoryModerator;
 	};
 
 	Posts.getResolvedStatus = async function (pid) {

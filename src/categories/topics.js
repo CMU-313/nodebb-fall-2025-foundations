@@ -13,6 +13,7 @@ const utils = require('../utils');
 
 module.exports = function (Categories) {
 	Categories.getCategoryTopics = async function (data) {
+		console.log('DEBUG: getCategoryTopics called with cid:', data.cid);
 		let results = await plugins.hooks.fire('filter:category.topics.prepare', data);
 		const tids = await Categories.getTopicIds(results);
 		let topicsData = await topics.getTopicsByTids(tids, data.uid);
@@ -22,6 +23,22 @@ module.exports = function (Categories) {
 			return { topics: [], uid: data.uid };
 		}
 		topics.calculateTopicIndices(topicsData, data.start);
+
+		// Add resolved status for topics in Comments & Feedback category
+		const categoryData = await db.getObject(`category:${data.cid}`);
+		const categoryName = categoryData ? categoryData.name.replace(/&amp;/g, '&') : '';
+		const isCommentsAndFeedback = categoryData && categoryName === 'Comments & Feedback';
+		
+		if (isCommentsAndFeedback) {
+			const posts = require('../posts');
+			for (const topic of topicsData) {
+				if (topic && topic.mainPid) {
+					const resolved = await posts.getPostField(topic.mainPid, 'resolved');
+					topic.resolved = parseInt(resolved, 10) === 1;
+					topic.showUnresolved = true;
+				}
+			}
+		}
 
 		results = await plugins.hooks.fire('filter:category.topics.get', { cid: data.cid, topics: topicsData, uid: data.uid });
 		return { topics: results.topics, nextStart: data.stop + 1 };

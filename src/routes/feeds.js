@@ -80,7 +80,7 @@ async function generateForTopic(req, res, next) {
 	if (await validateTokenIfRequiresLogin(!userPrivileges['topics:read'], topic.cid, req, res)) {
 		const topicData = await topics.getTopicWithPosts(topic, `tid:${tid}:posts`, req.uid || req.query.uid || 0, 0, 24, true);
 
-		topics.modifyPostsByPrivilege(topicData, userPrivileges);
+		await topics.modifyPostsByPrivilege(topicData, userPrivileges);
 
 		const feed = new rss({
 			title: utils.stripHTMLTags(topicData.title, utils.tags),

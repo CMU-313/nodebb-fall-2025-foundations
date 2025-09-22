@@ -227,9 +227,11 @@
     "announcers-x": "Shares (%1)",
 
     "resolved": "Resolved",
+    "unresolved": "Unresolved",
     "mark-resolved": "Mark as Resolved",
     "mark-unresolved": "Mark as Unresolved",
     "question-resolved": "This question has been resolved",
+    "question-unresolved": "This question is unresolved",
     "question-marked-resolved": "Question marked as resolved",
     "question-marked-unresolved": "Question marked as unresolved"
 }

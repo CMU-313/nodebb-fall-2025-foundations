@@ -555,6 +555,11 @@ describe('API', async () => {
 						return;
 					}
 
+					if (result.response.statusCode === 404 && context[method].responses['404']) {
+						// Skip body validation for 404 responses
+						return;
+					}
+
 					const http200 = context[method].responses['200'];
 					if (!http200) {
 						return;

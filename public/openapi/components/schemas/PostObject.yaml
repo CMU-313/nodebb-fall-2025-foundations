@@ -198,6 +198,9 @@ PostDataObject:
           type: string
         index:
           type: number
+        resolved:
+          type: boolean
+          description: Whether the post is marked as resolved (only for posts in the Comments & Feedback category)
         user:
           type: object
           properties:

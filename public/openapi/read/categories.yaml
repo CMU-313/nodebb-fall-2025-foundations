@@ -125,6 +125,9 @@ get:
                                                   type: string
                                                 title:
                                                   type: string
+                                            resolved:
+                                              type: boolean
+                                              description: Whether the post is marked as resolved (only for posts in the Comments & Feedback category)
                                       imageClass:
                                         type: string
                                       timesClicked:
@@ -196,6 +199,9 @@ get:
                                         type: string
                                       title:
                                         type: string
+                                  resolved:
+                                    type: boolean
+                                    description: Whether the post is marked as resolved (only for posts in the Comments & Feedback category)
                             teaser:
                               type: object
                               properties:

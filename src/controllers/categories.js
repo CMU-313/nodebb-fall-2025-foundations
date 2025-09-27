@@ -12,24 +12,25 @@ const privileges = require('../privileges');
 const categoriesController = module.exports;
 
 categoriesController.list = async function (req, res) {
-	res.locals.metaTags = [{
-		name: 'title',
-		content: String(meta.config.title || 'NodeBB'),
-	}, {
-		property: 'og:type',
-		content: 'website',
-	}];
+	res.locals.metaTags = [
+		{ name: 'title', content: String(meta.config.title || 'NodeBB') },
+		{ property: 'og:type', content: 'website' },
+	];
 
+	// Get root categories
 	const allRootCids = await categories.getAllCidsFromSet('cid:0:children');
 	const rootCids = await privileges.categories.filterCids('find', allRootCids, req.uid);
+
 	const pageCount = Math.max(1, Math.ceil(rootCids.length / meta.config.categoriesPerPage));
 	const page = Math.min(parseInt(req.query.page, 10) || 1, pageCount);
 	const start = Math.max(0, (page - 1) * meta.config.categoriesPerPage);
 	const stop = start + meta.config.categoriesPerPage - 1;
 	const pageCids = rootCids.slice(start, stop + 1);
 
+	// Get child categories
 	const allChildCids = _.flatten(await Promise.all(pageCids.map(categories.getChildrenCids)));
 	const childCids = await privileges.categories.filterCids('find', allChildCids, req.uid);
+
 	const categoryData = await categories.getCategories(pageCids.concat(childCids));
 	const tree = categories.getTree(categoryData, 0);
 
@@ -66,6 +67,7 @@ categoriesController.list = async function (req, res) {
 		pagination: pagination.create(page, pageCount, req.query),
 	};
 
+	// Prepare categories for display
 	data.categories.forEach((category) => {
 		if (category) {
 			helpers.trimChildren(category);
@@ -74,19 +76,18 @@ categoriesController.list = async function (req, res) {
 	});
 
 	//CHATGPT
-	// API response first
-	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api/categories`) ||
-    req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)) {
+	// API route — must comply with schema, no allowCategoryCreation
+	if (
+		req.originalUrl.startsWith(`${nconf.get('relative_path')}/api/categories`) ||
+    req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)
+	) {
 		data.title = '[[pages:categories]]';
 		data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
 		res.locals.metaTags.push({ property: 'og:title', content: '[[pages:categories]]' });
-
-		// NEVER attach allowCategoryCreation here
 		return res.json(data);
 	}
 
-	// Template rendering: allowCategoryCreation is safe
+	// Template route — safe to add allowCategoryCreation
 	data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
 	res.render('categories', data);
-
 };

@@ -37,16 +37,14 @@ categoriesController.list = async function (req, res) {
 		categories.setUnread(tree, pageCids.concat(childCids), req.uid),
 	]);
 
-	// copilot
+	// copilot: create category API
 	categoriesController.create = async function (req, res) {
 		try {
-		// Make sure user has privilege
 			const canCreate = await privileges.global.can('category:create', req.uid);
 			if (!canCreate) {
 				return res.status(403).json({ error: 'Not allowed to create categories' });
 			}
 
-			// Call your backend create logic
 			const category = await categories.create({
 				name: req.body.name || 'Untitled Category',
 				description: req.body.description || '',
@@ -67,9 +65,6 @@ categoriesController.list = async function (req, res) {
 		pagination: pagination.create(page, pageCount, req.query),
 	};
 
-	// source: ChatGPT
-	const allowCategoryCreation = await privileges.global.can('category:create', req.uid);
-
 	data.categories.forEach((category) => {
 		if (category) {
 			helpers.trimChildren(category);
@@ -77,23 +72,17 @@ categoriesController.list = async function (req, res) {
 		}
 	});
 
-	//CHATGPT
-	// at the end of categoriesController.list
 	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api/categories`) || req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)) {
 		data.title = '[[pages:categories]]';
 		data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
 		res.locals.metaTags.push({
 			property: 'og:title',
 			content: '[[pages:categories]]',
-		});
-
-		// don't include allowCategoryCreation in API response
-		return res.json(data); 
+		});//CHATGPT
+	} else {
+		// Only add allowCategoryCreation for template rendering, not API
+		data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
 	}
 
-	// for normal template rendering, allowCategoryCreation is still available
-	res.render('categories', {
-		...data,
-		allowCategoryCreation, // only for template
-	});
+	res.render('categories', data);
 };

@@ -1,19 +1,36 @@
-'use strict';
+define('forum/categories', ['categorySelector', 'api', 'bootbox', 'translator'], function (categorySelector, api, bootbox, translator) {
+    const categories = {};
 
+    categories.init = function () {
+        app.enterRoom('categories');
 
-define('forum/categories', ['categorySelector'], function (categorySelector) {
-	const categories = {};
+        categorySelector.init($('[component="category-selector"]'), {
+            privilege: 'find',
+            onSelect: function (category) {
+                ajaxify.go('/category/' + category.cid);
+            },
+        });
 
-	categories.init = function () {
-		app.enterRoom('categories');
+        const btn = $('#btn-new-category');
+        if (!btn.length) return;
+//COPILOT
+        btn.on('click', function () {
+            bootbox.prompt({
+                title: translator.translate('[[categories:create-prompt]]') || 'Enter category name:',
+                callback: function (categoryName) {
+                    if (!categoryName) return;
 
-		categorySelector.init($('[component="category-selector"]'), {
-			privilege: 'find',
-			onSelect: function (category) {
-				ajaxify.go('/category/' + category.cid);
-			},
-		});
-	};
+                    api.post('/categories', { name: categoryName }).then(res => {
+                        bootbox.alert(`Category "${res.name}" created!`, function () {
+                            ajaxify.refresh();
+                        });
+                    }).catch(err => {
+                        bootbox.alert(`Error creating category: ${err.message || err}`);
+                    });
+                }
+            });
+        });
+    };
 
-	return categories;
+    return categories;
 });

@@ -269,17 +269,35 @@ describe('Admin Controllers', () => {
 		const socketAdmin = require('../src/socket.io/admin');
 		socketAdmin.user.exportUsersCSV({ uid: adminUid }, {}, (err) => {
 			assert.ifError(err);
-			setTimeout(async () => {
-				const { response, body } = await request.get(`${nconf.get('url')}/api/admin/users/csv`, {
-					jar: jar,
-					headers: {
-						referer: `${nconf.get('url')}/admin/manage/users`,
-					},
-				});
-				assert.equal(response.statusCode, 200);
-				assert(body);
-				done();
-			}, 2000);
+			// Wait for the CSV file to be created with retries
+			const checkForFile = async (attempts = 0) => {
+				if (attempts >= 20) { // 20 attempts * 500ms = 10 seconds max
+					return done(new Error('CSV file was not created within timeout'));
+				}
+				
+				try {
+					const { response, body } = await request.get(`${nconf.get('url')}/api/admin/users/csv`, {
+						jar: jar,
+						headers: {
+							referer: `${nconf.get('url')}/admin/manage/users`,
+						},
+					});
+					
+					if (response.statusCode === 200) {
+						assert(body);
+						done();
+					} else {
+						// File not ready yet, retry
+						setTimeout(() => checkForFile(attempts + 1), 500);
+					}
+				} catch (err) {
+					// File not ready yet, retry
+					setTimeout(() => checkForFile(attempts + 1), 500);
+				}
+			};
+			
+			// Start checking after a short delay
+			setTimeout(() => checkForFile(), 1000);
 		});
 	});
 

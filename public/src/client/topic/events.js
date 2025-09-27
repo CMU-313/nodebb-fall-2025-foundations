@@ -258,17 +258,28 @@ define('forum/topic/events', [
 			postEl.find('[component="post/pinned-indicator"]').removeClass('hidden');
 		}
 
-		// Move the pinned post directly under the main post (visually)
+		// Move the pinned post to the pinned section: after the last existing pinned post
 		try {
 			const topicEl = components.get('topic');
 			const mainPost = topicEl.find('[component="post"][data-index="0"]');
-			if (mainPost.length && mainPost[0] !== postEl[0]) {
+			// Find the last pinned post (excluding the one we're pinning)
+			let insertAfterEl = topicEl.find('[component="post"].pinned-post').not(postEl).last();
+			if (!insertAfterEl.length) {
+				// If there are no pinned posts, insert directly after the main post (if found)
+				insertAfterEl = mainPost.length ? mainPost : null;
+			}
+			if (insertAfterEl) {
 				// Store reference to the next sibling so we can restore on unpin
 				postEl.data('pin-previous-next', postEl.next());
-				postEl.insertAfter(mainPost);
+				// If insertAfterEl is mainPost and equals the post itself, skip
+				if (insertAfterEl[0] !== postEl[0]) {
+					postEl.insertAfter(insertAfterEl);
+				}
+			} else {
+				// As a last resort, append to topic container
+				topicEl.append(postEl);
 			}
 		} catch (e) {
-			// fail silently if components.get isn't available or DOM changes unexpectedly
 			console.warn('Unable to move pinned post in DOM', e);
 		}
 	}

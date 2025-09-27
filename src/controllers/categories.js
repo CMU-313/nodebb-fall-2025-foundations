@@ -65,10 +65,10 @@ categoriesController.list = async function (req, res) {
 		selectCategoryLabel: '[[pages:categories]]',
 		categories: tree,
 		pagination: pagination.create(page, pageCount, req.query),
-
-		// source: ChatGPT
-		allowCategoryCreation: await privileges.global.can('category:create', req.uid),
 	};
+
+	// source: ChatGPT
+	const allowCategoryCreation = await privileges.global.can('category:create', req.uid);
 
 	data.categories.forEach((category) => {
 		if (category) {
@@ -86,5 +86,9 @@ categoriesController.list = async function (req, res) {
 		});
 	}
 
-	res.render('categories', data);
+	//CHATGPT
+	res.render('categories', {
+		...data,
+		allowCategoryCreation, // still available in template only
+	});
 };

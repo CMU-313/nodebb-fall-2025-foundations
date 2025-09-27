@@ -174,6 +174,9 @@ PostDataObject:
           type: number
         votes:
           type: number
+        pinned:
+          type: boolean
+          description: Whether this post is pinned within the topic
         deleted:
           type: number
         upvotes:

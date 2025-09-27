@@ -31,15 +31,22 @@ module.exports = function (Categories) {
 		const isCommentsAndFeedback = categoryData && categoryName === 'Comments & Feedback';
 		
 		if (isCommentsAndFeedback) {
-			for (const topic of topicsData) {
-				if (topic && topic.mainPid) {
-					// Get the resolved status directly from database to bypass any caching
+			// Get all resolved statuses in parallel to avoid await in loop
+			const resolvedPromises = topicsData
+				.filter(topic => topic && topic.mainPid)
+				.map(async (topic) => {
 					const postData = await db.getObject(`post:${topic.mainPid}`);
 					const resolved = postData ? postData.resolved : null;
-					topic.resolved = parseInt(resolved, 10) === 1;
-					topic.showUnresolved = true;
-				}
-			}
+					return { topic, resolved: parseInt(resolved, 10) === 1 };
+				});
+			
+			const resolvedResults = await Promise.all(resolvedPromises);
+			
+			// Apply the resolved status to topics
+			resolvedResults.forEach(({ topic, resolved }) => {
+				topic.resolved = resolved;
+				topic.showUnresolved = true;
+			});
 		}
 
 		results = await plugins.hooks.fire('filter:category.topics.get', { cid: data.cid, topics: topicsData, uid: data.uid });

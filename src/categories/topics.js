@@ -13,7 +13,6 @@ const utils = require('../utils');
 
 module.exports = function (Categories) {
 	Categories.getCategoryTopics = async function (data) {
-		console.log('DEBUG: getCategoryTopics called with cid:', data.cid);
 		let results = await plugins.hooks.fire('filter:category.topics.prepare', data);
 		const tids = await Categories.getTopicIds(results);
 		let topicsData = await topics.getTopicsByTids(tids, data.uid);
@@ -30,10 +29,11 @@ module.exports = function (Categories) {
 		const isCommentsAndFeedback = categoryData && categoryName === 'Comments & Feedback';
 		
 		if (isCommentsAndFeedback) {
-			const posts = require('../posts');
 			for (const topic of topicsData) {
 				if (topic && topic.mainPid) {
-					const resolved = await posts.getPostField(topic.mainPid, 'resolved');
+					// Get the resolved status directly from database to bypass any caching
+					const postData = await db.getObject(`post:${topic.mainPid}`);
+					const resolved = postData ? postData.resolved : null;
 					topic.resolved = parseInt(resolved, 10) === 1;
 					topic.showUnresolved = true;
 				}

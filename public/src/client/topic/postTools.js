@@ -602,20 +602,20 @@ define('forum/topic/postTools', [
 	}
 
 		// Show/hide resolved button based on category and initialize button text
-		$(document).ready(function() {
+		function initializeResolvedButton() {
 			if (ajaxify.data && ajaxify.data.category) {
 				// Handle HTML entities in category name
 				const categoryName = ajaxify.data.category.name.replace(/&amp;/g, '&');
 				if (categoryName === 'Comments & Feedback') {
 					$('.resolved-tools').show();
-					
+
 					// Initialize button text based on current resolved status
 					const btn = $('[component="topic/resolved"]');
 					if (btn.length) {
 						const isResolved = btn.attr('data-resolved') === 'true';
 						const icon = btn.find('[component="topic/resolved/icon"]');
 						const text = btn.find('[component="topic/resolved/text"]');
-						
+
 						if (isResolved) {
 							icon.removeClass('fa-question-circle text-warning')
 								.addClass('fa-check-circle text-success');
@@ -625,12 +625,19 @@ define('forum/topic/postTools', [
 								.addClass('fa-question-circle text-warning');
 							text.text('Mark as Resolved');
 						}
+					} else {
+						// Button not found, try again after a short delay
+						setTimeout(initializeResolvedButton, 100);
 					}
 				} else {
 					$('.resolved-tools').hide();
 				}
 			}
-		});
+		}
+
+		// Initialize on document ready
+		$(document).ready(initializeResolvedButton);
+		$(window).on('action:ajaxify.end', initializeResolvedButton);
 
 		// Handle topic-level resolved button
 		$(document).on('click', '[component="topic/resolved"]', function () {

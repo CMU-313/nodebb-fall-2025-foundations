@@ -32,12 +32,13 @@ categoriesController.list = async function (req, res) {
 	const childCids = await privileges.categories.filterCids('find', allChildCids, req.uid);
 	const categoryData = await categories.getCategories(pageCids.concat(childCids));
 	const tree = categories.getTree(categoryData, 0);
+
 	await Promise.all([
 		categories.getRecentTopicReplies(categoryData, req.uid, req.query),
 		categories.setUnread(tree, pageCids.concat(childCids), req.uid),
 	]);
 
-	// copilot: create category endpoint
+	// Category creation endpoint
 	categoriesController.create = async function (req, res) {
 		try {
 			const canCreate = await privileges.global.can('category:create', req.uid);
@@ -73,7 +74,7 @@ categoriesController.list = async function (req, res) {
 	});
 
 	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api/categories`) || req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)) {
-		// API response: no extra fields
+		// API response: must comply with schema (no allowCategoryCreation)
 		data.title = '[[pages:categories]]';
 		data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
 		res.locals.metaTags.push({
@@ -81,9 +82,9 @@ categoriesController.list = async function (req, res) {
 			content: '[[pages:categories]]',
 		});
 		return res.json(data);
-	} 
-	// Template rendering: allowCategoryCreation safe to include
+	}
+
+	// Template rendering: allowCategoryCreation is safe
 	data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
 	res.render('categories', data);
-	
 };

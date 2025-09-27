@@ -20,6 +20,13 @@ define('forum/categories', ['categorySelector', 'api', 'bootbox', 'translator'],
                 callback: function (categoryName) {
                     if (!categoryName) return;
 
+                    api.post('/categories', { name: categoryName }).then(res => {
+                        bootbox.alert(`Category "${res.name}" created!`, function () {
+                            ajaxify.refresh();
+                        });
+                    }).catch(err => {
+                        bootbox.alert(`Error creating category: ${err.message || err}`);
+                    });
     
                 }
             });

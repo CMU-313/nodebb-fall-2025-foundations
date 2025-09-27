@@ -241,8 +241,35 @@ define('forum/topic/events', [
 		postEl.addClass('pinned-post');
 		postEl.find('[component="post/pin"]').toggleClass('hidden', true).parent().attr('hidden', '');
 		postEl.find('[component="post/unpin"]').toggleClass('hidden', false).parent().attr('hidden', null);
-		if (!postEl.find('[component="post/pinned"]').length) {
-			postEl.find('[component="post/header"]').append('<span component="post/pinned" class="badge bg-secondary ms-2"><i class="fa fa-thumb-tack"></i></span>');
+
+		// Add a small pinned icon next to the edit indicator (if not present)
+		if (!postEl.find('[component="post/pinned-indicator"]').length) {
+			// place the icon next to the edit indicator for consistent placement
+			const editIndicator = postEl.find('[component="post/edit-indicator"]');
+			if (editIndicator.length) {
+				editIndicator.after('<i component="post/pinned-indicator" class="fa fa-thumb-tack text-muted pinned-icon ms-1" aria-hidden="true"></i>');
+			} else {
+				postEl.find('[component="post/header"]').append('<i component="post/pinned-indicator" class="fa fa-thumb-tack text-muted pinned-icon ms-1" aria-hidden="true"></i>');
+			}
+			translator.translate('[[topic:pinned]]', function (translated) {
+				postEl.find('[component="post/pinned-indicator"]').attr('title', translated);
+			});
+		} else {
+			postEl.find('[component="post/pinned-indicator"]').removeClass('hidden');
+		}
+
+		// Move the pinned post directly under the main post (visually)
+		try {
+			const topicEl = components.get('topic');
+			const mainPost = topicEl.find('[component="post"][data-index="0"]');
+			if (mainPost.length && mainPost[0] !== postEl[0]) {
+				// Store reference to the next sibling so we can restore on unpin
+				postEl.data('pin-previous-next', postEl.next());
+				postEl.insertAfter(mainPost);
+			}
+		} catch (e) {
+			// fail silently if components.get isn't available or DOM changes unexpectedly
+			console.warn('Unable to move pinned post in DOM', e);
 		}
 	}
 
@@ -258,6 +285,22 @@ define('forum/topic/events', [
 		postEl.find('[component="post/pin"]').toggleClass('hidden', false).parent().attr('hidden', null);
 		postEl.find('[component="post/unpin"]').toggleClass('hidden', true).parent().attr('hidden', '');
 		postEl.find('[component="post/pinned"]').remove();
+		// remove the small pinned indicator
+		postEl.find('[component="post/pinned-indicator"]').remove();
+
+		// Try to restore the post to its previous position if we saved it
+		try {
+			const prevNext = postEl.data('pin-previous-next');
+			if (prevNext && prevNext.length) {
+				postEl.insertBefore(prevNext);
+			} else {
+				// fallback: append to topic container
+				components.get('topic').append(postEl);
+			}
+			postEl.removeData('pin-previous-next');
+		} catch (e) {
+			console.warn('Unable to restore unpinned post position', e);
+		}
 	}
 
 	function togglePostBookmark(data) {

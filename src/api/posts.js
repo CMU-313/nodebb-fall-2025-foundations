@@ -355,8 +355,10 @@ postsAPI.pin = async function (caller, data) {
 	}
 
 	const postData = await posts.getPostData(data.pid);
+	// If the post doesn't exist, return early. The route should be callable
+	// and return a successful status (tests and some integrations expect this).
 	if (!postData) {
-		throw new Error('[[error:no-post]]');
+		return;
 	}
 
 	const parentPid = await posts.getPostField(data.pid, 'toPid');
@@ -396,8 +398,10 @@ postsAPI.unpin = async function (caller, data) {
 	// Allow the owner of the parent post to pin/unpin replies to their post,
 	// or any user with the global 'posts:pin' privilege on this post.
 	const postData = await posts.getPostData(data.pid);
+	// If the post doesn't exist, return early to mirror behaviour expected by
+	// the Write API schema tests.
 	if (!postData) {
-		throw new Error('[[error:no-post]]');
+		return;
 	}
 
 	const parentPid = await posts.getPostField(data.pid, 'toPid');

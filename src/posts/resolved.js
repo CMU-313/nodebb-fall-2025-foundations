@@ -1,5 +1,8 @@
 'use strict';
 
+// AI Assistance: This file was created with assistance from ChatGPT for implementing
+// the resolved/unresolved functionality, including permission logic and database operations.
+
 const db = require('../database');
 const user = require('../user');
 const privileges = require('../privileges');

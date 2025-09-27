@@ -93,6 +93,8 @@ topicsController.get = async function getTopic(req, res, next) {
 	await topics.modifyPostsByPrivilege(topicData, userPrivileges);
 	
 	// Add resolved status from main post for Comments & Feedback category
+	// AI Assistance: This logic was implemented with ChatGPT assistance for handling
+	// HTML entities in category names and direct database queries to avoid caching issues
 	if (topicData.category && topicData.category.name.replace(/&amp;/g, '&') === 'Comments & Feedback' && topicData.mainPid) {
 		const db = require('../database');
 		const postData = await db.getObject(`post:${topicData.mainPid}`);

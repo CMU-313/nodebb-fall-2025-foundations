@@ -670,6 +670,8 @@ async function sendQueueNotification(type, targetUid, path, notificationText) {
 	await notifications.push(notifObj, [targetUid]);
 }
 
+// AI Assistance: This API endpoint was implemented with ChatGPT assistance for handling
+// resolved/unresolved status updates with proper authentication and validation
 postsAPI.setResolved = async function (caller, data) {
 	if (!data || !data.pid || typeof data.resolved !== 'boolean') {
 		throw new Error('[[error:invalid-data]]');

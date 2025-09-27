@@ -70,6 +70,7 @@ function modifyPost(post, fields) {
 		if (!fields.length || fields.includes('attachments')) {
 			post.attachments = (post.attachments || '').split(',').filter(Boolean);
 		}
+		// AI Assistance: Resolved field handling implemented with ChatGPT assistance
 		if (post.hasOwnProperty('resolved')) {
 			post.resolved = parseInt(post.resolved, 10) === 1;
 		} else {

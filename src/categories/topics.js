@@ -24,6 +24,8 @@ module.exports = function (Categories) {
 		topics.calculateTopicIndices(topicsData, data.start);
 
 		// Add resolved status for topics in Comments & Feedback category
+		// AI Assistance: This logic was implemented with ChatGPT assistance for handling
+		// HTML entities in category names and direct database queries to bypass caching
 		const categoryData = await db.getObject(`category:${data.cid}`);
 		const categoryName = categoryData ? categoryData.name.replace(/&amp;/g, '&') : '';
 		const isCommentsAndFeedback = categoryData && categoryName === 'Comments & Feedback';

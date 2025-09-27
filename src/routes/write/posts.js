@@ -34,6 +34,10 @@ module.exports = function () {
 	setupApiRoute(router, 'put', '/:pid/bookmark', middlewares, controllers.write.posts.bookmark);
 	setupApiRoute(router, 'delete', '/:pid/bookmark', middlewares, controllers.write.posts.unbookmark);
 
+	// allow post creator to pin and unpin comments in a post (issue #4)
+	setupApiRoute(router, 'put', '/:pid/pin', middlewares, controllers.write.posts.pin);
+	setupApiRoute(router, 'delete', '/:pid/pin', middlewares, controllers.write.posts.unpin);
+
 	setupApiRoute(router, 'get', '/:pid/diffs', [middleware.assert.post], controllers.write.posts.getDiffs);
 	setupApiRoute(router, 'get', '/:pid/diffs/:since', [middleware.assert.post], controllers.write.posts.loadDiff);
 	setupApiRoute(router, 'put', '/:pid/diffs/:since', middlewares, controllers.write.posts.restoreDiff);

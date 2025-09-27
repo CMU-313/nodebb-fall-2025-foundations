@@ -77,23 +77,23 @@ categoriesController.list = async function (req, res) {
 		}
 	});
 
-//CHATGPT
-// at the end of categoriesController.list
-if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api/categories`) || req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)) {
-    data.title = '[[pages:categories]]';
-    data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
-    res.locals.metaTags.push({
-        property: 'og:title',
-        content: '[[pages:categories]]',
-    });
+	//CHATGPT
+	// at the end of categoriesController.list
+	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api/categories`) || req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)) {
+		data.title = '[[pages:categories]]';
+		data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
+		res.locals.metaTags.push({
+			property: 'og:title',
+			content: '[[pages:categories]]',
+		});
 
-    // don't include allowCategoryCreation in API response
-    return res.json(data); 
-}
+		// don't include allowCategoryCreation in API response
+		return res.json(data); 
+	}
 
-// for normal template rendering, allowCategoryCreation is still available
-res.render('categories', {
-    ...data,
-    allowCategoryCreation, // only for template
-});
+	// for normal template rendering, allowCategoryCreation is still available
+	res.render('categories', {
+		...data,
+		allowCategoryCreation, // only for template
+	});
 };

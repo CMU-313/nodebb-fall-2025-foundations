@@ -155,6 +155,7 @@ PostObject:
       type: boolean
     replies:
       type: number
+    # AI Assistance: Added resolved field to support mark-as-resolved feature for Comments & Feedback category
     resolved:
       type: boolean
       description: Whether the post is marked as resolved (only for posts in the Comments & Feedback category)
@@ -198,6 +199,7 @@ PostDataObject:
           type: string
         index:
           type: number
+        # AI Assistance: Added resolved field to support mark-as-resolved feature for Comments & Feedback category
         resolved:
           type: boolean
           description: Whether the post is marked as resolved (only for posts in the Comments & Feedback category)

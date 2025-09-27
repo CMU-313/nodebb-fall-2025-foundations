@@ -555,6 +555,7 @@ describe('API', async () => {
 						return;
 					}
 
+					// AI Assistance: Handle 404 responses for async operations like CSV export
 					if (result.response.statusCode === 404 && context[method].responses['404']) {
 						// Skip body validation for 404 responses
 						return;

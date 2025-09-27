@@ -97,12 +97,12 @@ categoriesController.list = async function (req, res) {
 				meta: [
 					{ name: 'description', content: meta.config.description || '' },
 					{ name: 'title', content: meta.config.title || 'NodeBB' },
-					{ property: 'og:type', content: 'website' }
+					{ property: 'og:type', content: 'website' },
 				],
 				link: [
-					{ rel: 'canonical', href: String(nconf.get('url') || meta.config.url || '') }
-				]
-			}
+					{ rel: 'canonical', href: String(nconf.get('url') || meta.config.url || '') },
+				],
+			},
 		};
 
 		data.widgets = [];
@@ -114,10 +114,10 @@ categoriesController.list = async function (req, res) {
 	// Template route — safe to add allowCategoryCreation
 	data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
 	res.render('categories', {
-    title: meta.config.homePageTitle || '[[pages:home]]',
-    categories: tree,
-    allowCategoryCreation: await privileges.global.can('category:create', req.uid),
-    loggedInUser: req.user || null
-});
+		title: meta.config.homePageTitle || '[[pages:home]]',
+		categories: tree,
+		allowCategoryCreation: await privileges.global.can('category:create', req.uid),
+		loggedInUser: req.user || null,
+	});
 
 };

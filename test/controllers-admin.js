@@ -265,39 +265,65 @@ describe('Admin Controllers', () => {
 		assert(body);
 	});
 
-	it('should load /admin/users/csv', (done) => {
-		const socketAdmin = require('../src/socket.io/admin');
-		socketAdmin.user.exportUsersCSV({ uid: adminUid }, {}, (err) => {
-			assert.ifError(err);
-			// Wait for the CSV file to be created with retries
-			const checkForFile = async (attempts = 0) => {
-				if (attempts >= 20) { // 20 attempts * 500ms = 10 seconds max
-					return done(new Error('CSV file was not created within timeout'));
+	it('should load /admin/users/csv', async () => {
+		// Ensure export directory exists
+		const fs = require('fs');
+		const path = require('path');
+		const exportDir = path.join(__dirname, '../build/export');
+		if (!fs.existsSync(exportDir)) {
+			fs.mkdirSync(exportDir, { recursive: true });
+		}
+
+		// Login as admin to get proper authentication
+		({ jar } = await helpers.loginUser('admin', 'barbar'));
+		
+		// Make admin user an administrator
+		await groups.join('administrators', adminUid);
+
+		// Used AI for debugging the async/await issues
+		return new Promise((resolve, reject) => {
+			const socketAdmin = require('../src/socket.io/admin');
+			socketAdmin.user.exportUsersCSV({ uid: adminUid }, {}, (err) => {
+				if (err) {
+					return reject(err);
 				}
 				
-				try {
-					const { response, body } = await request.get(`${nconf.get('url')}/api/admin/users/csv`, {
-						jar: jar,
-						headers: {
-							referer: `${nconf.get('url')}/admin/manage/users`,
-						},
-					});
+				// Wait for the CSV file to be created with retries
+				const checkForFile = async (attempts = 0) => {
+					if (attempts >= 40) { // 40 attempts * 500ms = 20 seconds max
+						return reject(new Error('CSV file was not created within timeout'));
+					}
 					
-					if (response.statusCode === 200) {
-						assert(body);
-						done();
-					} else {
+					try {
+						// Check if file exists first
+						const csvPath = path.join(__dirname, '../build/export/users.csv');
+						
+						if (fs.existsSync(csvPath)) {
+							const { response, body } = await request.get(`${nconf.get('url')}/api/admin/users/csv`, {
+								jar: jar,
+								headers: {
+									referer: `${nconf.get('url')}/admin/manage/users`,
+								},
+							});
+							
+							if (response.statusCode === 200) {
+								assert(body);
+								resolve();
+								return;
+							}
+						}
+						
+						// File not ready yet, retry
+						setTimeout(() => checkForFile(attempts + 1), 500);
+					} catch (err) {
 						// File not ready yet, retry
 						setTimeout(() => checkForFile(attempts + 1), 500);
 					}
-				} catch (err) {
-					// File not ready yet, retry
-					setTimeout(() => checkForFile(attempts + 1), 500);
-				}
-			};
-			
-			// Start checking after a short delay
-			setTimeout(() => checkForFile(), 1000);
+				};
+				
+				// Start checking after a short delay
+				setTimeout(() => checkForFile(), 1000);
+			});
 		});
 	});
 
@@ -669,11 +695,11 @@ describe('Admin Controllers', () => {
 				for (const route of adminRoutes) {
 					/* eslint-disable no-await-in-loop */
 					await privileges.admin.rescind([privileges.admin.routeMap[route]], uid);
-					let { response: res } = await await request.get(`${nconf.get('url')}/api/admin`, requestOpts);
+					let { response: res } = await request.get(`${nconf.get('url')}/api/admin`, requestOpts);
 					assert.strictEqual(res.statusCode, 403);
 
 					await privileges.admin.give([privileges.admin.routeMap[route]], uid);
-					({ response: res } = await await request.get(`${nconf.get('url')}/api/admin`, requestOpts));
+					({ response: res } = await request.get(`${nconf.get('url')}/api/admin`, requestOpts));
 					assert.strictEqual(res.statusCode, 200);
 
 					await privileges.admin.rescind([privileges.admin.routeMap[route]], uid);

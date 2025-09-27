@@ -34,6 +34,7 @@ categoriesController.list = async function (req, res) {
 	const categoryData = await categories.getCategories(pageCids.concat(childCids));
 	const tree = categories.getTree(categoryData, 0);
 
+	//CHATGPT
 	await Promise.all([
 		categories.getRecentTopicReplies(categoryData, req.uid, req.query),
 		categories.setUnread(tree, pageCids.concat(childCids), req.uid),
@@ -75,14 +76,9 @@ categoriesController.list = async function (req, res) {
 		}
 	});
 
-	//COPILOT
-	// API route — must comply with schema, no allowCategoryCreation
-	if (
-		req.originalUrl.startsWith(`${nconf.get('relative_path')}/api`) ||
-    req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)
-	) {
+	// API routes
+	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api`)) {
 		data.title = '[[pages:categories]]';
-		//data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
 		res.locals.metaTags.push({ property: 'og:title', content: '[[pages:categories]]' });
 
 		data.loggedIn = !!req.uid;
@@ -91,6 +87,7 @@ categoriesController.list = async function (req, res) {
 		data.template = { name: 'categories' };
 		data.url = String(nconf.get('url') || meta.config.url || '');
 		data.bodyClass = 'categories-page';
+
 		// Ensure API responses include session info expected by the schema/tests
 		data._header = {
 			tags: {
@@ -105,19 +102,27 @@ categoriesController.list = async function (req, res) {
 			},
 		};
 
-		data.widgets = [];
+		data.widgets = {
+			sidebar: [],
+			header: [],
+			footer: [],
+			// add other widget areas if needed by your schema
+		};
+
+		// Only add breadcrumbs for /api/categories
+		if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api/categories`)) {
+			data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
+		}
 
 		return res.json(data);
 	}
-
 
 	// Template route — safe to add allowCategoryCreation
 	data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
 	res.render('categories', {
 		title: meta.config.homePageTitle || '[[pages:home]]',
 		categories: tree,
-		allowCategoryCreation: await privileges.global.can('category:create', req.uid),
+		allowCategoryCreation: data.allowCategoryCreation,
 		loggedInUser: req.user || null,
 	});
-
 };

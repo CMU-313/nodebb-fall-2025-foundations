@@ -39,26 +39,26 @@ categoriesController.list = async function (req, res) {
 
 	// copilot
 	categoriesController.create = async function (req, res) {
-	try {
+		try {
 		// Make sure user has privilege
-		const canCreate = await privileges.global.can('category:create', req.uid);
-		if (!canCreate) {
-			return res.status(403).json({ error: 'Not allowed to create categories' });
+			const canCreate = await privileges.global.can('category:create', req.uid);
+			if (!canCreate) {
+				return res.status(403).json({ error: 'Not allowed to create categories' });
+			}
+
+			// Call your backend create logic
+			const category = await categories.create({
+				name: req.body.name || 'Untitled Category',
+				description: req.body.description || '',
+				uid: req.uid,
+			});
+
+			return res.json({ category });
+		} catch (err) {
+			console.error(err);
+			return res.status(500).json({ error: err.message });
 		}
-
-		// Call your backend create logic
-		const category = await categories.create({
-			name: req.body.name || 'Untitled Category',
-			description: req.body.description || '',
-			uid: req.uid,
-		});
-
-		return res.json({ category });
-	} catch (err) {
-		console.error(err);
-		return res.status(500).json({ error: err.message });
-	}
-};
+	};
 
 	const data = {
 		title: meta.config.homePageTitle || '[[pages:home]]',

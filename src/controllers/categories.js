@@ -73,18 +73,20 @@ categoriesController.list = async function (req, res) {
 		}
 	});
 
-	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api/categories`) || req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)) {
-		// API response: must comply with schema (no allowCategoryCreation)
+	//CHATGPT
+	// API response first
+	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api/categories`) ||
+    req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)) {
 		data.title = '[[pages:categories]]';
 		data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
-		res.locals.metaTags.push({
-			property: 'og:title',
-			content: '[[pages:categories]]',
-		});
+		res.locals.metaTags.push({ property: 'og:title', content: '[[pages:categories]]' });
+
+		// NEVER attach allowCategoryCreation here
 		return res.json(data);
 	}
 
 	// Template rendering: allowCategoryCreation is safe
 	data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
 	res.render('categories', data);
+
 };

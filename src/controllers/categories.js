@@ -37,7 +37,7 @@ categoriesController.list = async function (req, res) {
 		categories.setUnread(tree, pageCids.concat(childCids), req.uid),
 	]);
 
-	// copilot: create category API
+	// copilot: create category endpoint
 	categoriesController.create = async function (req, res) {
 		try {
 			const canCreate = await privileges.global.can('category:create', req.uid);
@@ -73,16 +73,17 @@ categoriesController.list = async function (req, res) {
 	});
 
 	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api/categories`) || req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)) {
+		// API response: no extra fields
 		data.title = '[[pages:categories]]';
 		data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
 		res.locals.metaTags.push({
 			property: 'og:title',
 			content: '[[pages:categories]]',
-		});//CHATGPT
-	} else {
-		// Only add allowCategoryCreation for template rendering, not API
-		data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
-	}
-
+		});
+		return res.json(data);
+	} 
+	// Template rendering: allowCategoryCreation safe to include
+	data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
 	res.render('categories', data);
+	
 };

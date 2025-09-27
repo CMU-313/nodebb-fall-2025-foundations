@@ -93,10 +93,15 @@ topicsController.get = async function getTopic(req, res, next) {
 	await topics.modifyPostsByPrivilege(topicData, userPrivileges);
 	
 	// Add resolved status from main post for Comments & Feedback category
-	if (topicData.category && topicData.category.name === 'Comments & Feedback' && topicData.mainPid) {
-		const posts = require('../posts');
-		const resolved = await posts.getPostField(topicData.mainPid, 'resolved');
+	if (topicData.category && topicData.category.name.replace(/&amp;/g, '&') === 'Comments & Feedback' && topicData.mainPid) {
+		const db = require('../database');
+		const postData = await db.getObject(`post:${topicData.mainPid}`);
+		const resolved = postData ? postData.resolved : null;
 		topicData.resolved = parseInt(resolved, 10) === 1;
+
+		// Check if current user can resolve this post
+		const posts = require('../posts');
+		topicData.canResolve = await posts.canResolve(topicData.mainPid, req.uid);
 	}
 	topicData.tagWhitelist = categories.filterTagWhitelist(topicData.tagWhitelist, userPrivileges.isAdminOrMod);
 

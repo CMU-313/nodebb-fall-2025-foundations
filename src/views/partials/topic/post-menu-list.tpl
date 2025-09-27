@@ -19,12 +19,12 @@
 {{{ if posts.canPin }}}
 <li {{{ if posts.pinned }}}hidden{{{ end }}}>
 	<a class="dropdown-item rounded-1 d-flex align-items-center gap-2" component="post/pin" role="menuitem" href="#" data-pid="{posts.pid}">
-		<span class="menu-icon"><i class="fa fa-fw text-secondary fa-thumb-tack"></i></span> [[topic:pin-post]]
+		<span class="menu-icon"><i class="fa fa-fw text-secondary fa-thumb-tack"></i></span> [[topic:pin-comment]]
 	</a>
 </li>
 <li {{{ if !posts.pinned }}}hidden{{{ end }}}>
 	<a class="dropdown-item rounded-1 d-flex align-items-center gap-2" component="post/unpin" role="menuitem" href="#" data-pid="{posts.pid}">
-		<span class="menu-icon"><i class="fa fa-fw text-secondary fa-thumb-tack fa-rotate-90"></i></span> [[topic:unpin-post]]
+		<span class="menu-icon"><i class="fa fa-fw text-secondary fa-thumb-tack fa-rotate-90"></i></span> [[topic:unpin-comment]]
 	</a>
 </li>
 {{{ end }}}

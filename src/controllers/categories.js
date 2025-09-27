@@ -82,7 +82,7 @@ categoriesController.list = async function (req, res) {
     req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)
 	) {
 		data.title = '[[pages:categories]]';
-		data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
+		//data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
 		res.locals.metaTags.push({ property: 'og:title', content: '[[pages:categories]]' });
 
 		data.loggedIn = !!req.uid;
@@ -93,14 +93,19 @@ categoriesController.list = async function (req, res) {
 		data.bodyClass = 'categories-page';
 		// Ensure API responses include session info expected by the schema/tests
 		data._header = {
-			title: 'Categories',
-			tags: (res.locals.metaTags || []).map(tag => ({
-				name: tag.name || tag.property || 'unknown',
-				content: String(tag.content || ''),
-				meta: true,
-			})),
+			tags: {
+				meta: [
+					{ name: 'description', content: meta.config.description || '' },
+					{ name: 'title', content: meta.config.title || 'NodeBB' },
+					{ property: 'og:type', content: 'website' }
+				],
+				link: [
+					{ rel: 'canonical', href: String(nconf.get('url') || meta.config.url || '') }
+				]
+			}
 		};
 
+		data.widgets = [];
 
 		return res.json(data);
 	}
@@ -108,5 +113,11 @@ categoriesController.list = async function (req, res) {
 
 	// Template route — safe to add allowCategoryCreation
 	data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
-	res.render('categories', data);
+	res.render('categories', {
+    title: meta.config.homePageTitle || '[[pages:home]]',
+    categories: tree,
+    allowCategoryCreation: await privileges.global.can('category:create', req.uid),
+    loggedInUser: req.user || null
+});
+
 };

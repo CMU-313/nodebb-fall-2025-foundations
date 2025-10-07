@@ -9,8 +9,63 @@ const pagination = require('../pagination');
 const helpers = require('./helpers');
 const privileges = require('../privileges');
 const widgets = require('../widgets');
+const user = require('../user');
 
 const categoriesController = module.exports;
+
+// Category creation endpoint
+categoriesController.create = async function (req, res) {
+	try {
+		const canCreate = await privileges.global.can('category:create', req.uid);
+		if (!canCreate) {
+			return res.status(403).json({ error: 'Not allowed to create categories' });
+		}
+
+		const category = await categories.create({
+			name: req.body.name || 'Untitled Category',
+			description: req.body.description || '',
+			uid: req.uid,
+		});
+
+		return res.json({ category });
+	} catch (err) {
+		console.error(err);
+		return res.status(500).json({ error: err.message });
+	}
+};
+
+// Category update endpoint
+categoriesController.update = async function (req, res) {
+	try {
+		const { cid } = req.params;
+		
+		// Check if user can edit this category (admin or moderator)
+		const [isAdmin, isModerator] = await Promise.all([
+			user.isAdministrator(req.uid),
+			user.isModerator(req.uid, cid),
+		]);
+		
+		if (!isAdmin && !isModerator) {
+			return res.status(403).json({ error: 'Not allowed to edit this category' });
+		}
+
+		const updateData = {};
+		if (req.body.name !== undefined) {
+			updateData.name = req.body.name;
+		}
+		if (req.body.description !== undefined) {
+			updateData.description = req.body.description;
+		}
+
+		await categories.update(cid, updateData);
+		const updatedCategory = await categories.getCategoryData(cid);
+
+		return res.json({ category: updatedCategory });
+	} catch (err) {
+		console.error(err);
+		return res.status(500).json({ error: err.message });
+	}
+};
 
 categoriesController.list = async function (req, res) {
 	res.locals.metaTags = [
@@ -40,27 +95,6 @@ categoriesController.list = async function (req, res) {
 		categories.setUnread(tree, pageCids.concat(childCids), req.uid),
 	]);
 
-	// Category creation endpoint
-	categoriesController.create = async function (req, res) {
-		try {
-			const canCreate = await privileges.global.can('category:create', req.uid);
-			if (!canCreate) {
-				return res.status(403).json({ error: 'Not allowed to create categories' });
-			}
-
-			const category = await categories.create({
-				name: req.body.name || 'Untitled Category',
-				description: req.body.description || '',
-				uid: req.uid,
-			});
-
-			return res.json({ category });
-		} catch (err) {
-			console.error(err);
-			return res.status(500).json({ error: err.message });
-		}
-	};
-
 	const data = {
 		title: meta.config.homePageTitle || '[[pages:home]]',
 		selectCategoryLabel: '[[pages:categories]]',
@@ -75,6 +109,18 @@ categoriesController.list = async function (req, res) {
 			helpers.setCategoryTeaser(category);
 		}
 	});
+
+	// Add edit privileges for each category
+	await Promise.all(data.categories.map(async (category) => {
+		if (category) {
+			// Check if user can edit this category (admin or moderator)
+			const [isAdmin, isModerator] = await Promise.all([
+				user.isAdministrator(req.uid),
+				user.isModerator(req.uid, category.cid),
+			]);
+			category.editable = isAdmin || isModerator;
+		}
+	}));
 
 	//COPILOT
 	// API route — JSON response

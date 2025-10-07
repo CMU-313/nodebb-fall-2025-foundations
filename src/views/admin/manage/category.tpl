@@ -18,6 +18,7 @@
 					</label>
 					<input id="cid-{category.cid}-name" type="text" class="form-control" data-name="name" value="{category.name}" />
 				</div>
+				</div>
 
 				<div class="mb-3">
 					<label class="form-label" for="cid-{category.cid}-handle">

@@ -12,8 +12,32 @@ define('forum/account/edit', [
 ], function (header, picture, translator, api, hooks, bootbox, alerts, changeEmail) {
 	const AccountEdit = {};
 
+	function normalizeUniversity(input) {
+		if (!input) return '';
+		const s = input.replace(/<[^>]*>/g, '').trim();
+		const small = { of: true, the: true };
+		const parts = s.split(/\s+/).map(function (w, i) {
+			const lw = w.toLowerCase();
+			if (i === 0) {
+				return lw.charAt(0).toUpperCase() + lw.slice(1);
+			}
+			if (small[lw]) {
+				return lw; // keep 'of'/'the' lowercase when not first
+			}
+			return lw.charAt(0).toUpperCase() + lw.slice(1);
+		});
+		return parts.join(' ');
+	}
+
 	AccountEdit.init = function () {
 		header.init();
+
+		// University add-toggle
+		$('#addUniversityBtn').on('click', function (e) {
+			e.preventDefault();
+			$('#university-placeholder').hide();
+			$('#university-fields').show();
+		});
 
 		$('#submitBtn').on('click', updateProfile);
 
@@ -57,6 +81,22 @@ define('forum/account/edit', [
 			}
 			userData[name] = JSON.stringify(userData[name] || []);
 		});
+
+		// sanitize and format university input if present
+		if (userData.university) {
+			userData.university = normalizeUniversity(userData.university);
+		}
+
+		if (userData.graduationYear) {
+			userData.graduationYear = userData.graduationYear.toString().replace(/[^0-9]/g, '');
+		}
+
+		// if both present, combine into a single display string stored in university custom field
+		if (userData.university && userData.graduationYear) {
+			// takes the last two digits and shortens them
+			const l2 = userData.graduationYear.toString().slice(-2);
+			userData.university = userData.university + ' (\'' + l2 + ')';
+		}
 
 		userData.uid = ajaxify.data.uid;
 		userData.groupTitle = userData.groupTitle || '';

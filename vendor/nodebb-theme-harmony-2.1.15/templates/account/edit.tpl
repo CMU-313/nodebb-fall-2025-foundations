@@ -7,6 +7,16 @@
 <div class="row">
 	<div class="col-xl-6 col-12">
 		<form role="form" component="profile/edit/form">
+			<div class="mb-3" id="university-block">
+				<label class="form-label fw-bold" for="university">University</label>
+				<div id="university-placeholder">
+					<a href="#" id="addUniversityBtn" class="text-decoration-none">Add University</a>
+				</div>
+				<div id="university-fields" style="display: none;">
+					<input class="form-control mb-2" type="text" id="university" name="university" placeholder="University" value="{university}">
+					<input class="form-control" type="number" id="graduationYear" name="graduationYear" placeholder="Graduation Year" value="{graduationYear}">
+				</div>
+			</div>
 			<div class="mb-3">
 				<label class="form-label fw-bold" for="fullname">[[user:fullname]]</label>
 				<input class="form-control" type="text" id="fullname" name="fullname" placeholder="[[user:fullname]]" value="{fullname}">

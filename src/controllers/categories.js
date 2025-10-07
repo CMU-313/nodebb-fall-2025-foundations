@@ -111,6 +111,9 @@ categoriesController.list = async function (req, res) {
 			},
 		};
 
+		// Include privilege flag so client-side renders keep "Create New Category" button
+		data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
+
 		// Render widgets for API response
 		data.widgets = await widgets.render(req.uid, {
 			template: 'categories.tpl',

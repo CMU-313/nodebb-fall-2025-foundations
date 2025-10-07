@@ -77,11 +77,8 @@ categoriesController.list = async function (req, res) {
 	});
 
 	//COPILOT
-	// API route — must comply with schema, no allowCategoryCreation
-	if (
-		req.originalUrl.startsWith(`${nconf.get('relative_path')}/api`) ||
-    req.originalUrl.startsWith(`${nconf.get('relative_path')}/categories`)
-	) {
+	// API route — JSON response
+	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api`)) {
 		data.title = '[[pages:categories]]';
 		data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
 		res.locals.metaTags.push({ property: 'og:title', content: '[[pages:categories]]' });
@@ -111,14 +108,14 @@ categoriesController.list = async function (req, res) {
 			},
 		};
 
-		// Include privilege flag so client-side renders keep "Create New Category" button
-		data.allowCategoryCreation = await privileges.global.can('category:create', req.uid);
-
-		// Render widgets for API response
+		// Compute privilege flag for template rendering and API schema
+		const allowCategoryCreation = await privileges.global.can('category:create', req.uid);
+		// Include in JSON to support client-side (schema updated to allow it)
+		data.allowCategoryCreation = allowCategoryCreation;
 		data.widgets = await widgets.render(req.uid, {
 			template: 'categories.tpl',
 			url: data.url,
-			templateData: data,
+			templateData: { ...data, allowCategoryCreation },
 			req: req,
 			res: res,
 		});

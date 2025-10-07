@@ -76,6 +76,16 @@
 		{{{ if ./value }}}
 		<div class="stat">
 			<div class="align-items-center justify-content-center card card-header p-3 border-0 rounded-1 h-100 gap-2">
+				<span class="stat-label text-xs fw-semibold"><span><i class="text-muted {./icon} {{#if (eq ./key "university")}}fa-solid fa-graduation-cap{{/if}}"></i> {./name}</span></span>
+				{{{ if (./type == "input-link") }}}
+				<a class="text-sm text-center text-break w-100 px-2 ff-secondary text-underline text-reset" href="{./value}" rel="nofollow noreferrer">{./linkValue}</a>
+				{{{ else }}}
+				<span class="text-center {{{ if (./type == "input-number") }}}fs-2{{{else }}}fs-6{{{ end }}} ff-secondary">{./value}</span>
+				{{{ end }}}
+			</div>
+		</div>
+		<div class="stat">
+			<div class="align-items-center justify-content-center card card-header p-3 border-0 rounded-1 h-100 gap-2">
 				<span class="stat-label text-xs fw-semibold"><span><i class="text-muted {./icon}"></i> {./name}</span></span>
 				{{{ if (./type == "input-link") }}}
 				<a class="text-sm text-center text-break w-100 px-2 ff-secondary text-underline text-reset" href="{./value}" rel="nofollow noreferrer">{./linkValue}</a>

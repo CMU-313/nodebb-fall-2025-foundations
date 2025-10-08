@@ -26,13 +26,20 @@ define('forum/account/profile', [
 		return parts.join(' ');
 	}
 
-	function normalizeLocationPart(input) {
+	function normalizeLocationPart(input, type) {
 		if (!input) return '';
 		const s = input.replace(/<[^>]*>/g, '').trim();
-		return s.split(/\s+/).map(function (w) {
+		const joined = s.split(/\s+/).map(function (w) {
 			const lw = w.toLowerCase();
 			return lw.charAt(0).toUpperCase() + lw.slice(1);
 		}).join(' ');
+		if (type === 'state' && joined.replace(/\s+/g, '').length === 2) {
+			return joined.replace(/\s+/g, '').toUpperCase();
+		}
+		if (type === 'country' && joined.replace(/\s+/g, '').length === 3) {
+			return joined.replace(/\s+/g, '').toUpperCase();
+		}
+		return joined;
 	}
 
 	Account.init = function () {
@@ -190,8 +197,8 @@ define('forum/account/profile', [
 								className: 'btn-primary',
 								callback: function () {
 									var city = normalizeLocationPart($('#boot-city').val() || '');
-									var state = normalizeLocationPart($('#boot-state').val() || '');
-									var country = normalizeLocationPart($('#boot-country').val() || '');
+									var state = normalizeLocationPart($('#boot-state').val() || '', 'state');
+									var country = normalizeLocationPart($('#boot-country').val() || '', 'country');
 									var parts = [city, state, country].filter(Boolean).join(', ');
 									if (!parts) {
 										return false;

@@ -55,6 +55,33 @@ module.exports = function (User) {
 			return parts.join(' ');
 		}
 
+		function normalizeLocationPartServer(input) {
+			if (!input) return '';
+			const s = input.replace(/<[^>]*>/g, '').trim();
+			return s.split(/\s+/).map((w) => {
+				const lw = w.toLowerCase();
+				return lw.charAt(0).toUpperCase() + lw.slice(1);
+			}).join(' ');
+		}
+
+		// Combine location parts if provided separately (from edit page inputs)
+		if (data.location_city || data.location_state || data.location_country) {
+			const parts = [];
+			if (data.location_city) parts.push(normalizeLocationPartServer(data.location_city));
+			if (data.location_state) parts.push(normalizeLocationPartServer(data.location_state));
+			if (data.location_country) parts.push(normalizeLocationPartServer(data.location_country));
+			if (parts.length) {
+				data.location = parts.join(', ');
+			}
+		}
+
+		// Server-side normalization for `location` if provided directly
+		if (data.location) {
+			// If the client provided a single string, normalize each comma-separated part
+			const raw = String(data.location).split(',').map(p => normalizeLocationPartServer(p));
+			data.location = raw.filter(Boolean).join(', ');
+		}
+
 		if (data.university) {
 			// If graduationYear is provided separately we'll append the ('YY) format below
 			data.university = normalizeUniversityServer(data.university);

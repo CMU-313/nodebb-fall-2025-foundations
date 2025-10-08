@@ -26,6 +26,15 @@ define('forum/account/profile', [
 		return parts.join(' ');
 	}
 
+	function normalizeLocationPart(input) {
+		if (!input) return '';
+		const s = input.replace(/<[^>]*>/g, '').trim();
+		return s.split(/\s+/).map(function (w) {
+			const lw = w.toLowerCase();
+			return lw.charAt(0).toUpperCase() + lw.slice(1);
+		}).join(' ');
+	}
+
 	Account.init = function () {
 		header.init();
 
@@ -131,6 +140,93 @@ define('forum/account/profile', [
 											ajaxify.data.customUserFields.push({ key: 'university', name: displayName, value: payload.university, icon: iconClass, type: 'input-text' });
 										} catch (e) {
 											// if anything goes wrong, reload as a fallback
+											window.location.reload();
+										}
+									}).catch(function (err) {
+										alerts.error(err);
+									});
+								},
+							},
+						},
+					});
+				});
+			}
+
+			// Add clickable 'add location' if viewing own profile and field missing
+			const hasLocation = (ajaxify.data.customUserFields || []).some(f => f.key === 'location' && f.value);
+			if (!hasLocation) {
+				const elLoc = $('<div class="card p-2 mb-3" id="add-location-card"><a href="#" id="profile-add-location">Add Location</a></div>');
+				// Insert directly under university placeholder/stat if possible, else fallback to same insertion points
+				const $universityStat = $('.account-stats .stat').filter(function () {
+					return $(this).text().trim().includes('University');
+				}).first();
+				if ($universityStat.length) {
+					$universityStat.after(elLoc);
+				} else {
+					// reuse same fallbacks as university
+					const $about2 = $('[component="aboutme"]').first();
+					if ($about2.length) {
+						$about2.after(elLoc);
+					} else if ($('.account-stats').first().length) {
+						$('.account-stats').first().before(elLoc);
+					} else if ($('.account .container').first().length) {
+						$('.account .container').first().prepend(elLoc);
+					} else {
+						$('body').prepend(elLoc);
+					}
+				}
+
+				$('#profile-add-location').on('click', function (e) {
+					e.preventDefault();
+					bootbox.dialog({
+						title: 'Add Location',
+						message: '<p><input class="form-control mb-2" id="boot-city" placeholder="City"></p><p><input class="form-control mb-2" id="boot-state" placeholder="State"></p><p><input class="form-control" id="boot-country" placeholder="Country"></p>',
+						buttons: {
+							cancel: { label: 'Cancel', className: 'btn-light' },
+							submit: {
+								label: 'Save',
+								className: 'btn-primary',
+								callback: function () {
+									var city = normalizeLocationPart($('#boot-city').val() || '');
+									var state = normalizeLocationPart($('#boot-state').val() || '');
+									var country = normalizeLocationPart($('#boot-country').val() || '');
+									var parts = [city, state, country].filter(Boolean).join(', ');
+									if (!parts) {
+										return false;
+									}
+									var payload = { uid: ajaxify.data.theirid, location: parts };
+									api.put('/users/' + ajaxify.data.theirid, payload).then(function () {
+										alerts.success('[[user:profile-update-success]]');
+										try {
+											$('#add-location-card').remove();
+											// build stat card matching template structure
+											var displayNameLoc = 'Location';
+											var iconClassLoc = 'fa-solid fa-location-dot';
+											var $statLoc = $(
+												'<div class="stat">' +
+													'<div class="align-items-center justify-content-center card card-header p-3 border-0 rounded-1 h-100 gap-2">' +
+														'<span class="stat-label text-xs fw-semibold"><span><i class="text-muted ' + iconClassLoc + '"></i> ' + displayNameLoc + '</span></span>' +
+														'<span class="text-center fs-6 ff-secondary"></span>' +
+													'</div>' +
+												'</div>'
+											);
+											$statLoc.find('.ff-secondary').text(parts);
+											// insert under university stat when present
+											if ($universityStat.length) {
+												$universityStat.after($statLoc);
+											} else {
+												var $row2 = $('.account-stats .row').first();
+												if ($row2.length) {
+													$row2.append($statLoc);
+												} else {
+													window.location.reload();
+													return;
+												}
+											}
+											// update ajaxify data
+											ajaxify.data.customUserFields = ajaxify.data.customUserFields || [];
+											ajaxify.data.customUserFields.push({ key: 'location', name: displayNameLoc, value: parts, icon: iconClassLoc, type: 'input-text' });
+										} catch (e) {
 											window.location.reload();
 										}
 									}).catch(function (err) {

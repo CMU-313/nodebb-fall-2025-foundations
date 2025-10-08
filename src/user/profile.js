@@ -65,18 +65,26 @@ module.exports = function (User) {
 		function normalizeLocationPartServer(input) {
 			if (!input) return '';
 			const s = input.replace(/<[^>]*>/g, '').trim();
-			return s.split(/\s+/).map((w) => {
+			const joined = s.split(/\s+/).map((w) => {
 				const lw = w.toLowerCase();
 				return lw.charAt(0).toUpperCase() + lw.slice(1);
 			}).join(' ');
+			// default behavior: return joined; caller can uppercase state/country as needed
+			return joined;
 		}
 
 		// Combine location parts if provided separately (from edit page inputs)
 		if (data.location_city || data.location_state || data.location_country) {
 			const parts = [];
 			if (data.location_city) parts.push(normalizeLocationPartServer(data.location_city));
-			if (data.location_state) parts.push(normalizeLocationPartServer(data.location_state));
-			if (data.location_country) parts.push(normalizeLocationPartServer(data.location_country));
+			if (data.location_state) {
+				const stateNorm = normalizeLocationPartServer(data.location_state);
+				parts.push(stateNorm.replace(/\s+/g, '').length === 2 ? stateNorm.replace(/\s+/g, '').toUpperCase() : stateNorm);
+			}
+			if (data.location_country) {
+				const countryNorm = normalizeLocationPartServer(data.location_country);
+				parts.push(countryNorm.replace(/\s+/g, '').length === 3 ? countryNorm.replace(/\s+/g, '').toUpperCase() : countryNorm);
+			}
 			if (parts.length) {
 				data.location = parts.join(', ');
 			}

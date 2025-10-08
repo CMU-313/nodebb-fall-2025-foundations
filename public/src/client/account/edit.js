@@ -29,13 +29,22 @@ define('forum/account/edit', [
 		return parts.join(' ');
 	}
 
-	function normalizeLocationPart(input) {
+	function normalizeLocationPart(input, type) {
 		if (!input) return '';
 		const s = input.replace(/<[^>]*>/g, '').trim();
-		return s.split(/\s+/).map(function (w) {
+		const joined = s.split(/\s+/).map(function (w) {
 			const lw = w.toLowerCase();
 			return lw.charAt(0).toUpperCase() + lw.slice(1);
 		}).join(' ');
+		// If state is two letters, uppercase both (PA)
+		if (type === 'state' && joined.replace(/\s+/g, '').length === 2) {
+			return joined.replace(/\s+/g, '').toUpperCase();
+		}
+		// If country is three letters, uppercase all three (USA)
+		if (type === 'country' && joined.replace(/\s+/g, '').length === 3) {
+			return joined.replace(/\s+/g, '').toUpperCase();
+		}
+		return joined;
 	}
 
 	AccountEdit.init = function () {
@@ -195,6 +204,9 @@ define('forum/account/edit', [
 			if (parts.length) {
 				userData.location = parts.join(', ');
 			}
+		} else {
+			// all blank -> explicitly clear location
+			userData.location = '';
 		}
 
 		userData.uid = ajaxify.data.uid;
@@ -208,7 +220,19 @@ define('forum/account/edit', [
 
 			// Update ajaxify.data so the profile view and quick-add logic stay in sync
 			ajaxify.data.university = userData.university || ajaxify.data.university;
-			ajaxify.data.location = userData.location || ajaxify.data.location;
+			ajaxify.data.location = (userData.location !== undefined) ? userData.location : ajaxify.data.location;
+
+			// If user cleared location, remove location stat from DOM and ajaxify.customUserFields
+			if (userData.location === '') {
+				// remove stat card
+				$('.account-stats .stat').filter(function () {
+					return $(this).text().trim().includes('Location');
+				}).remove();
+				// remove from ajaxify data
+				if (ajaxify.data.customUserFields) {
+					ajaxify.data.customUserFields = ajaxify.data.customUserFields.filter(f => f.key !== 'location');
+				}
+			}
 
 			if (res.picture) {
 				$('#user-current-picture').attr('src', res.picture);

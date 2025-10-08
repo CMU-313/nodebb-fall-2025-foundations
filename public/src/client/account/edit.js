@@ -36,6 +36,15 @@ define('forum/account/edit', [
 			const lw = w.toLowerCase();
 			return lw.charAt(0).toUpperCase() + lw.slice(1);
 		}).join(' ');
+		// If state is two letters, capitalize both
+		if (type === 'state' && joined.replace(/\s+/g, '').length === 2) {
+			return joined.replace(/\s+/g, '').toUpperCase();
+		}
+		// If country is three letters, capitalize all three
+		if (type === 'country' && joined.replace(/\s+/g, '').length === 3) {
+			return joined.replace(/\s+/g, '').toUpperCase();
+		}
+		return joined;
 	}
 
 	AccountEdit.init = function () {
@@ -113,9 +122,9 @@ define('forum/account/edit', [
 				// If there's a combined location string in ajaxify, split it into parts
 				if (ajaxify.data.location && !$('#location_city').val()) {
 					const parts = ajaxify.data.location.split(',').map(p => p.trim());
-					$('#location_city').val(parts[0] || '');
-					$('#location_state').val(parts[1] || '');
-					$('#location_country').val(parts[2] || '');
+					$('#location_city').val(parts[0] ? normalizeLocationPart(parts[0]) : '');
+					$('#location_state').val(parts[1] ? normalizeLocationPart(parts[1], 'state') : '');
+					$('#location_country').val(parts[2] ? normalizeLocationPart(parts[2], 'country') : '');
 				}
 			}
 		} catch (e) {
@@ -184,10 +193,10 @@ define('forum/account/edit', [
 			userData.location_city = normalizeLocationPart(userData.location_city);
 		}
 		if (userData.location_state) {
-			userData.location_state = normalizeLocationPart(userData.location_state);
+			userData.location_state = normalizeLocationPart(userData.location_state, 'state');
 		}
 		if (userData.location_country) {
-			userData.location_country = normalizeLocationPart(userData.location_country);
+			userData.location_country = normalizeLocationPart(userData.location_country, 'country');
 		}
 
 		if (userData.location_city || userData.location_state || userData.location_country) {
@@ -195,6 +204,9 @@ define('forum/account/edit', [
 			if (parts.length) {
 				userData.location = parts.join(', ');
 			}
+		} else {
+			// allow delete / clear functionality by leaving fields blank
+			userData.location = '';
 		}
 
 		userData.uid = ajaxify.data.uid;

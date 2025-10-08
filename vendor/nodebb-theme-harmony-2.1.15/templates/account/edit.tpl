@@ -28,28 +28,30 @@
 			</div>
 
 			{{{ each customUserFields }}}
-			<div class="mb-3">
-				<label class="form-label fw-bold" for="{./key}">{./name}</label>
-				{{{ if ((./type == "input-text") || (./type == "input-link")) }}}
-				<input class="form-control" type="text" id="{./key}" name="{./key}" value="{./value}">
-				{{{ end }}}
-
-				{{{ if (./type == "input-number") }}}
-				<input class="form-control" type="number" id="{./key}" name="{./key}" value="{./value}">
-				{{{ end }}}
-
-				{{{ if (./type == "input-date") }}}
-				<input class="form-control" type="date" id="{./key}" name="{./key}" value="{./value}">
-				{{{ end }}}
-
-				{{{ if ((./type == "select") || (./type == "select-multi")) }}}
-				<select class="form-select" id="{./key}" name="{./key}" {{{ if (./type == "select-multi") }}} multiple{{{ end }}}>
-					{{{ each ./select-options}}}
-					<option value="{./value}" {{{ if ./selected }}}selected{{{ end }}}>{./value}</option>
+				{{{ if (./key != "university") }}}
+				<div class="mb-3">
+					<label class="form-label fw-bold" for="{./key}">{./name}</label>
+					{{{ if ((./type == "input-text") || (./type == "input-link")) }}}
+					<input class="form-control" type="text" id="{./key}" name="{./key}" value="{./value}">
 					{{{ end }}}
-				</select>
+
+					{{{ if (./type == "input-number") }}}
+					<input class="form-control" type="number" id="{./key}" name="{./key}" value="{./value}">
+					{{{ end }}}
+
+					{{{ if (./type == "input-date") }}}
+					<input class="form-control" type="date" id="{./key}" name="{./key}" value="{./value}">
+					{{{ end }}}
+
+					{{{ if ((./type == "select") || (./type == "select-multi")) }}}
+					<select class="form-select" id="{./key}" name="{./key}" {{{ if (./type == "select-multi") }}} multiple{{{ end }}}>
+						{{{ each ./select-options}}}
+						<option value="{./value}" {{{ if ./selected }}}selected{{{ end }}}>{./value}</option>
+						{{{ end }}}
+					</select>
+					{{{ end }}}
+				</div>
 				{{{ end }}}
-			</div>
 			{{{ end }}}
 
 			{{{ if groups.length }}}

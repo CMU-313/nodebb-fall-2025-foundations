@@ -32,6 +32,38 @@ define('forum/account/edit', [
 	AccountEdit.init = function () {
 		header.init();
 
+		// If university field is pre-populated (from template / edit profile),
+		// hide the "Add University" placeholder
+		try {
+			const existingUni = $('#university').length ? ($('#university').val() || '') : (ajaxify.data.university || '');
+			if (existingUni && existingUni.toString().trim()) {
+				$('#university-placeholder').hide();
+				$('#university-fields').show();
+			}
+		} catch (e) {
+			// supplied by chat --> defensive: if ajaxify or DOM not ready, ignore silently
+		}
+
+		// Defensive: If multiple university inputs are rendered for any reason,
+		// keep the first and remove duplicates to avoid showing two fields.
+		try {
+			const uniEls = $('input#university');
+			if (uniEls.length > 1) {
+				uniEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+
+			const gradEls = $('input#graduationYear');
+			if (gradEls.length > 1) {
+				gradEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+		} catch (e) {
+			// ignore
+		}
+
 		// University add-toggle
 		$('#addUniversityBtn').on('click', function (e) {
 			e.preventDefault();

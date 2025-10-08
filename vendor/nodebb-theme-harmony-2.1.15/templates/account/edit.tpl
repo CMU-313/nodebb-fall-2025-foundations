@@ -7,6 +7,27 @@
 <div class="row">
 	<div class="col-xl-6 col-12">
 		<form role="form" component="profile/edit/form">
+			<div class="mb-3" id="university-block">
+				<label class="form-label fw-bold" for="university">University</label>
+				<div id="university-placeholder">
+					<a href="#" id="addUniversityBtn" class="text-decoration-none">Add University</a>
+				</div>
+				<div id="university-fields" style="display: none;">
+					<input class="form-control mb-2" type="text" id="university" name="university" placeholder="University" value="{university}">
+					<input class="form-control" type="number" id="graduationYear" name="graduationYear" placeholder="Graduation Year" value="{graduationYear}">
+				</div>
+			</div>
+			<div class="mb-3" id="location-block">
+				<label class="form-label fw-bold" for="location">Location</label>
+				<div id="location-placeholder">
+					<a href="#" id="addLocationBtn" class="text-decoration-none">Add Location</a>
+				</div>
+				<div id="location-fields" style="display: none;">
+					<input class="form-control mb-2" type="text" id="location_city" name="location_city" placeholder="City" value="{location_city}">
+					<input class="form-control mb-2" type="text" id="location_state" name="location_state" placeholder="State" value="{location_state}">
+					<input class="form-control" type="text" id="location_country" name="location_country" placeholder="Country" value="{location_country}">
+				</div>
+			</div>
 			<div class="mb-3">
 				<label class="form-label fw-bold" for="fullname">[[user:fullname]]</label>
 				<input class="form-control" type="text" id="fullname" name="fullname" placeholder="[[user:fullname]]" value="{fullname}">
@@ -18,11 +39,12 @@
 			</div>
 
 			{{{ each customUserFields }}}
-			<div class="mb-3">
-				<label class="form-label fw-bold" for="{./key}">{./name}</label>
-				{{{ if ((./type == "input-text") || (./type == "input-link")) }}}
-				<input class="form-control" type="text" id="{./key}" name="{./key}" value="{./value}">
-				{{{ end }}}
+				{{{ if ((./key != "university") && (./key != "location")) }}}
+				<div class="mb-3">
+					<label class="form-label fw-bold" for="{./key}">{./name}</label>
+					{{{ if ((./type == "input-text") || (./type == "input-link")) }}}
+					<input class="form-control" type="text" id="{./key}" name="{./key}" value="{./value}">
+					{{{ end }}}
 
 				{{{ if (./type == "input-number") }}}
 				<input class="form-control" type="number" id="{./key}" name="{./key}" value="{./value}">
@@ -32,14 +54,15 @@
 				<input class="form-control" type="date" id="{./key}" name="{./key}" value="{./value}">
 				{{{ end }}}
 
-				{{{ if ((./type == "select") || (./type == "select-multi")) }}}
-				<select class="form-select" id="{./key}" name="{./key}" {{{ if (./type == "select-multi") }}} multiple{{{ end }}}>
-					{{{ each ./select-options}}}
-					<option value="{./value}" {{{ if ./selected }}}selected{{{ end }}}>{./value}</option>
+					{{{ if ((./type == "select") || (./type == "select-multi")) }}}
+					<select class="form-select" id="{./key}" name="{./key}" {{{ if (./type == "select-multi") }}} multiple{{{ end }}}>
+						{{{ each ./select-options}}}
+						<option value="{./value}" {{{ if ./selected }}}selected{{{ end }}}>{./value}</option>
+						{{{ end }}}
+					</select>
 					{{{ end }}}
-				</select>
+				</div>
 				{{{ end }}}
-			</div>
 			{{{ end }}}
 
 			{{{ if groups.length }}}

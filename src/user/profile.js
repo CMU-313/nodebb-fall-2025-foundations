@@ -37,6 +37,46 @@ module.exports = function (User) {
 		fields = result.fields;
 		data = result.data;
 
+		// Server-side normalization for `university` custom field and graduationYear
+		function normalizeUniversityServer(input) {
+			if (!input) return '';
+			const s = input.replace(/<[^>]*>/g, '').trim();
+			const small = { of: true, the: true };
+			const parts = s.split(/\s+/).map((w, i) => {
+				const lw = w.toLowerCase();
+				if (i === 0) {
+					return lw.charAt(0).toUpperCase() + lw.slice(1);
+				}
+				if (small[lw]) {
+					return lw;
+				}
+				return lw.charAt(0).toUpperCase() + lw.slice(1);
+			});
+			return parts.join(' ');
+		}
+
+		if (data.university) {
+			// If graduationYear is provided separately we'll append the ('YY) format below
+			data.university = normalizeUniversityServer(data.university);
+		}
+
+		if (data.graduationYear) {
+			const digits = String(data.graduationYear).replace(/[^0-9]/g, '');
+			if (digits.length) {
+				const yy = digits.slice(-2);
+				// append or replace trailing ('YY) pattern
+				if (data.university && /\('\d{2}\)$/.test(data.university)) {
+					// replace existing trailing pattern
+					data.university = data.university.replace(/\('\d{2}\)$/, '(' + "'" + yy + ')');
+				} else if (data.university) {
+					data.university = data.university + ' (\'' + yy + ')';
+				} else {
+					// no university text but grad year provided; set a small placeholder
+					data.university = 'Graduation (\'' + yy + ')';
+				}
+			}
+		}
+
 		await validateData(uid, data);
 
 		const oldData = await User.getUserFields(updateUid, fields);

@@ -136,6 +136,8 @@ define('forum/account/profile', [
 											// update ajaxify data so UI logic won't re-show add link
 											ajaxify.data.customUserFields = ajaxify.data.customUserFields || [];
 											ajaxify.data.customUserFields.push({ key: 'university', name: displayName, value: payload.university, icon: iconClass, type: 'input-text' });
+											// keep ajaxify.data.university in sync for the edit page prefill logic
+											ajaxify.data.university = payload.university;
 										} catch (e) {
 											// if anything goes wrong, reload as a fallback
 											window.location.reload();
@@ -224,6 +226,8 @@ define('forum/account/profile', [
 											// update ajaxify data
 											ajaxify.data.customUserFields = ajaxify.data.customUserFields || [];
 											ajaxify.data.customUserFields.push({ key: 'location', name: displayNameLoc, value: parts, icon: iconClassLoc, type: 'input-text' });
+											// keep ajaxify.data.location in sync for the edit page prefill logic
+											ajaxify.data.location = parts;
 										} catch (e) {
 											window.location.reload();
 										}

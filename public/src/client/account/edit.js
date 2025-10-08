@@ -12,10 +12,115 @@ define('forum/account/edit', [
 ], function (header, picture, translator, api, hooks, bootbox, alerts, changeEmail) {
 	const AccountEdit = {};
 
+	function normalizeUniversity(input) {
+		if (!input) return '';
+		const s = input.replace(/<[^>]*>/g, '').trim();
+		const small = { of: true, the: true };
+		const parts = s.split(/\s+/).map(function (w, i) {
+			const lw = w.toLowerCase();
+			if (i === 0) {
+				return lw.charAt(0).toUpperCase() + lw.slice(1);
+			}
+			if (small[lw]) {
+				return lw; // keep 'of'/'the' lowercase when not first
+			}
+			return lw.charAt(0).toUpperCase() + lw.slice(1);
+		});
+		return parts.join(' ');
+	}
+
+	function normalizeLocationPart(input) {
+		if (!input) return '';
+		const s = input.replace(/<[^>]*>/g, '').trim();
+		return s.split(/\s+/).map(function (w) {
+			const lw = w.toLowerCase();
+			return lw.charAt(0).toUpperCase() + lw.slice(1);
+		}).join(' ');
+	}
+
 	AccountEdit.init = function () {
 		header.init();
 
+		// If university field is pre-populated (from template / edit profile),
+		// hide the "Add University" placeholder
+		try {
+			const existingUni = $('#university').length ? ($('#university').val() || '') : (ajaxify.data.university || '');
+			if (existingUni && existingUni.toString().trim()) {
+				$('#university-placeholder').hide();
+				$('#university-fields').show();
+			}
+		} catch (e) {
+			// supplied by chat --> defensive: if ajaxify or DOM not ready, ignore silently
+		}
+
+		// Defensive: If multiple university inputs are rendered for any reason,
+		// keep the first and remove duplicates to avoid showing two fields.
+		try {
+			const uniEls = $('input#university');
+			if (uniEls.length > 1) {
+				uniEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+
+			const gradEls = $('input#graduationYear');
+			if (gradEls.length > 1) {
+				gradEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+
+			// Location duplicate cleanup
+			const cityEls = $('input#location_city');
+			if (cityEls.length > 1) {
+				cityEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+
+			const stateEls = $('input#location_state');
+			if (stateEls.length > 1) {
+				stateEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+
+			const countryEls = $('input#location_country');
+			if (countryEls.length > 1) {
+				countryEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+		} catch (e) {
+			// ignore
+		}
+
+		// University add-toggle
+		$('#addUniversityBtn').on('click', function (e) {
+			e.preventDefault();
+			$('#university-placeholder').hide();
+			$('#university-fields').show();
+		});
+
 		$('#submitBtn').on('click', updateProfile);
+
+		// If location is pre-populated, hide its placeholder and show fields, and prefill parts
+		try {
+			const existingLocation = ($('#location_city').length ? ($('#location_city').val() || '') : '') || (ajaxify.data.location || '');
+			if (existingLocation && existingLocation.toString().trim()) {
+				$('#location-placeholder').hide();
+				$('#location-fields').show();
+				// If there's a combined location string in ajaxify, split it into parts
+				if (ajaxify.data.location && !$('#location_city').val()) {
+					const parts = ajaxify.data.location.split(',').map(p => p.trim());
+					$('#location_city').val(parts[0] || '');
+					$('#location_state').val(parts[1] || '');
+					$('#location_country').val(parts[2] || '');
+				}
+			}
+		} catch (e) {
+			// ignore
+		}
 
 		if (ajaxify.data.groupTitleArray.length === 1 && ajaxify.data.groupTitleArray[0] === '') {
 			$('#groupTitle option[value=""]').attr('selected', true);
@@ -58,6 +163,40 @@ define('forum/account/edit', [
 			userData[name] = JSON.stringify(userData[name] || []);
 		});
 
+		// sanitize and format university input if present
+		if (userData.university) {
+			userData.university = normalizeUniversity(userData.university);
+		}
+
+		if (userData.graduationYear) {
+			userData.graduationYear = userData.graduationYear.toString().replace(/[^0-9]/g, '');
+		}
+
+		// if both present, combine into a single display string stored in university custom field
+		if (userData.university && userData.graduationYear) {
+			// takes the last two digits and shortens them
+			const l2 = userData.graduationYear.toString().slice(-2);
+			userData.university = userData.university + ' (\'' + l2 + ')';
+		}
+
+		// Normalize and combine location parts if present into single `location` field
+		if (userData.location_city) {
+			userData.location_city = normalizeLocationPart(userData.location_city);
+		}
+		if (userData.location_state) {
+			userData.location_state = normalizeLocationPart(userData.location_state);
+		}
+		if (userData.location_country) {
+			userData.location_country = normalizeLocationPart(userData.location_country);
+		}
+
+		if (userData.location_city || userData.location_state || userData.location_country) {
+			const parts = [userData.location_city, userData.location_state, userData.location_country].filter(Boolean);
+			if (parts.length) {
+				userData.location = parts.join(', ');
+			}
+		}
+
 		userData.uid = ajaxify.data.uid;
 		userData.groupTitle = userData.groupTitle || '';
 		userData.groupTitle = JSON.stringify(getGroupSelection());
@@ -66,6 +205,10 @@ define('forum/account/edit', [
 
 		api.put('/users/' + userData.uid, userData).then((res) => {
 			alerts.success('[[user:profile-update-success]]');
+
+			// Update ajaxify.data so the profile view and quick-add logic stay in sync
+			ajaxify.data.university = userData.university || ajaxify.data.university;
+			ajaxify.data.location = userData.location || ajaxify.data.location;
 
 			if (res.picture) {
 				$('#user-current-picture').attr('src', res.picture);

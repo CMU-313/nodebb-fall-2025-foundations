@@ -37,6 +37,13 @@ module.exports = function (User) {
 		fields = result.fields;
 		data = result.data;
 
+		// If client submitted location parts or a location string but the DB
+		// hasn't registered the custom field yet (migration not applied),
+		// include 'location' in the update fields so we still persist the value.
+		if ((data.location || data.location_city || data.location_state || data.location_country) && !fields.includes('location')) {
+			fields.push('location');
+		}
+
 		// Server-side normalization for `university` custom field and graduationYear
 		function normalizeUniversityServer(input) {
 			if (!input) return '';

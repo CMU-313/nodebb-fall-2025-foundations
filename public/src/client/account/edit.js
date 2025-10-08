@@ -29,6 +29,15 @@ define('forum/account/edit', [
 		return parts.join(' ');
 	}
 
+	function normalizeLocationPart(input) {
+		if (!input) return '';
+		const s = input.replace(/<[^>]*>/g, '').trim();
+		return s.split(/\s+/).map(function (w) {
+			const lw = w.toLowerCase();
+			return lw.charAt(0).toUpperCase() + lw.slice(1);
+		}).join(' ');
+	}
+
 	AccountEdit.init = function () {
 		header.init();
 
@@ -60,6 +69,28 @@ define('forum/account/edit', [
 					$(el).closest('.mb-3').remove();
 				});
 			}
+
+			// Location duplicate cleanup
+			const cityEls = $('input#location_city');
+			if (cityEls.length > 1) {
+				cityEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+
+			const stateEls = $('input#location_state');
+			if (stateEls.length > 1) {
+				stateEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+
+			const countryEls = $('input#location_country');
+			if (countryEls.length > 1) {
+				countryEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
 		} catch (e) {
 			// ignore
 		}
@@ -72,6 +103,24 @@ define('forum/account/edit', [
 		});
 
 		$('#submitBtn').on('click', updateProfile);
+
+		// If location is pre-populated, hide its placeholder and show fields, and prefill parts
+		try {
+			const existingLocation = ($('#location_city').length ? ($('#location_city').val() || '') : '') || (ajaxify.data.location || '');
+			if (existingLocation && existingLocation.toString().trim()) {
+				$('#location-placeholder').hide();
+				$('#location-fields').show();
+				// If there's a combined location string in ajaxify, split it into parts
+				if (ajaxify.data.location && !$('#location_city').val()) {
+					const parts = ajaxify.data.location.split(',').map(p => p.trim());
+					$('#location_city').val(parts[0] || '');
+					$('#location_state').val(parts[1] || '');
+					$('#location_country').val(parts[2] || '');
+				}
+			}
+		} catch (e) {
+			// ignore
+		}
 
 		if (ajaxify.data.groupTitleArray.length === 1 && ajaxify.data.groupTitleArray[0] === '') {
 			$('#groupTitle option[value=""]').attr('selected', true);
@@ -130,6 +179,24 @@ define('forum/account/edit', [
 			userData.university = userData.university + ' (\'' + l2 + ')';
 		}
 
+		// Normalize and combine location parts if present into single `location` field
+		if (userData.location_city) {
+			userData.location_city = normalizeLocationPart(userData.location_city);
+		}
+		if (userData.location_state) {
+			userData.location_state = normalizeLocationPart(userData.location_state);
+		}
+		if (userData.location_country) {
+			userData.location_country = normalizeLocationPart(userData.location_country);
+		}
+
+		if (userData.location_city || userData.location_state || userData.location_country) {
+			const parts = [userData.location_city, userData.location_state, userData.location_country].filter(Boolean);
+			if (parts.length) {
+				userData.location = parts.join(', ');
+			}
+		}
+
 		userData.uid = ajaxify.data.uid;
 		userData.groupTitle = userData.groupTitle || '';
 		userData.groupTitle = JSON.stringify(getGroupSelection());
@@ -138,6 +205,10 @@ define('forum/account/edit', [
 
 		api.put('/users/' + userData.uid, userData).then((res) => {
 			alerts.success('[[user:profile-update-success]]');
+
+			// Update ajaxify.data so the profile view and quick-add logic stay in sync
+			ajaxify.data.university = userData.university || ajaxify.data.university;
+			ajaxify.data.location = userData.location || ajaxify.data.location;
 
 			if (res.picture) {
 				$('#user-current-picture').attr('src', res.picture);

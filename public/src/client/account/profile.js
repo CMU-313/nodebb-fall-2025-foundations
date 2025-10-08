@@ -54,8 +54,25 @@ define('forum/account/profile', [
 			const hasUniversity = (ajaxify.data.customUserFields || []).some(f => f.key === 'university' && f.value);
 			if (!hasUniversity) {
 				// append a small card to aboutme area
+				// use fallback insertion points so it shows even if profile has lots of content
 				const el = $('<div class="card p-2 mb-3" id="add-university-card"><a href="#" id="profile-add-university">Add University</a></div>');
-				$('[component="aboutme"]').first().after(el);
+				const $about = $('[component="aboutme"]').first();
+				if ($about.length) {
+					$about.after(el);
+				} else {
+					const $stats = $('.account-stats').first();
+					if ($stats.length) {
+						$stats.before(el);
+					} else {
+						const $profileContainer = $('.account .container').first();
+						if ($profileContainer.length) {
+							$profileContainer.prepend(el);
+						} else {
+							// last-resort fallback to body so admin always sees the prompt
+							$('body').prepend(el);
+						}
+					}
+				}
 				$('#profile-add-university').on('click', function (e) {
 					e.preventDefault();
 					bootbox.dialog({

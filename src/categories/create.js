@@ -28,6 +28,7 @@ module.exports = function (Categories) {
 
 		let category = {
 			cid: cid,
+			uid: data.uid ? data.uid : 0,
 			name: data.name,
 			handle,
 			description: data.description ? data.description : '',

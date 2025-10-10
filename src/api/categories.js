@@ -49,10 +49,10 @@ categoriesAPI.get = async function (caller, data) {
 };
 
 categoriesAPI.create = async function (caller, data) {
-	// Allow users who are site administrators to create their own categories
-	const isSiteAdmin = await user.isAdministrator(caller.uid);
-	if (!isSiteAdmin) {
-		await hasAdminPrivilege(caller.uid);
+	// Changed to allow any authenticated user to create a category. Guests (no uid)
+	// are rejected. Record the creating uid as the owner.
+	if (!caller || !caller.uid) {
+		throw new Error('[[error:no-privileges]]');
 	}
 
 	// Ensure the creating uid is set to the caller

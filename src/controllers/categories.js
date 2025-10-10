@@ -43,8 +43,11 @@ categoriesController.list = async function (req, res) {
 	// Category creation endpoint
 	categoriesController.create = async function (req, res) {
 		try {
-			const canCreate = await privileges.global.can('category:create', req.uid);
-			if (!canCreate) {
+			// COPILOT
+			// Allow any authenticated user to create a category; record
+			// the creating uid as the owner. Guests or unauthenticated
+			// requests are rejected.
+			if (!req.uid) {
 				return res.status(403).json({ error: 'Not allowed to create categories' });
 			}
 

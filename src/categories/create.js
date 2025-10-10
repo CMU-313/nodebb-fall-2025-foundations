@@ -284,4 +284,23 @@ module.exports = function (Categories) {
 		await privileges.categories.give(givePrivs, toCid, group);
 		await privileges.categories.rescind(rescindPrivs, toCid, group);
 	}
+
+	// Category name validation (similar to Groups.validateGroupName)
+	Categories.validateCategoryName = function (name) {
+		if (!name) {
+			throw new Error('[[error:invalid-data]]');
+		}
+
+		if (typeof name !== 'string') {
+			throw new Error('[[error:invalid-data]]');
+		}
+
+		if (name.length > 50) { // reasonable limit for category names
+			throw new Error('[[error:category-name-too-long]]');
+		}
+
+		if (name.includes('/') || name.includes(':') || !slugify(name)) {
+			throw new Error('[[error:invalid-category-name]]');
+		}
+	};
 };

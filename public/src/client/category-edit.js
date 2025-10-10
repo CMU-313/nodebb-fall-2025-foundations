@@ -92,7 +92,7 @@ define('forum/category-edit', [
 		
 		// Check for duplicate names (client-side check)
 		const existingNames = [];
-		$('.edit-category-btn').each(function() {
+		$('.edit-category-btn').each(function () {
 			const existingName = $(this).data('name');
 			if (existingName && existingName.toLowerCase() === name.toLowerCase()) {
 				existingNames.push(existingName);

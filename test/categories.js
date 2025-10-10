@@ -42,6 +42,47 @@ describe('Categories', () => {
 			done();
 		});
 	});
+	it('should fail to create a category with invalid data', (done) => {
+		Categories.create({}, (err) => {
+			assert(err);
+			assert.equal(err.message, '[[error:invalid-data]]');
+			done();
+		});
+	});
+
+	it('should fail to create a category with a duplicate name', (done) => {
+		Categories.create({
+			name: 'Duplicate Category',
+			description: 'This category will be duplicated',
+		}, (err) => {
+			assert.ifError(err);
+			Categories.create({
+				name: 'Duplicate Category',
+				description: 'This category will fail',
+			}, (err) => {
+				assert(err);
+				assert.equal(err.message, '[[error:category-already-exists]]');
+				done();
+			});
+		});
+	});
+
+	it('should create a category with valid data', (done) => {
+		Categories.create({
+			name: 'Valid Category',
+			description: 'This is a valid category',
+			icon: 'fa-folder',
+			order: 1,
+		}, (err, category) => {
+			assert.ifError(err);
+			assert(category);
+			assert.equal(category.name, 'Valid Category');
+			assert.equal(category.description, 'This is a valid category');
+			assert.equal(category.icon, 'fa-folder');
+			assert.equal(category.order, 1);
+			done();
+		});
+	});
 
 	it('should retrieve a newly created category by its ID', (done) => {
 		Categories.getCategoryById({

@@ -19,7 +19,20 @@ module.exports = function (Categories) {
 			db.getSortedSetRangeWithScores(`cid:${parentCid}:children`, 0, 0),
 		]);
 
-		data.name = String(data.name || `Category ${cid}`);
+		// Validate category name first (similar to Groups.validateGroupName)
+		if (!data.name) {
+			throw new Error('[[error:invalid-data]]');
+		}
+		
+		data.name = String(data.name);
+		Categories.validateCategoryName(data.name);
+		
+		// Check for duplicate category names
+		const exists = await Categories.existsByName(data.name);
+		if (exists) {
+			throw new Error('[[error:category-already-exists]]');
+		}
+		
 		const slug = `${cid}/${slugify(data.name)}`;
 		const handle = await Categories.generateHandle(slugify(data.name));
 		const smallestOrder = firstChild.length ? firstChild[0].score - 1 : 1;
@@ -285,4 +298,43 @@ module.exports = function (Categories) {
 		await privileges.categories.give(givePrivs, toCid, group);
 		await privileges.categories.rescind(rescindPrivs, toCid, group);
 	}
+	//COPILOT
+	// Category name validation (similar to Groups.validateGroupName)
+	Categories.validateCategoryName = function (name) {
+		if (!name) {
+			throw new Error('[[error:invalid-data]]');
+		}
+
+		if (typeof name !== 'string') {
+			throw new Error('[[error:invalid-data]]');
+		}
+
+		if (name.length > 50) { // reasonable limit for category names
+			throw new Error('[[error:category-name-too-long]]');
+		}
+
+		if (name.includes('/') || name.includes(':') || !slugify(name)) {
+			throw new Error('[[error:invalid-category-name]]');
+		}
+	};
+
+	// Check if category name already exists
+	Categories.existsByName = async function (name) {
+		if (!name) {
+			return false;
+		}
+		
+		// Get all category names and check for duplicates
+		const allNames = await db.getSortedSetRange('categories:name', 0, -1);
+		const normalizedName = name.toLowerCase();
+		
+		for (const entry of allNames) {
+			const [entryName] = entry.split(':');
+			if (entryName === normalizedName) {
+				return true;
+			}
+		}
+		
+		return false;
+	};
 };

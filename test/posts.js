@@ -665,8 +665,8 @@ describe('Post\'s', () => {
 		});
 
 		it('should fail to move post if not moderator of target category', async () => {
-			const cat1 = await categories.create({ name: 'Test Category', description: 'Test category created by testing script' });
-			const cat2 = await categories.create({ name: 'Test Category', description: 'Test category created by testing script' });
+			const cat1 = await categories.create({ name: 'Posts Test Category 1', description: 'Test category created by testing script' });
+			const cat2 = await categories.create({ name: 'Posts Test Category 2', description: 'Test category created by testing script' });
 			const result = await apiTopics.create({ uid: globalModUid }, { title: 'target topic', content: 'queued topic', cid: cat2.cid });
 			const modUid = await user.create({ username: 'modofcat1' });
 			const userPrivilegeList = await privileges.categories.getUserPrivilegeList();

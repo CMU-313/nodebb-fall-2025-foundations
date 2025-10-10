@@ -40,7 +40,7 @@ describe('upload methods', () => {
 		});
 
 		({ cid } = await categories.create({
-			name: 'Test Category',
+			name: 'Uploads Test Category',
 			description: 'Test category created by testing script',
 		}));
 
@@ -323,7 +323,7 @@ describe('post uploads management', () => {
 		});
 
 		({ cid } = await categories.create({
-			name: 'Test Category',
+			name: 'Uploads Test Category',
 			description: 'Test category created by testing script',
 		}));
 

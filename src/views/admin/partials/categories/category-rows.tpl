@@ -28,6 +28,11 @@
 
 				<a href="./categories/{./cid}" class="btn btn-light btn-sm d-none d-sm-block">[[admin/manage/categories:edit]]</a>
 
+				<!-- Visible purge button for quick access on larger screens -->
+				<button class="btn btn-danger btn-sm" data-action="purge" data-cid="{categories.cid}" title="[[admin/manage/categories:purge]]">
+					<i class="fa fa-fw fa-trash"></i>
+				</button>
+
 				<div class="category-tools">
 					<button class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button"><i class="fa fa-fw fa-gear text-primary"></i></button>
 					<ul class="dropdown-menu dropdown-menu-end p-1" role="menu">

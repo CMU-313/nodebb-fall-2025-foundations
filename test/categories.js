@@ -18,6 +18,11 @@ describe('Categories', () => {
 
 	before(async () => {
 		posterUid = await User.create({ username: 'poster' });
+		// Ensure poster is not considered a 'new' user by test hooks
+		await User.setUserField(posterUid, 'joindate', Date.now() - (1000 * 60 * 60));
+		// Ensure posting throttles won't block test posts
+		await User.setUserField(posterUid, 'lastposttime', Date.now() - (1000 * 60 * 60));
+		await User.setUserField(posterUid, 'reputation', 1000);
 		adminUid = await User.create({ username: 'admin' });
 		await groups.join('administrators', adminUid);
 	});
@@ -454,6 +459,53 @@ describe('Categories', () => {
 			assert.strictEqual(data, null);
 		});
 
+		it('site admin can create and delete their own category', async () => {
+			// create a new site admin user (member of administrators)
+			const admin2Uid = await User.create({ username: 'admin2' });
+			await groups.join('administrators', admin2Uid);
+
+			// admin2 creates a category
+			const category = await apiCategories.create({ uid: admin2Uid }, {
+				name: 'admin2 category',
+				description: 'created by admin2',
+			});
+
+			// ensure category exists and owner is admin2
+			const owner = await Categories.getCategoryField(category.cid, 'uid');
+			assert.strictEqual(String(owner), String(admin2Uid));
+
+			// admin2 should be able to delete their own category
+			await apiCategories.delete({ uid: admin2Uid }, { cid: category.cid });
+			const data = await Categories.getCategoryById(category.cid);
+			assert.strictEqual(data, null);
+
+			// cleanup: remove admin2 from administrators to avoid polluting global state
+			await groups.leave('administrators', admin2Uid);
+		});
+
+
+
+		it('site admin cannot delete category owned by another admin', async () => {
+			const admin3Uid = await User.create({ username: 'admin3' });
+
+			// admin creates a category owned by the first adminUid
+			const category = await apiCategories.create({ uid: adminUid }, {
+				name: 'admin-owned',
+				description: 'owned by adminUid',
+			});
+
+			let err;
+			try {
+				// admin3 (site admin but not owner) should NOT be allowed to delete this
+				await apiCategories.delete({ uid: admin3Uid }, { cid: category.cid });
+			} catch (_err) {
+				err = _err;
+			}
+
+			assert(err);
+			assert.strictEqual(err.message, '[[error:no-privileges]]');
+		});
+
 		it('should get all category names', (done) => {
 			socketCategories.getNames({ uid: adminUid }, {}, (err, data) => {
 				assert.ifError(err);
@@ -649,6 +701,7 @@ describe('Categories', () => {
 	describe('privileges', () => {
 		const privileges = require('../src/privileges');
 
+
 		it('should return empty array if uids is empty array', (done) => {
 			privileges.categories.filterUids('find', categoryObj.cid, [], (err, uids) => {
 				assert.ifError(err);
@@ -657,12 +710,22 @@ describe('Categories', () => {
 			});
 		});
 
-		it('should filter uids by privilege', (done) => {
-			privileges.categories.filterUids('find', categoryObj.cid, [1, 2, 3, 4], (err, uids) => {
-				assert.ifError(err);
-				assert.deepEqual(uids, [1, 2]);
-				done();
-			});
+		it('should filter uids by privilege', async () => {
+			// Locally adjust privileges for this test to avoid affecting other tests.
+			const apiCategories = require('../src/api/categories');
+			// rescind group-based find for registered-users on this category
+			await apiCategories.setPrivilege({ uid: adminUid }, { cid: categoryObj.cid, privilege: 'groups:find', set: false, member: 'registered-users' });
+			// give user-specific find to 1 and 2
+			await privileges.categories.give(['find'], categoryObj.cid, [1, 2]);
+
+			try {
+				const uids = await privileges.categories.filterUids('find', categoryObj.cid, [1, 2, 3, 4]);
+				assert.deepEqual(uids.sort(), [1, 2]);
+			} finally {
+				// cleanup: rescind user-specific finds and restore group-based find
+				await privileges.categories.rescind(['find'], categoryObj.cid, [1, 2]);
+				await apiCategories.setPrivilege({ uid: adminUid }, { cid: categoryObj.cid, privilege: 'groups:find', set: true, member: 'registered-users' });
+			}
 		});
 
 		it('should load category user privileges', (done) => {

@@ -29,10 +29,27 @@ describe('Topics - Needs Attention', () => {
 	before(async function () {
 		this.timeout(10000);
 		
+		// Set base time for all tests - this is our "current" time
+		const baseTime = new Date('2025-01-01T12:00:00Z').getTime();
+		mockdate.set(baseTime);
+		
 		// Create users
 		adminUid = await user.create({ username: 'needsadmin', password: 'adminpass123' });
 		regularUserUid = await user.create({ username: 'needsregular', password: 'regularpass123' });
 		postAuthorUid = await user.create({ username: 'needsauthor', password: 'authorpass123' });
+
+		// Set user joindates to past relative to base time to bypass "user-too-new" restriction
+		// Set to 30 days before base time
+		const userJoinDate = baseTime - (30 * 24 * 60 * 60 * 1000);
+		await Promise.all([
+			user.setUserField(adminUid, 'joindate', userJoinDate),
+			user.setUserField(regularUserUid, 'joindate', userJoinDate),
+			user.setUserField(postAuthorUid, 'joindate', userJoinDate),
+			// Set lastposttime to allow immediate posting without delay
+			user.setUserField(adminUid, 'lastposttime', 0),
+			user.setUserField(regularUserUid, 'lastposttime', 0),
+			user.setUserField(postAuthorUid, 'lastposttime', 0),
+		]);
 
 		// Assign admin privileges
 		await groups.join('administrators', adminUid);
@@ -55,16 +72,21 @@ describe('Topics - Needs Attention', () => {
 		await createTestTopics();
 	});
 
+	after(() => {
+		// Reset mockdate to avoid affecting other tests
+		mockdate.reset();
+	});
+
 	async function createTestTopics() {
 		// Set mock date to a fixed point in time for consistent testing
 		const baseTime = new Date('2025-01-01T12:00:00Z').getTime();
 		mockdate.set(baseTime);
 
 		// Topic 1: Old unresolved topic (needs attention)
-		// Create topic 8 days ago
+		// Create topic 8 days ago - use admin to bypass post delay checks
 		mockdate.set(baseTime - (8 * 24 * 60 * 60 * 1000));
 		const oldResult = await topics.post({
-			uid: postAuthorUid,
+			uid: adminUid,
 			cid: commentsCid,
 			title: 'Old Unresolved Question',
 			content: 'This is an old question that needs attention',
@@ -75,7 +97,7 @@ describe('Topics - Needs Attention', () => {
 		// Create topic 3 days ago
 		mockdate.set(baseTime - (3 * 24 * 60 * 60 * 1000));
 		const recentResult = await topics.post({
-			uid: postAuthorUid,
+			uid: adminUid,
 			cid: commentsCid,
 			title: 'Recent Question',
 			content: 'This is a recent question',
@@ -86,7 +108,7 @@ describe('Topics - Needs Attention', () => {
 		// Create topic 8 days ago
 		mockdate.set(baseTime - (8 * 24 * 60 * 60 * 1000));
 		const resolvedResult = await topics.post({
-			uid: postAuthorUid,
+			uid: adminUid,
 			cid: commentsCid,
 			title: 'Old Resolved Question',
 			content: 'This is an old resolved question',
@@ -100,7 +122,7 @@ describe('Topics - Needs Attention', () => {
 		// Create topic 8 days ago
 		mockdate.set(baseTime - (8 * 24 * 60 * 60 * 1000));
 		const activeResult = await topics.post({
-			uid: postAuthorUid,
+			uid: adminUid,
 			cid: commentsCid,
 			title: 'Old Question with Recent Activity',
 			content: 'This is an old question with recent replies',
@@ -110,13 +132,13 @@ describe('Topics - Needs Attention', () => {
 		// Add a recent reply (2 days ago)
 		mockdate.set(baseTime - (2 * 24 * 60 * 60 * 1000));
 		await topics.reply({
-			uid: regularUserUid,
+			uid: adminUid,
 			tid: activeTopicTid,
 			content: 'Recent reply to keep this topic active',
 		});
 
-		// Reset to current time
-		mockdate.reset();
+		// Set back to base time (our "current" time for testing)
+		mockdate.set(baseTime);
 	}
 
 	describe('Core needsAttention() Function', () => {
@@ -148,7 +170,7 @@ describe('Topics - Needs Attention', () => {
 		it('should return false for topics in non-Comments & Feedback categories', async () => {
 			// Create a topic in another category
 			const otherResult = await topics.post({
-				uid: postAuthorUid,
+				uid: adminUid,
 				cid: otherCid,
 				title: 'Question in Other Category',
 				content: 'This is in a different category',
@@ -159,18 +181,10 @@ describe('Topics - Needs Attention', () => {
 			mockdate.set(baseTime);
 			
 			// Update the topic timestamp to be 8 days old
-			await topics.edit({
-				tid: otherResult.topicData.tid,
-				uid: adminUid,
-				data: {
-					timestamp: baseTime - (8 * 24 * 60 * 60 * 1000)
-				}
-			});
+			await topics.setTopicField(otherResult.topicData.tid, 'timestamp', baseTime - (8 * 24 * 60 * 60 * 1000));
 
 			const needsAttention = await topics.needsAttention(otherResult.topicData.tid);
 			assert.strictEqual(needsAttention, false);
-			
-			mockdate.reset();
 		});
 	});
 
@@ -198,7 +212,7 @@ describe('Topics - Needs Attention', () => {
 				cid: commentsCid,
 				uid: adminUid,
 				start: 0,
-				stop: 10
+				stop: 10,
 			});
 
 			const oldTopic = categoryTopics.topics.find(topic => topic.tid === oldTopicTid);
@@ -224,7 +238,7 @@ describe('Topics - Needs Attention', () => {
 				cid: otherCid,
 				uid: adminUid,
 				start: 0,
-				stop: 10
+				stop: 10,
 			});
 
 			// Topics in other categories should not have needsAttention flag
@@ -240,7 +254,7 @@ describe('Topics - Needs Attention', () => {
 				cid: commentsCid,
 				uid: adminUid,
 				start: 0,
-				stop: 10
+				stop: 10,
 			});
 
 			const topicsWithNeedsAttention = categoryTopics.topics.filter(topic => topic.needsAttention);
@@ -259,26 +273,27 @@ describe('Topics - Needs Attention', () => {
 			mockdate.set(baseTime - (10 * 24 * 60 * 60 * 1000)); // 10 days ago
 			
 			const olderResult = await topics.post({
-				uid: postAuthorUid,
+				uid: adminUid,
 				cid: commentsCid,
 				title: 'Even Older Question',
 				content: 'This is an even older question',
 			});
 
-			mockdate.reset();
+			// Set back to base time for consistent testing
+			mockdate.set(baseTime);
 
 			const categoryTopics = await categories.getCategoryTopics({
 				cid: commentsCid,
 				uid: adminUid,
 				start: 0,
-				stop: 10
+				stop: 10,
 			});
 
 			const needsAttentionTopics = categoryTopics.topics.filter(topic => topic.needsAttention);
 			
 			// Should be sorted by timestamp (oldest first)
 			for (let i = 1; i < needsAttentionTopics.length; i++) {
-				assert(needsAttentionTopics[i].timestamp >= needsAttentionTopics[i-1].timestamp);
+				assert(needsAttentionTopics[i].timestamp >= needsAttentionTopics[i - 1].timestamp);
 			}
 		});
 
@@ -287,7 +302,7 @@ describe('Topics - Needs Attention', () => {
 				cid: commentsCid,
 				uid: regularUserUid,
 				start: 0,
-				stop: 10
+				stop: 10,
 			});
 
 			const needsAttentionTopics = categoryTopics.topics.filter(topic => topic.needsAttention);
@@ -331,13 +346,14 @@ describe('Topics - Needs Attention', () => {
 			mockdate.set(baseTime - (7 * 24 * 60 * 60 * 1000)); // Exactly 7 days
 			
 			const exactResult = await topics.post({
-				uid: postAuthorUid,
+				uid: adminUid,
 				cid: commentsCid,
 				title: 'Exactly 7 Days Old',
 				content: 'This is exactly 7 days old',
 			});
 
-			mockdate.reset();
+			// Set back to base time for testing
+			mockdate.set(baseTime);
 
 			// Should need attention (7+ days old)
 			const needsAttention = await topics.needsAttention(exactResult.topicData.tid);
@@ -350,13 +366,14 @@ describe('Topics - Needs Attention', () => {
 			mockdate.set(baseTime - (7 * 24 * 60 * 60 * 1000) + (60 * 1000)); // 6 days, 23h 59m
 			
 			const underResult = await topics.post({
-				uid: postAuthorUid,
+				uid: adminUid,
 				cid: commentsCid,
 				title: 'Just Under 7 Days',
 				content: 'This is just under 7 days old',
 			});
 
-			mockdate.reset();
+			// Set back to base time for testing
+			mockdate.set(baseTime);
 
 			// Should not need attention (< 7 days old)
 			const needsAttention = await topics.needsAttention(underResult.topicData.tid);
@@ -371,13 +388,14 @@ describe('Topics - Needs Attention', () => {
 			mockdate.set(baseTime - (8 * 24 * 60 * 60 * 1000));
 			
 			const integrationResult = await topics.post({
-				uid: postAuthorUid,
+				uid: adminUid,
 				cid: commentsCid,
 				title: 'Integration Test Topic',
 				content: 'Testing integration with resolved status',
 			});
 
-			mockdate.reset();
+			// Set back to base time for testing
+			mockdate.set(baseTime);
 
 			// Initially should need attention
 			let needsAttention = await topics.needsAttention(integrationResult.topicData.tid);

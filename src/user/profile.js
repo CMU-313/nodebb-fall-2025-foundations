@@ -111,7 +111,6 @@ module.exports = function (User) {
 			}
 		}
 
->>>>>>> 6433626 (initial commit for this feature. Feature works on profile side, though could add more advanced features like capitalize 2-letter state and 3-letter country. Feature does not work on edit profile side)
 		await validateData(uid, data);
 
 		const oldData = await User.getUserFields(updateUid, fields);

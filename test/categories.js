@@ -448,6 +448,9 @@ describe('Categories', () => {
 				name: 'purge me',
 				description: 'update description',
 			});
+			// COPILOT
+			// Ensure poster won't be blocked by posting throttles in this test
+			await User.setUserField(posterUid, 'lastposttime', Date.now() - (1000 * 60 * 60));
 			await Topics.post({
 				uid: posterUid,
 				cid: category.cid,

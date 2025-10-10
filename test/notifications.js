@@ -374,7 +374,7 @@ describe('Notifications', () => {
 		const followerUid = await user.create({ username: 'follower' });
 		await user.follow(followerUid, uid);
 		const { cid } = await categories.create({
-			name: 'Test Category',
+			name: 'Notifications Test Category',
 			description: 'Test category created by testing script',
 		});
 		await topics.post({

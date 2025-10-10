@@ -30,6 +30,7 @@
 								<th>[[admin/manage/categories:federation.syncing-actorUri]]</th>
 								<th></th>
 							</tr>
+							
 						</thead>
 						<tbody>
 							{{{ each following }}}

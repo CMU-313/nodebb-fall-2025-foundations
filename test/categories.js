@@ -885,67 +885,65 @@ describe('Categories', () => {
 		});
 
 		describe('Category Name Validation', () => {
-			it('should validate empty category names', (done) => {
-				Categories.validateCategoryName('', (err) => {
-					assert(err);
-					assert.equal(err.message, '[[error:invalid-data]]');
-					done();
+			it('should validate empty category names', () => {
+				assert.throws(() => {
+					Categories.validateCategoryName('');
+				}, (err) => {
+					return err.message === '[[error:invalid-data]]';
 				});
 			});
 
-			it('should validate null category names', (done) => {
-				Categories.validateCategoryName(null, (err) => {
-					assert(err);
-					assert.equal(err.message, '[[error:invalid-data]]');
-					done();
+			it('should validate null category names', () => {
+				assert.throws(() => {
+					Categories.validateCategoryName(null);
+				}, (err) => {
+					return err.message === '[[error:invalid-data]]';
 				});
 			});
 
-			it('should validate non-string category names', (done) => {
-				Categories.validateCategoryName(123, (err) => {
-					assert(err);
-					assert.equal(err.message, '[[error:invalid-data]]');
-					done();
+			it('should validate non-string category names', () => {
+				assert.throws(() => {
+					Categories.validateCategoryName(123);
+				}, (err) => {
+					return err.message === '[[error:invalid-data]]';
 				});
 			});
 
-			it('should validate category names that are too long', (done) => {
+			it('should validate category names that are too long', () => {
 				const longName = 'a'.repeat(51); // 51 characters
-				Categories.validateCategoryName(longName, (err) => {
-					assert(err);
-					assert.equal(err.message, '[[error:category-name-too-long]]');
-					done();
+				assert.throws(() => {
+					Categories.validateCategoryName(longName);
+				}, (err) => {
+					return err.message === '[[error:category-name-too-long]]';
 				});
 			});
 
-			it('should validate category names with invalid characters', (done) => {
-				Categories.validateCategoryName('Invalid/Name', (err) => {
-					assert(err);
-					assert.equal(err.message, '[[error:invalid-category-name]]');
-					done();
+			it('should validate category names with invalid characters', () => {
+				assert.throws(() => {
+					Categories.validateCategoryName('Invalid/Name');
+				}, (err) => {
+					return err.message === '[[error:invalid-category-name]]';
 				});
 			});
 
-			it('should validate category names with colons', (done) => {
-				Categories.validateCategoryName('Invalid:Name', (err) => {
-					assert(err);
-					assert.equal(err.message, '[[error:invalid-category-name]]');
-					done();
+			it('should validate category names with colons', () => {
+				assert.throws(() => {
+					Categories.validateCategoryName('Invalid:Name');
+				}, (err) => {
+					return err.message === '[[error:invalid-category-name]]';
 				});
 			});
 
-			it('should accept valid category names', (done) => {
-				Categories.validateCategoryName('Valid Category Name', (err) => {
-					assert.ifError(err);
-					done();
+			it('should accept valid category names', () => {
+				assert.doesNotThrow(() => {
+					Categories.validateCategoryName('Valid Category Name');
 				});
 			});
 
-			it('should accept category names at the length limit', (done) => {
+			it('should accept category names at the length limit', () => {
 				const maxLengthName = 'a'.repeat(50); // Exactly 50 characters
-				Categories.validateCategoryName(maxLengthName, (err) => {
-					assert.ifError(err);
-					done();
+				assert.doesNotThrow(() => {
+					Categories.validateCategoryName(maxLengthName);
 				});
 			});
 		});
@@ -1087,11 +1085,16 @@ describe('Categories', () => {
 
 		describe('Category Update Controller', () => {
 			it('should handle PUT /api/categories/:cid endpoint', async () => {
+				// Create a fresh category for this test
+				const controllerTestCategory = await Categories.create({
+					name: 'Controller Test Category Original',
+				});
+				
 				const newName = 'Controller Test Category';
 				
 				// Test the controller directly
 				const req = {
-					params: { cid: testCategory.cid },
+					params: { cid: controllerTestCategory.cid },
 					body: { name: newName },
 					uid: adminUid,
 				};
@@ -1104,9 +1107,14 @@ describe('Categories', () => {
 				
 				await categoriesController.update(req, res);
 				
+				// Verify the response
 				assert(responseData);
 				assert(responseData.category);
 				assert.equal(responseData.category.name, newName);
+				
+				// Also verify the database was actually updated
+				const updatedCategory = await Categories.getCategoryData(controllerTestCategory.cid);
+				assert.equal(updatedCategory.name, newName);
 			});
 
 			it('should return 403 for unauthorized users', async () => {

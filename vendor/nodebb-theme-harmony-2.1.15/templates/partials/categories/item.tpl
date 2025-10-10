@@ -66,6 +66,13 @@
 			<!-- IMPORT partials/categories/lastpost.tpl -->
 		</div>
 		{{{ end }}}
+		<div class="d-flex align-items-start justify-content-end gap-2 mb-2 w-100">
+			{{{ if ajaxify.data.isOwner }}}{{{ else }}}{{{ end }}}
+			<!-- Visible purge button for owners/admins (will be hidden unless privileges are set via client JS) -->
+			<button class="btn btn-danger btn-sm ms-2" data-action="purge" data-cid="{./cid}" title="[[admin/manage/categories:purge]]">
+				<i class="fa fa-fw fa-trash"></i>
+			</button>
+		</div>
 	</div>
 	{{{ end }}}
 </li>

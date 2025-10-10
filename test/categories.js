@@ -10,6 +10,8 @@ const Topics = require('../src/topics');
 const User = require('../src/user');
 const groups = require('../src/groups');
 const privileges = require('../src/privileges');
+const categoriesController = require('../src/controllers/categories');
+const apiCategories = require('../src/api/categories');
 
 describe('Categories', () => {
 	let categoryObj;
@@ -863,5 +865,297 @@ describe('Categories', () => {
 		});
 		assert.strictEqual(child1.cid, data.children[0].cid);
 		assert.strictEqual(child2.cid, data.children[0].children[0].cid);
+	});
+
+	//CHATGPT - Category Edit Feature Tests
+	describe('Category Edit Feature', () => {
+		let testCategory;
+		let adminUid;
+		let regularUserUid;
+
+		before(async () => {
+			adminUid = await User.create({ username: 'edit-admin' });
+			await groups.join('administrators', adminUid);
+			
+			regularUserUid = await User.create({ username: 'edit-regular' });
+			
+			testCategory = await Categories.create({
+				name: 'Edit Test Category',
+			});
+		});
+
+		describe('Category Name Validation', () => {
+			it('should validate empty category names', (done) => {
+				Categories.validateCategoryName('', (err) => {
+					assert(err);
+					assert.equal(err.message, '[[error:invalid-data]]');
+					done();
+				});
+			});
+
+			it('should validate null category names', (done) => {
+				Categories.validateCategoryName(null, (err) => {
+					assert(err);
+					assert.equal(err.message, '[[error:invalid-data]]');
+					done();
+				});
+			});
+
+			it('should validate non-string category names', (done) => {
+				Categories.validateCategoryName(123, (err) => {
+					assert(err);
+					assert.equal(err.message, '[[error:invalid-data]]');
+					done();
+				});
+			});
+
+			it('should validate category names that are too long', (done) => {
+				const longName = 'a'.repeat(51); // 51 characters
+				Categories.validateCategoryName(longName, (err) => {
+					assert(err);
+					assert.equal(err.message, '[[error:category-name-too-long]]');
+					done();
+				});
+			});
+
+			it('should validate category names with invalid characters', (done) => {
+				Categories.validateCategoryName('Invalid/Name', (err) => {
+					assert(err);
+					assert.equal(err.message, '[[error:invalid-category-name]]');
+					done();
+				});
+			});
+
+			it('should validate category names with colons', (done) => {
+				Categories.validateCategoryName('Invalid:Name', (err) => {
+					assert(err);
+					assert.equal(err.message, '[[error:invalid-category-name]]');
+					done();
+				});
+			});
+
+			it('should accept valid category names', (done) => {
+				Categories.validateCategoryName('Valid Category Name', (err) => {
+					assert.ifError(err);
+					done();
+				});
+			});
+
+			it('should accept category names at the length limit', (done) => {
+				const maxLengthName = 'a'.repeat(50); // Exactly 50 characters
+				Categories.validateCategoryName(maxLengthName, (err) => {
+					assert.ifError(err);
+					done();
+				});
+			});
+		});
+
+		describe('Category Update API', () => {
+			it('should update category name successfully', async () => {
+				const newName = 'Updated Category Name';
+				await apiCategories.update({ uid: adminUid }, {
+					cid: testCategory.cid,
+					values: { name: newName },
+				});
+				
+				const updatedCategory = await Categories.getCategoryData(testCategory.cid);
+				assert.equal(updatedCategory.name, newName);
+			});
+
+			it('should update name', async () => {
+				const newName = 'Final Updated Name';
+				
+				await apiCategories.update({ uid: adminUid }, {
+					cid: testCategory.cid,
+					values: { 
+						name: newName,
+					},
+				});
+				
+				const updatedCategory = await Categories.getCategoryData(testCategory.cid);
+				assert.equal(updatedCategory.name, newName);
+			});
+
+			it('should fail to update category without admin privileges', async () => {
+				let err;
+				try {
+					await apiCategories.update({ uid: regularUserUid }, {
+						cid: testCategory.cid,
+						values: { name: 'Unauthorized Update' },
+					});
+				} catch (_err) {
+					err = _err;
+				}
+				assert(err);
+				assert.equal(err.message, '[[error:no-privileges]]');
+			});
+
+			it('should fail to update category with empty name', async () => {
+				let err;
+				try {
+					await apiCategories.update({ uid: adminUid }, {
+						cid: testCategory.cid,
+						values: { name: '' },
+					});
+				} catch (_err) {
+					err = _err;
+				}
+				assert(err);
+				assert.equal(err.message, '[[error:invalid-data]]');
+			});
+
+			it('should fail to update category with name too long', async () => {
+				const longName = 'a'.repeat(51);
+				let err;
+				try {
+					await apiCategories.update({ uid: adminUid }, {
+						cid: testCategory.cid,
+						values: { name: longName },
+					});
+				} catch (_err) {
+					err = _err;
+				}
+				assert(err);
+				assert.equal(err.message, '[[error:category-name-too-long]]');
+			});
+
+			it('should fail to update category with invalid characters', async () => {
+				let err;
+				try {
+					await apiCategories.update({ uid: adminUid }, {
+						cid: testCategory.cid,
+						values: { name: 'Invalid/Name' },
+					});
+				} catch (_err) {
+					err = _err;
+				}
+				assert(err);
+				assert.equal(err.message, '[[error:invalid-category-name]]');
+			});
+
+			it('should fail to update category with duplicate name', async () => {
+				// Create another category first
+				const otherCategory = await Categories.create({
+					name: 'Duplicate Test Category',
+				});
+
+				let err;
+				try {
+					await apiCategories.update({ uid: adminUid }, {
+						cid: testCategory.cid,
+						values: { name: 'Duplicate Test Category' },
+					});
+				} catch (_err) {
+					err = _err;
+				}
+				assert(err);
+				assert.equal(err.message, '[[error:category-already-exists]]');
+			});
+
+			it('should allow updating to the same name (no change)', async () => {
+				// This should succeed because it's not actually changing the name
+				const currentName = 'Final Updated Name';
+				await apiCategories.update({ uid: adminUid }, {
+					cid: testCategory.cid,
+					values: { name: currentName },
+				});
+				
+				const updatedCategory = await Categories.getCategoryData(testCategory.cid);
+				assert.equal(updatedCategory.name, currentName);
+			});
+
+			it('should handle case-insensitive duplicate detection', async () => {
+				// Create a category with different case
+				const otherCategory = await Categories.create({
+					name: 'Case Test Category',
+					description: 'Category for case testing',
+				});
+
+				let err;
+				try {
+					await apiCategories.update({ uid: adminUid }, {
+						cid: testCategory.cid,
+						values: { name: 'CASE TEST CATEGORY' }, // Same name, different case
+					});
+				} catch (_err) {
+					err = _err;
+				}
+				assert(err);
+				assert.equal(err.message, '[[error:category-already-exists]]');
+			});
+		});
+
+		describe('Category Update Controller', () => {
+			it('should handle PUT /api/categories/:cid endpoint', async () => {
+				const newName = 'Controller Test Category';
+				
+				// Test the controller directly
+				const req = {
+					params: { cid: testCategory.cid },
+					body: { name: newName },
+					uid: adminUid,
+				};
+				
+				let responseData;
+				const res = {
+					json: (data) => { responseData = data; },
+					status: (code) => ({ json: (data) => { responseData = data; } }),
+				};
+				
+				await categoriesController.update(req, res);
+				
+				assert(responseData);
+				assert(responseData.category);
+				assert.equal(responseData.category.name, newName);
+			});
+
+			it('should return 403 for unauthorized users', async () => {
+				const req = {
+					params: { cid: testCategory.cid },
+					body: { name: 'Unauthorized Update' },
+					uid: regularUserUid,
+				};
+				
+				let statusCode;
+				let responseData;
+				const res = {
+					json: (data) => { responseData = data; },
+					status: (code) => {
+						statusCode = code;
+						return { json: (data) => { responseData = data; } };
+					},
+				};
+				
+				await categoriesController.update(req, res);
+				
+				assert.equal(statusCode, 403);
+				assert(responseData);
+				assert.equal(responseData.error, 'Not allowed to edit this category');
+			});
+
+			it('should return 400 for invalid category name', async () => {
+				const req = {
+					params: { cid: testCategory.cid },
+					body: { name: '' }, // Empty name
+					uid: adminUid,
+				};
+				
+				let statusCode;
+				let responseData;
+				const res = {
+					json: (data) => { responseData = data; },
+					status: (code) => {
+						statusCode = code;
+						return { json: (data) => { responseData = data; } };
+					},
+				};
+				
+				await categoriesController.update(req, res);
+				
+				assert.equal(statusCode, 400);
+				assert(responseData);
+				assert.equal(responseData.error, '[[error:invalid-data]]');
+			});
+		});
 	});
 });

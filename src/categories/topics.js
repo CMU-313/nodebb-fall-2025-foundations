@@ -51,23 +51,23 @@ module.exports = function (Categories) {
 			topic.resolved = resolved;
 			topic.showUnresolved = true;
 			topic.needsAttention = needsAttention;
-		});
+	});
 
-		// For admins and moderators, pin posts needing attention at the top
-		const privileges = require('../privileges');
-		const isAdminOrMod = await privileges.categories.isAdminOrMod(data.cid, data.uid);
+	// For admins and moderators, pin posts needing attention at the top
+	const privileges = require('../privileges');
+	const isAdminOrMod = await privileges.categories.isAdminOrMod(data.cid, data.uid);
+	
+	if (isAdminOrMod) {
+		const needsAttentionTopics = topicsData.filter(topic => topic.needsAttention);
+		const normalTopics = topicsData.filter(topic => !topic.needsAttention);
 		
-		if (isAdminOrMod) {
-			const needsAttentionTopics = topicsData.filter(topic => topic.needsAttention);
-			const normalTopics = topicsData.filter(topic => !topic.needsAttention);
-			
-			// Sort needs attention topics by age (oldest first)
-			needsAttentionTopics.sort((a, b) => a.timestamp - b.timestamp);
-			
-			// Combine: needs attention first, then normal topics
-			topicsData = needsAttentionTopics.concat(normalTopics);
-		}
+		// Sort needs attention topics by age (oldest first)
+		needsAttentionTopics.sort((a, b) => a.timestamp - b.timestamp);
+		
+		// Combine: needs attention first, then normal topics
+		topicsData = needsAttentionTopics.concat(normalTopics);
 	}
+}
 
 		results = await plugins.hooks.fire('filter:category.topics.get', { cid: data.cid, topics: topicsData, uid: data.uid });
 		return { topics: results.topics, nextStart: data.stop + 1 };

@@ -1,6 +1,8 @@
 CategoryObject:
   allOf:
     - type: object
+      required:
+        - cid
       properties:
         cid:
           type: number
@@ -83,6 +85,9 @@ CategoryObject:
         subCategoriesPerPage:
           type: number
           description: The number of subcategories to display on the categories and category page
+        uid:
+          type: number
+          description: The user id of the category creator/owner
     - type: object
       description: Optional properties that may or may not be present (except for `cid`, which is always present, and is only here as a hack to pass validation)
       properties:

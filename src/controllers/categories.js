@@ -49,8 +49,41 @@ categoriesController.update = async function (req, res) {
 			return res.status(403).json({ error: 'Not allowed to edit this category' });
 		}
 
+		//CHATGPT and create-category copied over
 		const updateData = {};
 		if (req.body.name !== undefined) {
+			console.log('Validating category name:', req.body.name, 'for cid:', cid);
+			
+			// Validate category name (same as in create)
+			if (!req.body.name) {
+				console.log('Empty name detected');
+				return res.status(400).json({ error: '[[error:invalid-data]]' });
+			}
+			
+			if (typeof req.body.name !== 'string') {
+				console.log('Invalid type detected');
+				return res.status(400).json({ error: '[[error:invalid-data]]' });
+			}
+			
+			if (req.body.name.length > 50) {
+				console.log('Name too long detected');
+				return res.status(400).json({ error: '[[error:category-name-too-long]]' });
+			}
+			
+			if (req.body.name.includes('/') || req.body.name.includes(':') || !require('../slugify')(req.body.name)) {
+				console.log('Invalid characters detected');
+				return res.status(400).json({ error: '[[error:invalid-category-name]]' });
+			}
+			
+			// Check for duplicate names (excluding current category)
+			console.log('Checking for duplicates...');
+			const exists = await categories.existsByName(req.body.name, cid);
+			console.log('Duplicate check result:', exists);
+			if (exists) {
+				console.log('Duplicate found, returning error');
+				return res.status(400).json({ error: '[[error:category-already-exists]]' });
+			}
+			
 			updateData.name = req.body.name;
 		}
 		if (req.body.description !== undefined) {

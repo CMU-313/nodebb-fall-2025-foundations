@@ -1,4 +1,4 @@
-//COPILOT
+//COPILOT and CHATGPT
 'use strict';
 
 define('forum/category-edit', [
@@ -71,8 +71,31 @@ define('forum/category-edit', [
 				// Close the modal
 				$('.bootbox').modal('hide');
 				
-				// Refresh the page to show updated data
-				ajaxify.refresh();
+				// Update the button's data attribute to reflect the new name
+				const $btn = $(`.edit-category-btn[data-cid="${cid}"]`);
+				$btn.data('name', data.name);
+				
+				// Update the displayed category name in the UI
+				const $categoryItem = $btn.closest('[component="categories/category"]');
+				const $categoryTitle = $categoryItem.find('.title');
+				
+				if ($categoryTitle.length) {
+					// Check if it's a section (just text) or a link
+					const $link = $categoryTitle.find('a');
+					if ($link.length) {
+						// It's a link, update the link text
+						$link.text(data.name);
+					} else {
+						// It's just text, update the title text
+						$categoryTitle.text(data.name);
+					}
+				}
+				
+				// Also update the meta tag if it exists
+				const $metaName = $categoryItem.find('meta[itemprop="name"]');
+				if ($metaName.length) {
+					$metaName.attr('content', data.name);
+				}
 			})
 			.catch(function (err) {
 				alerts.alert({

@@ -43,7 +43,7 @@ module.exports = function (Posts) {
 	};
 
 	Posts.canResolve = async function (pid, uid) {
-		// Only allow moderators, administrators, or course instructors to resolve posts
+		// Only allow administrators, moderators, or post authors to resolve posts
 		const [isAdmin, isGlobalModerator, postData] = await Promise.all([
 			user.isAdministrator(uid),
 			user.isGlobalModerator(uid),
@@ -71,8 +71,11 @@ module.exports = function (Posts) {
 		// Check if user is moderator of the category
 		const isCategoryModerator = await user.isModerator(uid, cid);
 
-		// Allow if user is admin, global moderator, or category moderator
-		return isAdmin || isGlobalModerator || isCategoryModerator;
+		// Check if user is the post author
+		const isPostAuthor = parseInt(uid, 10) > 0 && parseInt(uid, 10) === parseInt(postData.uid, 10);
+
+		// Allow if user is admin, global moderator, category moderator, or post author
+		return isAdmin || isGlobalModerator || isCategoryModerator || isPostAuthor;
 	};
 
 	Posts.getResolvedStatus = async function (pid) {

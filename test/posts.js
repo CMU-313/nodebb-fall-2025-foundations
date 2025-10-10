@@ -299,6 +299,57 @@ describe('Post\'s', () => {
 				done();
 			});
 		});
+
+		it('should treat pinned as boolean and compute votes/timestamps/attachments', async () => {
+			// Directly set a post object in the DB to exercise modifyPost behavior
+			const pid = 99999;
+			await db.setObject(`post:${pid}`, {
+				uid: 1,
+				pid: pid,
+				tid: topicData.tid,
+				pinned: 1,
+				upvotes: 3,
+				downvotes: 1,
+				timestamp: 1600000000000,
+				edited: 1600000005000,
+				attachments: 'a.png,b.jpg',
+			});
+
+			const postsFields = await posts.getPostFields(pid, ['pinned', 'upvotes', 'downvotes', 'timestamp', 'edited', 'attachments']);
+			assert.strictEqual(postsFields.pinned, true);
+			assert.strictEqual(postsFields.votes, 2);
+			assert.ok(postsFields.timestampISO);
+			assert.ok(postsFields.editedISO);
+			assert.deepStrictEqual(postsFields.attachments, ['a.png', 'b.jpg']);
+		});
+
+		it('api.posts.pin should return early for non-existent post and allow parent owner to pin/unpin reply', async () => {
+			// non-existent pid should not throw and should return undefined
+			const res = await apiPosts.pin({ uid: voterUid }, { pid: 123456789 });
+			assert.strictEqual(res, undefined);
+
+			// create a parent post (topic) and a reply
+			const parent = await topics.post({ uid: voterUid, cid, title: 'parent topic', content: 'parent content longer' });
+			const reply = await topics.reply({ uid: voterUid, tid: parent.topicData.tid, toPid: parent.postData.pid, content: 'a reply with sufficient length' });
+
+			// as parent owner, pin the reply
+			await apiPosts.pin({ uid: voterUid }, { pid: reply.pid });
+			let pinned = await posts.getPostField(reply.pid, 'pinned');
+			assert.strictEqual(Boolean(pinned), true);
+
+			// unpin as parent owner
+			await apiPosts.unpin({ uid: voterUid }, { pid: reply.pid });
+			pinned = await posts.getPostField(reply.pid, 'pinned');
+			assert.strictEqual(Boolean(pinned), false);
+		});
+
+		it('loadPostTools should set canPin for parent owner', async () => {
+			const parent = await topics.post({ uid: voterUid, cid, title: 'parent topic 2', content: 'parent content two is long enough' });
+			const reply = await topics.reply({ uid: voterUid, tid: parent.topicData.tid, toPid: parent.postData.pid, content: 'reply 2 with enough length' });
+			const data = await socketPosts.loadPostTools({ uid: voterUid }, { pid: reply.pid });
+			// loadPostTools returns results object; posts are in data.posts
+			assert.strictEqual(data.posts.canPin, true);
+		});
 	});
 
 	describe('delete/restore/purge', () => {

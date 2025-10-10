@@ -54,11 +54,11 @@ module.exports = function (Categories) {
 				topic.needsAttention = needsAttention;
 			});
 
-			// For admins, pin posts needing attention at the top
-			const user = require('../user');
-			const isAdmin = await user.isAdministrator(data.uid);
+			// For admins and moderators, pin posts needing attention at the top
+			const privileges = require('../privileges');
+			const isAdminOrMod = await privileges.categories.isAdminOrMod(data.cid, data.uid);
 			
-			if (isAdmin) {
+			if (isAdminOrMod) {
 				const needsAttentionTopics = topicsData.filter(topic => topic.needsAttention);
 				const normalTopics = topicsData.filter(topic => !topic.needsAttention);
 				

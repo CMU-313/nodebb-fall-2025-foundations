@@ -40,7 +40,7 @@ describe('upload methods', () => {
 		});
 
 		({ cid } = await categories.create({
-			name: 'Uploads Test Category',
+			name: 'Uploads Test Category 2',
 			description: 'Test category created by testing script',
 		}));
 

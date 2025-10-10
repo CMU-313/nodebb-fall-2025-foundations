@@ -58,7 +58,7 @@ describe('Category owner create and delete', () => {
 		const categoryData = await Categories.getCategoryData(createdCategory.cid);
 		assert(categoryData);
 		assert.equal(categoryData.name, 'Integration Owner Cat');
-		assert.equal(categoryData.ownerUid, ownerUid);
+		assert.equal(categoryData.uid, ownerUid);
 	});
 
 	it('should not allow non-owner to delete; owner and allow admin to delete', async () => {

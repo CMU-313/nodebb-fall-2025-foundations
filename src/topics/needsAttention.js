@@ -6,7 +6,6 @@
 // - Implementing the logic to check topic age, resolved status, and recent activity
 // - Creating helper functions for getting latest reply times and topic filtering
 
-const db = require('../database');
 const posts = require('../posts');
 const categories = require('../categories');
 

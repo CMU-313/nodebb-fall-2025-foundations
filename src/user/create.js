@@ -113,7 +113,12 @@ module.exports = function (User) {
 				email: data.email,
 				template: 'welcome',
 				subject: `[[email:welcome-to, ${meta.config.title || meta.config.browserTitle || 'NodeBB'}]]`,
-			}).catch(err => winston.error(`[user.create] Validation email failed to send\n[emailer.send] ${err.stack}`));
+			}).catch((err) => {
+				// Only log email errors in non-test environments to reduce noise
+				if (process.env.NODE_ENV !== 'test' && !err.message.includes('sendmail-not-found')) {
+					winston.error(`[user.create] Validation email failed to send\n[emailer.send] ${err.stack}`);
+				}
+			});
 		}
 		if (userNameChanged) {
 			await User.notifications.sendNameChangeNotification(userData.uid, userData.username);

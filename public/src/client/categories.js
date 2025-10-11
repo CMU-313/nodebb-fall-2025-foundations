@@ -100,6 +100,5 @@ define('forum/categories', ['categorySelector', 'api', 'bootbox', 'translator', 
 		// Bind purge handlers for index items
 		try { bindPurgeHandlers(); } catch (e) { console.error('bindPurgeHandlers error', e); }
 	};
-
 	return categories;
 });

@@ -29,12 +29,12 @@ describe('Search', () => {
 		phoebeUid = await user.create({ username: 'phoebe' });
 		gingerUid = await user.create({ username: 'ginger' });
 		cid1 = (await categories.create({
-			name: 'Test Category',
+			name: 'Search Test Category 1',
 			description: 'Test category created by testing script',
 		})).cid;
 
 		cid2 = (await categories.create({
-			name: 'Test Category',
+			name: 'Search Test Category 2',
 			description: 'Test category created by testing script',
 		})).cid;
 

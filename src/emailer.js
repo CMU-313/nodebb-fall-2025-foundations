@@ -370,7 +370,19 @@ Emailer.sendViaFallback = async (data) => {
 		address: data.from,
 	};
 	delete data.from_name;
-	await Emailer.fallbackTransport.sendMail(data);
+	try {
+		await Emailer.fallbackTransport.sendMail(data);
+	} catch (err) {
+		// nodemailer will surface ENOENT when sendmail binary is missing for the sendmail transport.
+		// Normalize this to a clear error so callers can handle it consistently (as before).
+		if (err && err.code === 'ENOENT') {
+			Emailer.fallbackNotFound = true;
+			const e = new Error('[[error:sendmail-not-found]]');
+			e.code = 'ENOENT';
+			throw e;
+		}
+		throw err;
+	}
 };
 
 Emailer.renderAndTranslate = async (template, params, lang) => {

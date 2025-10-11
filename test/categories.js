@@ -1033,7 +1033,7 @@ describe('Categories', () => {
 
 		describe('Category Update API', () => {
 			it('should update category name successfully', async () => {
-				const newName = 'Updated Category Name';
+				const newName = 'Updated Category Name 1353';
 				await apiCategories.update({ uid: adminUid }, {
 					cid: testCategory.cid,
 					values: { name: newName },

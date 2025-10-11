@@ -38,21 +38,21 @@
 					</span>
 					<span component="topic/pinned" class="badge border border-gray-300 text-body {{{ if (./scheduled || !./pinned) }}}hidden{{{ end }}}">
 						<i class="fa fa-thumb-tack"></i>
-						<span>{{{ if !./pinExpiry }}}[[topic:pinned]]{{{ else }}}[[topic:pinned-with-expiry, {isoTimeToLocaleString(./pinExpiryISO, config.userLang)}]]{{{ end }}}</span>
-					</span>
-					<span component="topic/locked" class="badge border border-gray-300 text-body {{{ if !./locked }}}hidden{{{ end }}}">
-						<i class="fa fa-lock"></i>
-						<span>[[topic:locked]]</span>
-					</span>
-					<span component="topic/moved" class="badge border border-gray-300 text-body {{{ if (!./oldCid || (./oldCid == "-1")) }}}hidden{{{ end }}}">
-						<i class="fa fa-arrow-circle-right"></i>
-						<span>[[topic:moved]]</span>
-					</span>
+					<span>{{{ if !./pinExpiry }}}[[topic:pinned]]{{{ else }}}[[topic:pinned-with-expiry, {isoTimeToLocaleString(./pinExpiryISO, config.userLang)}]]{{{ end }}}</span>
+				</span>
+				<span component="topic/locked" class="badge border border-gray-300 text-body {{{ if !./locked }}}hidden{{{ end }}}">
+					<i class="fa fa-lock"></i>
+					<span>[[topic:locked]]</span>
+				</span>
+				<span component="topic/moved" class="badge border border-gray-300 text-body {{{ if (!./oldCid || (./oldCid == "-1")) }}}hidden{{{ end }}}">
+					<i class="fa fa-arrow-circle-right"></i>
+					<span>[[topic:moved]]</span>
+				</span>
 				<span component="topic/needs-attention" class="badge text-dark" style="background-color: #ff9f40 !important;" {{{ if (!./needsAttention || (!privileges.isAdminOrMod && !privileges.isAdmin)) }}}hidden{{{ end }}}>
 					<i class="fa fa-exclamation-triangle"></i>
 					<span>Needs Attention</span>
 				</span>
-					{{{each ./icons}}}<span class="lh-1">{@value}</span>{{{end}}}
+				{{{each ./icons}}}<span class="lh-1">{@value}</span>{{{end}}}
 
 					{{{ if !template.category }}}
 					{buildCategoryLabel(./category, "a", "border")}

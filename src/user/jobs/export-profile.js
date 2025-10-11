@@ -29,8 +29,12 @@ process.on('message', async (msg) => {
 
 		const targetUid = msg.uid;
 
+		const exportDir = path.join(__dirname, '../../../build/export');
 		const profileFile = `${targetUid}_profile.json`;
-		const profilePath = path.join(__dirname, '../../../build/export', profileFile);
+		const profilePath = path.join(exportDir, profileFile);
+
+		// Ensure export directory exists
+		await fs.promises.mkdir(exportDir, { recursive: true });
 
 		const user = require('../index');
 		const [

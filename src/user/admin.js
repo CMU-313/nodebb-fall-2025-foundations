@@ -59,8 +59,13 @@ module.exports = function (User) {
 		if (!showIps && fields.includes('ip')) {
 			fields.splice(fields.indexOf('ip'), 1);
 		}
+		
+		// Ensure export directory exists
+		const exportDir = path.join(baseDir, 'build/export');
+		await fs.promises.mkdir(exportDir, { recursive: true });
+		
 		const fd = await fs.promises.open(
-			path.join(baseDir, 'build/export', 'users.csv'),
+			path.join(exportDir, 'users.csv'),
 			'w'
 		);
 		fs.promises.appendFile(fd, `${fields.map(f => `"${f}"`).join(',')}\n`);

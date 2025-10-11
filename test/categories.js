@@ -458,7 +458,7 @@ describe('Categories', () => {
 			await apiCategories.update({ uid: adminUid }, {
 				cid: cid,
 				values: {
-					name: 'Updated Category Name',
+					name: 'Updated Category Name 135242',
 				},
 			});
 

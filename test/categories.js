@@ -1115,9 +1115,9 @@ describe('Categories', () => {
 			});
 
 			it('should fail to update category with duplicate name', async () => {
-				// Create another category first
+				// Create another category first with the same name we'll try to update to
 				const otherCategory = await Categories.create({
-					name: 'Duplicate Test Category 15',
+					name: 'Duplicate Test Category',
 				});
 
 				let err;

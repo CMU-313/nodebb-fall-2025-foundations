@@ -2,27 +2,20 @@ define('forum/categories', ['categorySelector', 'api', 'bootbox', 'translator', 
 	const categories = {};
 
 	function bindPurgeHandlers() {
-		const selector = 'li[component="categories/category"] [data-action="purge"]';
+		// Use a selector that matches any purge button with a data-cid attribute
+		// so handlers work both on public category listings and admin/manage pages.
+		const selector = '[data-action="purge"][data-cid]';
 
-		if (!(ajaxify && ajaxify.data)) {
-			return;
-		}
-
-		// Only show and bind for owners/admins/global-mods. Otherwise hide the button.
-		if (!(ajaxify.data.isOwner || ajaxify.data.isAdminOrGlobalMod)) {
-			$(selector).addClass('d-none hidden');
-			return;
-		}
-
-		// Owner/admin: ensure the button is visible, then bind the handler.
-		$(selector).removeClass('d-none hidden');
-
-		// Delegate the handler so it works for dynamically rendered items as well.
+		// Always bind a delegated handler (idempotent) so admin/manage pages
+		// and category index both have working buttons. Server-side rendering
+		// already controls whether the button should be present for the user.
 		$('body').off('click.purge').on('click.purge', selector, function (e) {
 			e.preventDefault();
 			const $btn = $(this);
-			const $li = $btn.closest('li[component="categories/category"]');
-			const cid = $btn.attr('data-cid') || $li.attr('data-cid');
+			// Support multiple DOM structures: prefer the closest li with data-cid
+			// (admin rows use <li data-cid="...">) but fall back to button attr.
+			const $li = $btn.closest('li[data-cid]');
+			const cid = $btn.attr('data-cid') || ($li.length && $li.attr('data-cid'));
 			const name = ($li.length && $li.find('.title').text().trim()) || '';
 
 			// Fetch current topic count then render the same admin modal and perform purge.

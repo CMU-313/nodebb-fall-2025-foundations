@@ -58,7 +58,7 @@ describe('Topic thumbs', () => {
 		fooCSRF = fooLogin.csrf_token;
 
 		categoryObj = await categories.create({
-			name: 'Test Category',
+			name: 'Test Category 2',
 			description: 'Test category created by testing script',
 		});
 		topicObj = await topics.post({

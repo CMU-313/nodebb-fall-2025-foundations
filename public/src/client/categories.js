@@ -1,4 +1,4 @@
-define('forum/categories', ['categorySelector', 'api', 'bootbox', 'translator'], function (categorySelector, api, bootbox, translator) {
+define('forum/categories', ['categorySelector', 'api', 'bootbox', 'translator', 'forum/category-edit'], function (categorySelector, api, bootbox, translator, categoryEdit) {
 	const categories = {};
 
 	categories.init = function () {
@@ -10,6 +10,9 @@ define('forum/categories', ['categorySelector', 'api', 'bootbox', 'translator'],
 				ajaxify.go('/category/' + category.cid);
 			},
 		});
+
+		// Initialize category edit functionality
+		categoryEdit.init();
 
 		const btn = $('#btn-new-category');
 		if (!btn.length) return;

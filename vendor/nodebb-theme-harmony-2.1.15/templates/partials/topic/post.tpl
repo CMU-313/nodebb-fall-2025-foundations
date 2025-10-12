@@ -5,6 +5,15 @@
 	{{{ end }}}
 </div>
 {{{ end }}}
+<style>
+/* chat wrote the below */
+/* Small style for the inline pinned thumb-tack indicator */
+.pinned-icon {
+	font-size: 0.9em;
+	opacity: 0.85;
+	vertical-align: baseline;
+}
+</style>
 {{{ if (./parent && !hideParent) }}}
 <!-- IMPORT partials/topic/post-parent.tpl -->
 {{{ end }}}
@@ -61,6 +70,10 @@
 
 					<i component="post/edit-indicator" class="fa fa-edit text-muted{{{ if privileges.posts:history }}} pointer{{{ end }}} edit-icon {{{ if !posts.editor.username }}}hidden{{{ end }}}" title="[[global:edited-timestamp, {isoTimeToLocaleString(./editedISO, config.userLang)}]]"></i>
 					<span data-editor="{posts.editor.userslug}" component="post/editor" class="visually-hidden">[[global:last-edited-by, {posts.editor.username}]] <span class="timeago" title="{isoTimeToLocaleString(posts.editedISO, config.userLang)}"></span></span>
+
+					<!-- server-side small pinned indicator (mirrors client-side post/pinned-indicator) -->
+					<!-- I used copilot + GPT-5 and based this icon off of the edited post indicator code -->
+					<i component="post/pinned-indicator" class="fa fa-thumb-tack text-muted pinned-icon ms-1 {{{ if !posts.pinned }}}hidden{{{ end }}}" title="[[topic:pinned]]" aria-hidden="true"></i>
 				</div>
 
 				{{{ if posts.user.custom_profile_info.length }}}

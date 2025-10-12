@@ -46,6 +46,7 @@
 *  fix spec (3b609316)
 *  fix openapi (c7c83e0e)
 *  increase timeout of failing test (fe9b49e3)
+*  add tests for location validation and storage in user profiles (test/user/location.js)
 
 #### v4.4.4 (2025-06-18)
 

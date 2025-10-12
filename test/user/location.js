@@ -34,7 +34,9 @@ describe('user location field', () => {
 
 		const stored = await User.getUserField(uid, 'location');
 		assert.strictEqual(stored, 'Pittsburgh, Pa');
-		});	it('should reject location with URLs', async () => {
+	});
+
+	it('should reject location with URLs', async () => {
 		await assert.rejects(
 			User.updateProfile(uid, {
 				uid: uid,

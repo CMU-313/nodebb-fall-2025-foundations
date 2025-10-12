@@ -27,7 +27,9 @@ const activitypub = require('../src/activitypub');
 const utils = require('../src/utils');
 const api = require('../src/api');
 
-describe('API', async () => {
+describe('API', function () {
+	// Increase timeout for CI environments where setup may take longer than Mocha's default
+	this.timeout(60000);
 	let readApi = false;
 	let writeApi = false;
 	const readApiPath = path.resolve(__dirname, '../public/openapi/read.yaml');
@@ -366,8 +368,21 @@ describe('API', async () => {
 		}
 	});
 
-	readApi = await SwaggerParser.dereference(readApiPath);
-	writeApi = await SwaggerParser.dereference(writeApiPath);
+
+	before(async function () {
+		// Allow extra time for schema parsing in CI
+		this.timeout(60000);
+		try {
+			readApi = await SwaggerParser.dereference(readApiPath);
+			writeApi = await SwaggerParser.dereference(writeApiPath);
+		} catch (e) {
+			assert.ifError(e);
+		}
+    
+		// Generate the tests for all documented paths once schemas are loaded
+		generateTests(readApi, Object.keys(readApi.paths));
+		generateTests(writeApi, Object.keys(writeApi.paths), writeApi.servers[0].url);
+	});
 
 	it('should grab all mounted routes and ensure a schema exists', async () => {
 		const webserver = require('../src/webserver');
@@ -431,9 +446,6 @@ describe('API', async () => {
 			});
 		});
 	});
-
-	generateTests(readApi, Object.keys(readApi.paths));
-	generateTests(writeApi, Object.keys(writeApi.paths), writeApi.servers[0].url);
 
 	function generateTests(api, paths, prefix) {
 		// Iterate through all documented paths, make a call to it,

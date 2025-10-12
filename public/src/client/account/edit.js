@@ -29,6 +29,24 @@ define('forum/account/edit', [
 		return parts.join(' ');
 	}
 
+	function normalizeLocationPart(input, type) {
+		if (!input) return '';
+		const s = input.replace(/<[^>]*>/g, '').trim();
+		const joined = s.split(/\s+/).map(function (w) {
+			const lw = w.toLowerCase();
+			return lw.charAt(0).toUpperCase() + lw.slice(1);
+		}).join(' ');
+		// If state is two letters, capitalize both
+		if (type === 'state' && joined.replace(/\s+/g, '').length === 2) {
+			return joined.replace(/\s+/g, '').toUpperCase();
+		}
+		// If country is three letters, capitalize all three
+		if (type === 'country' && joined.replace(/\s+/g, '').length === 3) {
+			return joined.replace(/\s+/g, '').toUpperCase();
+		}
+		return joined;
+	}
+
 	AccountEdit.init = function () {
 		header.init();
 
@@ -60,6 +78,28 @@ define('forum/account/edit', [
 					$(el).closest('.mb-3').remove();
 				});
 			}
+
+			// Location duplicate cleanup
+			const cityEls = $('input#location_city');
+			if (cityEls.length > 1) {
+				cityEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+
+			const stateEls = $('input#location_state');
+			if (stateEls.length > 1) {
+				stateEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+
+			const countryEls = $('input#location_country');
+			if (countryEls.length > 1) {
+				countryEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
 		} catch (e) {
 			// ignore
 		}
@@ -71,7 +111,32 @@ define('forum/account/edit', [
 			$('#university-fields').show();
 		});
 
+		// Location add-toggle
+		$('#addLocationBtn').on('click', function (e) {
+			e.preventDefault();
+			$('#location-placeholder').hide();
+			$('#location-fields').show();
+		});
+
 		$('#submitBtn').on('click', updateProfile);
+
+		// If location is pre-populated, hide its placeholder and show fields, and prefill parts
+		try {
+			const existingLocation = ($('#location_city').length ? ($('#location_city').val() || '') : '') || (ajaxify.data.location || '');
+			if (existingLocation && existingLocation.toString().trim()) {
+				$('#location-placeholder').hide();
+				$('#location-fields').show();
+				// If there's a combined location string in ajaxify, split it into parts
+				if (ajaxify.data.location && !$('#location_city').val()) {
+					const parts = ajaxify.data.location.split(',').map(p => p.trim());
+					$('#location_city').val(parts[0] ? normalizeLocationPart(parts[0]) : '');
+					$('#location_state').val(parts[1] ? normalizeLocationPart(parts[1], 'state') : '');
+					$('#location_country').val(parts[2] ? normalizeLocationPart(parts[2], 'country') : '');
+				}
+			}
+		} catch (e) {
+			// ignore
+		}
 
 		if (ajaxify.data.groupTitleArray.length === 1 && ajaxify.data.groupTitleArray[0] === '') {
 			$('#groupTitle option[value=""]').attr('selected', true);
@@ -130,6 +195,27 @@ define('forum/account/edit', [
 			userData.university = userData.university + ' (\'' + l2 + ')';
 		}
 
+		// Normalize and combine location parts if present into single `location` field
+		if (userData.location_city) {
+			userData.location_city = normalizeLocationPart(userData.location_city);
+		}
+		if (userData.location_state) {
+			userData.location_state = normalizeLocationPart(userData.location_state, 'state');
+		}
+		if (userData.location_country) {
+			userData.location_country = normalizeLocationPart(userData.location_country, 'country');
+		}
+
+		if (userData.location_city || userData.location_state || userData.location_country) {
+			const parts = [userData.location_city, userData.location_state, userData.location_country].filter(Boolean);
+			if (parts.length) {
+				userData.location = parts.join(', ');
+			}
+		} else {
+			// allow delete / clear functionality by leaving fields blank
+			userData.location = '';
+		}
+
 		userData.uid = ajaxify.data.uid;
 		userData.groupTitle = userData.groupTitle || '';
 		userData.groupTitle = JSON.stringify(getGroupSelection());
@@ -138,6 +224,67 @@ define('forum/account/edit', [
 
 		api.put('/users/' + userData.uid, userData).then((res) => {
 			alerts.success('[[user:profile-update-success]]');
+
+			// Update ajaxify.data so the profile view and quick-add logic stay in sync
+			ajaxify.data.university = userData.university || ajaxify.data.university;
+			ajaxify.data.location = (userData.location !== undefined) ? userData.location : ajaxify.data.location;
+
+			// If user cleared location, remove location stat from DOM and ajaxify.customUserFields
+			if (userData.location === '') {
+				// remove stat card
+				$('.account-stats .stat').filter(function () {
+					return $(this).text().trim().includes('Location');
+				}).remove();
+				// remove from ajaxify data
+				if (ajaxify.data.customUserFields) {
+					ajaxify.data.customUserFields = ajaxify.data.customUserFields.filter(f => f.key !== 'location');
+				}
+			}
+
+			// If user set/updated location, update or create the stat card so profile shows the new value
+			if (userData.location && userData.location !== '') {
+				var $locStat = $('.account-stats .stat').filter(function () {
+					return $(this).text().trim().includes('Location');
+				}).first();
+				if ($locStat.length) {
+					$locStat.find('.ff-secondary').text(userData.location);
+				} else {
+					// build stat card matching template structure
+					var displayNameLoc = 'Location';
+					var iconClassLoc = 'fa-solid fa-location-dot';
+					var $statLoc = $(
+						'<div class="stat">' +
+							'<div class="align-items-center justify-content-center card card-header p-3 border-0 rounded-1 h-100 gap-2">' +
+								'<span class="stat-label text-xs fw-semibold"><span><i class="text-muted ' + iconClassLoc + '"></i> ' + displayNameLoc + '</span></span>' +
+								'<span class="text-center fs-6 ff-secondary"></span>' +
+							'</div>' +
+						'</div>'
+					);
+					$statLoc.find('.ff-secondary').text(userData.location);
+					// try to insert after university stat if present
+					var $uni = $('.account-stats .stat').filter(function () {
+						return $(this).text().trim().includes('University');
+					}).first();
+					if ($uni.length) {
+						$uni.after($statLoc);
+					} else {
+						$('.account-stats .row').first().append($statLoc);
+					}
+				}
+				// also ensure ajaxify.customUserFields contains the up-to-date value
+				ajaxify.data.customUserFields = ajaxify.data.customUserFields || [];
+				var found = false;
+				for (var i = 0; i < ajaxify.data.customUserFields.length; i++) {
+					if (ajaxify.data.customUserFields[i].key === 'location') {
+						ajaxify.data.customUserFields[i].value = userData.location;
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					ajaxify.data.customUserFields.push({ key: 'location', name: 'Location', value: userData.location, icon: 'fa-solid fa-location-dot', type: 'input-text' });
+				}
+			}
 
 			if (res.picture) {
 				$('#user-current-picture').attr('src', res.picture);

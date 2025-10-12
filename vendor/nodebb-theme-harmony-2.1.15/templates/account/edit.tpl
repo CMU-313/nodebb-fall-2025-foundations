@@ -17,6 +17,17 @@
 					<input class="form-control" type="number" id="graduationYear" name="graduationYear" placeholder="Graduation Year" value="{graduationYear}">
 				</div>
 			</div>
+			<div class="mb-3" id="location-block">
+				<label class="form-label fw-bold" for="location">Location</label>
+				<div id="location-placeholder">
+					<a href="#" id="addLocationBtn" class="text-decoration-none">Add Location</a>
+				</div>
+				<div id="location-fields" style="display: none;">
+					<input class="form-control mb-2" type="text" id="location_city" name="location_city" placeholder="City" value="{location_city}">
+					<input class="form-control mb-2" type="text" id="location_state" name="location_state" placeholder="State" value="{location_state}">
+					<input class="form-control" type="text" id="location_country" name="location_country" placeholder="Country" value="{location_country}">
+				</div>
+			</div>
 			<div class="mb-3">
 				<label class="form-label fw-bold" for="fullname">[[user:fullname]]</label>
 				<input class="form-control" type="text" id="fullname" name="fullname" placeholder="[[user:fullname]]" value="{fullname}">
@@ -28,7 +39,7 @@
 			</div>
 
 			{{{ each customUserFields }}}
-				{{{ if (./key != "university") }}}
+				{{{ if ((./key != "university") && (./key != "location")) }}}
 				<div class="mb-3">
 					<label class="form-label fw-bold" for="{./key}">{./name}</label>
 					{{{ if ((./type == "input-text") || (./type == "input-link")) }}}

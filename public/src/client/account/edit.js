@@ -12,8 +12,64 @@ define('forum/account/edit', [
 ], function (header, picture, translator, api, hooks, bootbox, alerts, changeEmail) {
 	const AccountEdit = {};
 
+	function normalizeUniversity(input) {
+		if (!input) return '';
+		const s = input.replace(/<[^>]*>/g, '').trim();
+		const small = { of: true, the: true };
+		const parts = s.split(/\s+/).map(function (w, i) {
+			const lw = w.toLowerCase();
+			if (i === 0) {
+				return lw.charAt(0).toUpperCase() + lw.slice(1);
+			}
+			if (small[lw]) {
+				return lw; // keep 'of'/'the' lowercase when not first
+			}
+			return lw.charAt(0).toUpperCase() + lw.slice(1);
+		});
+		return parts.join(' ');
+	}
+
 	AccountEdit.init = function () {
 		header.init();
+
+		// If university field is pre-populated (from template / edit profile),
+		// hide the "Add University" placeholder
+		try {
+			const existingUni = $('#university').length ? ($('#university').val() || '') : (ajaxify.data.university || '');
+			if (existingUni && existingUni.toString().trim()) {
+				$('#university-placeholder').hide();
+				$('#university-fields').show();
+			}
+		} catch (e) {
+			// supplied by chat --> defensive: if ajaxify or DOM not ready, ignore silently
+		}
+
+		// Defensive: If multiple university inputs are rendered for any reason,
+		// keep the first and remove duplicates to avoid showing two fields.
+		try {
+			const uniEls = $('input#university');
+			if (uniEls.length > 1) {
+				uniEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+
+			const gradEls = $('input#graduationYear');
+			if (gradEls.length > 1) {
+				gradEls.slice(1).each((i, el) => {
+					$(el).closest('.mb-3').remove();
+				});
+			}
+		} catch (e) {
+			// ignore
+		}
+
+		// University add-toggle
+		$('#addUniversityBtn').on('click', function (e) {
+			e.preventDefault();
+			$('#university-placeholder').hide();
+			$('#university-fields').show();
+		});
 
 		$('#submitBtn').on('click', updateProfile);
 
@@ -57,6 +113,22 @@ define('forum/account/edit', [
 			}
 			userData[name] = JSON.stringify(userData[name] || []);
 		});
+
+		// sanitize and format university input if present
+		if (userData.university) {
+			userData.university = normalizeUniversity(userData.university);
+		}
+
+		if (userData.graduationYear) {
+			userData.graduationYear = userData.graduationYear.toString().replace(/[^0-9]/g, '');
+		}
+
+		// if both present, combine into a single display string stored in university custom field
+		if (userData.university && userData.graduationYear) {
+			// takes the last two digits and shortens them
+			const l2 = userData.graduationYear.toString().slice(-2);
+			userData.university = userData.university + ' (\'' + l2 + ')';
+		}
 
 		userData.uid = ajaxify.data.uid;
 		userData.groupTitle = userData.groupTitle || '';

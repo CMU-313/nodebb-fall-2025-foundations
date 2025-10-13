@@ -297,7 +297,7 @@ define('forum/topic/postTools', [
 						icon.removeClass('fa-check-circle text-success')
 							.addClass('fa-question-circle text-warning');
 						text.text('Mark as Resolved');
-					}		
+					}
 
 					alerts.success(newResolved ? 'Marked as resolved' : 'Marked as unresolved');
 				})
@@ -601,47 +601,47 @@ define('forum/topic/postTools', [
 		}
 	}
 
-		// Show/hide resolved button based on category
-		$(document).ready(function() {
-			if (ajaxify.data && ajaxify.data.category) {
-				// Handle HTML entities in category name
-				const categoryName = ajaxify.data.category.name.replace(/&amp;/g, '&');
-				if (categoryName === 'Comments & Feedback') {
-					$('.resolved-tools').show();
-				} else {
-					$('.resolved-tools').hide();
-				}
+	// Show/hide resolved button based on category
+	$(document).ready(function () {
+		if (ajaxify.data && ajaxify.data.category) {
+			// Handle HTML entities in category name
+			const categoryName = ajaxify.data.category.name.replace(/&amp;/g, '&');
+			if (categoryName === 'Comments & Feedback') {
+				$('.resolved-tools').show();
+			} else {
+				$('.resolved-tools').hide();
 			}
-		});
-
-		// Handle topic-level resolved button
-		$(document).on('click', '[component="topic/resolved"]', function () {
-			const btn = $(this);
-			const mainPid = ajaxify.data.mainPid;
-			const currentResolved = btn.attr('data-resolved') === 'true';
-			const newResolved = !currentResolved;
-
-			api.put(`/posts/${mainPid}/resolved`, { resolved: newResolved })
-				.then(() => {
-					// Update the button state
-					btn.attr('data-resolved', newResolved);
-					const icon = btn.find('[component="topic/resolved/icon"]');
-					const text = btn.find('[component="topic/resolved/text"]');
-
-					if (newResolved) {
-						icon.removeClass('fa-question-circle text-warning')
-							.addClass('fa-check-circle text-success');
-						text.text('Mark as Unresolved');
-					} else {
-						icon.removeClass('fa-check-circle text-success')
-							.addClass('fa-question-circle text-warning');
-						text.text('Mark as Resolved');
-					}
-
-					alerts.success(newResolved ? 'Marked as resolved' : 'Marked as unresolved');
-				})
-				.catch(alerts.error);
-		});
-
-		return PostTools;
+		}
 	});
+
+	// Handle topic-level resolved button
+	$(document).on('click', '[component="topic/resolved"]', function () {
+		const btn = $(this);
+		const mainPid = ajaxify.data.mainPid;
+		const currentResolved = btn.attr('data-resolved') === 'true';
+		const newResolved = !currentResolved;
+
+		api.put(`/posts/${mainPid}/resolved`, { resolved: newResolved })
+			.then(() => {
+				// Update the button state
+				btn.attr('data-resolved', newResolved);
+				const icon = btn.find('[component="topic/resolved/icon"]');
+				const text = btn.find('[component="topic/resolved/text"]');
+
+				if (newResolved) {
+					icon.removeClass('fa-question-circle text-warning')
+						.addClass('fa-check-circle text-success');
+					text.text('Mark as Unresolved');
+				} else {
+					icon.removeClass('fa-check-circle text-success')
+						.addClass('fa-question-circle text-warning');
+					text.text('Mark as Resolved');
+				}
+
+				alerts.success(newResolved ? 'Marked as resolved' : 'Marked as unresolved');
+			})
+			.catch(alerts.error);
+	});
+
+	return PostTools;
+});

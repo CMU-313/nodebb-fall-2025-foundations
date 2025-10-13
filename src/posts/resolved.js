@@ -1,8 +1,6 @@
 'use strict';
 
-const db = require('../database');
 const user = require('../user');
-const privileges = require('../privileges');
 const plugins = require('../plugins');
 const events = require('../events');
 

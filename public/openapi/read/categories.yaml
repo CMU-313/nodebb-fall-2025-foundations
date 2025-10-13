@@ -26,6 +26,9 @@ get:
                   allowCategoryCreation:
                     type: boolean
                     description: Whether the current user can create categories
+                  allowPurge:
+                    type: boolean
+                    description: Whether the current user can purge categories
                   selectCategoryLabel:
                     type: string
                     description: Label to use for the category selector
@@ -145,6 +148,9 @@ get:
                                     type: number
                                   content:
                                     type: string
+                                  allowPurge:
+                                    type: boolean
+                                    description: Whether the current user can purge categories
                                   sourceContent:
                                     type: string
                                     nullable: true

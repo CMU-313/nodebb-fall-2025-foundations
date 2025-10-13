@@ -67,11 +67,19 @@
 		</div>
 		{{{ end }}}
 		<div class="d-flex align-items-start justify-content-end gap-2 mb-2 w-100">
-			{{{ if ajaxify.data.isOwner }}}{{{ else }}}{{{ end }}}
-			<!-- Visible purge button for owners/admins (will be hidden unless privileges are set via client JS) -->
+			{{{ if allowPurge }}}
+			<!-- Visible purge button for admins/global-mods (top-level) -->
 			<button class="btn btn-danger btn-sm ms-2" data-action="purge" data-cid="{./cid}" title="[[admin/manage/categories:purge]]">
 				<i class="fa fa-fw fa-trash"></i>
 			</button>
+			{{{ else }}}
+				{{{ if ./allowPurge }}}
+				<!-- Visible purge button for owners -->
+				<button class="btn btn-danger btn-sm ms-2" data-action="purge" data-cid="{./cid}" title="[[admin/manage/categories:purge]]">
+					<i class="fa fa-fw fa-trash"></i>
+				</button>
+				{{{ end }}}
+			{{{ end }}}
 		</div>
 	</div>
 	{{{ end }}}

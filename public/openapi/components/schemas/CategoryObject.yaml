@@ -97,5 +97,12 @@ CategoryObject:
         backgroundImage:
           type: string
           description: Relative URL to the category's background image
+        # Per-category purge authorization flags
+        allowPurge:
+          type: boolean
+          description: Whether the currently-viewing user may purge (delete) this category (per-category permission; true for owners/mods as appropriate).
+        purgable:
+          type: boolean
+          description: Alias for `allowPurge` (kept for backward-compatibility).
       required:
         - cid

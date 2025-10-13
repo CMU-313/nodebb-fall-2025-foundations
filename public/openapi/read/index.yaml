@@ -24,6 +24,9 @@ get:
                   allowPurge:
                     type: boolean
                     description: Whether the current user can purge categories
+                  purgable:
+                    type: boolean
+                    description: Alias for `allowPurge` kept for backwards compatibility
                   selectCategoryLabel:
                     type: string
                     description: Label to use for the category selector
@@ -44,6 +47,7 @@ get:
                               description: True if category or it's children have unread topics
                             unread-class:
                               type: string
+                            # per-category purge flags are defined in CategoryObject
                             children:
                               type: array
                               items:

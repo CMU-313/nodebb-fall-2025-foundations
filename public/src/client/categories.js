@@ -4,18 +4,31 @@ define('forum/categories', ['categorySelector', 'api', 'bootbox', 'translator', 
 	function bindPurgeHandlers() {
 		// Use a selector that matches any purge button with a data-cid attribute
 		// so handlers work both on public category listings and admin/manage pages.
-		const selector = '[data-action="purge"][data-cid]';
 
 		// Always bind a delegated handler (idempotent) so admin/manage pages
 		// and category index both have working buttons. Server-side rendering
 		// already controls whether the button should be present for the user.
-		$('body').off('click.purge').on('click.purge', selector, function (e) {
+		// Use an idempotent, fallback listener that checks the event target's
+		// ancestors for a `[data-action="purge"]` control. This catches
+		// clicks on inner elements (icons, anchors inside dropdowns) which
+		// sometimes don't match the delegated selector depending on markup.
+		if (window.__forum_categories_purge_bound) {
+			return;
+		}
+		window.__forum_categories_purge_bound = true;
+
+		$(document).on('click.purgeFallback', function (e) {
+			const $target = $(e.target);
+			const $btn = $target.closest('[data-action="purge"]');
+			if (!$btn.length) return; // not a purge click
+
 			e.preventDefault();
-			const $btn = $(this);
-			// Support multiple DOM structures: prefer the closest li with data-cid
-			// (admin rows use <li data-cid="...">) but fall back to button attr.
 			const $li = $btn.closest('li[data-cid]');
 			const cid = $btn.attr('data-cid') || ($li.length && $li.attr('data-cid'));
+			if (!cid) {
+				console.error('forum/categories: purge clicked but no cid found', this);
+				return;
+			}
 			const name = ($li.length && $li.find('.title').text().trim()) || '';
 
 			// Fetch current topic count then render the same admin modal and perform purge.
@@ -50,7 +63,7 @@ define('forum/categories', ['categorySelector', 'api', 'bootbox', 'translator', 
 										if (intervalId) clearInterval(intervalId);
 										modal.modal('hide');
 										alerts.success('[[admin/manage/categories:alert.purge-success]]');
-										$li.remove();
+										if ($li && $li.length) $li.remove();
 									}).catch(function (err) {
 										clearInterval(intervalId);
 										alerts.error(err);

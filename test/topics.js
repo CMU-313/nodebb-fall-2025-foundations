@@ -42,7 +42,7 @@ describe('Topic\'s', () => {
 		csrf_token = adminLogin.csrf_token;
 
 		categoryObj = await categories.create({
-			name: 'Test Category',
+			name: 'Topics Test Category',
 			description: 'Test category created by testing script',
 		});
 		topic = {
@@ -131,7 +131,7 @@ describe('Topic\'s', () => {
 
 		it('should fail to post a topic as guest with invalid csrf_token', async () => {
 			const categoryObj = await categories.create({
-				name: 'Test Category',
+				name: 'Topics CSRF Test Category',
 				description: 'Test category created by testing script',
 			});
 			await privileges.categories.give(['groups:topics:create'], categoryObj.cid, 'guests');
@@ -152,7 +152,7 @@ describe('Topic\'s', () => {
 
 		it('should fail to post a topic as guest if no privileges', async () => {
 			const categoryObj = await categories.create({
-				name: 'Test Category',
+				name: 'Topics Privileges Test Category',
 				description: 'Test category created by testing script',
 			});
 			const jar = request.jar();
@@ -169,7 +169,7 @@ describe('Topic\'s', () => {
 
 		it('should post a topic as guest if guest group has privileges', async () => {
 			const categoryObj = await categories.create({
-				name: 'Test Category',
+				name: 'Topics Guest Privileges Test Category',
 				description: 'Test category created by testing script',
 			});
 			await privileges.categories.give(['groups:topics:create'], categoryObj.cid, 'guests');
@@ -202,7 +202,7 @@ describe('Topic\'s', () => {
 
 		it('should post a topic/reply as guest with handle if guest group has privileges', async () => {
 			const categoryObj = await categories.create({
-				name: 'Test Category',
+				name: 'Topics Guest Handle Test Category',
 				description: 'Test category created by testing script',
 			});
 			await privileges.categories.give(['groups:topics:create'], categoryObj.cid, 'guests');
@@ -651,7 +651,7 @@ describe('Topic\'s', () => {
 			await topics.follow(newTopic.tid, followerUid);
 
 			({ cid: moveCid } = await categories.create({
-				name: 'Test Category',
+				name: 'Topics Test Category 2',
 				description: 'Test category created by testing script',
 			}));
 		});
@@ -1655,7 +1655,7 @@ describe('Topic\'s', () => {
 		});
 
 		it('should add and remove tags from topics properly', async () => {
-			const category = await categories.create({ name: 'add/remove category' });
+			const category = await categories.create({ name: 'add or remove category' });
 			const { cid } = category;
 			const result = await topics.post({ uid: adminUid, tags: ['tag4', 'tag2', 'tag1', 'tag3'], title: 'tag topic', content: 'topic 1 content', cid: cid });
 			const { tid } = result.topicData;
@@ -1731,7 +1731,7 @@ describe('Topic\'s', () => {
 		});
 
 		it('should create and delete category tags properly', async () => {
-			const category = await categories.create({ name: 'tag category 2' });
+			const category = await categories.create({ name: 'tag category 45' });
 			const { cid } = category;
 			const title = 'test title';
 			const postResult = await topics.post({ uid: adminUid, tags: ['cattag1', 'cattag2', 'cattag3'], title: title, content: 'topic 1 content', cid: cid });
@@ -1752,10 +1752,10 @@ describe('Topic\'s', () => {
 				{ value: 'cattag2', score: 1, valueEscaped: 'cattag2', valueEncoded: 'cattag2', class: 'cattag2' },
 			]);
 		});
-
+		//CHATGPT
 		it('should update counts correctly if topic is moved between categories', async () => {
 			const category1 = await categories.create({ name: 'tag category 2' });
-			const category2 = await categories.create({ name: 'tag category 2' });
+			const category2 = await categories.create({ name: 'tag category 3' });
 			const cid1 = category1.cid;
 			const cid2 = category2.cid;
 
@@ -1963,7 +1963,7 @@ describe('Topic\'s', () => {
 		});
 
 		it('should get users next post index in topic by wrapping around', async () => {
-			const cat = await categories.create({ name: 'tag category' });
+			const cat = await categories.create({ name: 'tag category 15' });
 			const t = await topics.post({ uid: adminUid, title: 'topic 1', content: 'content 1', cid: cat.cid });
 			await topics.reply({ uid: adminUid, content: 'reply 1 content', tid: t.topicData.tid });
 			await topics.reply({ uid: adminUid, content: 'reply 2 content', tid: t.topicData.tid });

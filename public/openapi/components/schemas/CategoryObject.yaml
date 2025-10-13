@@ -92,5 +92,8 @@ CategoryObject:
         backgroundImage:
           type: string
           description: Relative URL to the category's background image
+        editable:
+          type: boolean
+          description: Whether the current user can edit this category (only present when user has edit permissions)
       required:
         - cid

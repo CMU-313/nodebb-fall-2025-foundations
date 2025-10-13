@@ -97,7 +97,8 @@ define('forum/categories', ['categorySelector', 'api', 'bootbox', 'translator', 
 			});
 		});
 
-		// Bind purge handlers for index items (idempotent)
+		// Bind purge handlers for index items
+		// ChatGPT
 		try { bindPurgeHandlers(); } catch (e) { console.error('bindPurgeHandlers error', e); }
 
 		// Permanent runtime fallback: ensure purge buttons exist for admins/global-mods

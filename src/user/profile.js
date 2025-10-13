@@ -37,6 +37,88 @@ module.exports = function (User) {
 		fields = result.fields;
 		data = result.data;
 
+		// If client submitted location parts or a location string but the DB
+		// hasn't registered the custom field yet (migration not applied),
+		// include 'location' in the update fields so we still persist the value.
+		if ((data.location || data.location_city || data.location_state || data.location_country) && !fields.includes('location')) {
+			fields.push('location');
+		}
+
+		// Server-side normalization for `university` custom field and graduationYear
+		function normalizeUniversityServer(input) {
+			if (!input) return '';
+			const s = input.replace(/<[^>]*>/g, '').trim();
+			const small = { of: true, the: true };
+			const parts = s.split(/\s+/).map((w, i) => {
+				const lw = w.toLowerCase();
+				if (i === 0) {
+					return lw.charAt(0).toUpperCase() + lw.slice(1);
+				}
+				if (small[lw]) {
+					return lw;
+				}
+				return lw.charAt(0).toUpperCase() + lw.slice(1);
+			});
+			return parts.join(' ');
+		}
+
+		function normalizeLocationPartServer(input) {
+			if (!input) return '';
+			const s = input.replace(/<[^>]*>/g, '').trim();
+			const joined = s.split(/\s+/).map((w) => {
+				const lw = w.toLowerCase();
+				return lw.charAt(0).toUpperCase() + lw.slice(1);
+			}).join(' ');
+			// default behavior: return joined; caller can uppercase state/country as needed
+			return joined;
+		}
+
+		// Combine location parts if provided separately (from edit page inputs)
+		if (data.location_city || data.location_state || data.location_country) {
+			const parts = [];
+			if (data.location_city) parts.push(normalizeLocationPartServer(data.location_city));
+			if (data.location_state) {
+				const stateNorm = normalizeLocationPartServer(data.location_state);
+				parts.push(stateNorm.replace(/\s+/g, '').length === 2 ? stateNorm.replace(/\s+/g, '').toUpperCase() : stateNorm);
+			}
+			if (data.location_country) {
+				const countryNorm = normalizeLocationPartServer(data.location_country);
+				parts.push(countryNorm.replace(/\s+/g, '').length === 3 ? countryNorm.replace(/\s+/g, '').toUpperCase() : countryNorm);
+			}
+			if (parts.length) {
+				data.location = parts.join(', ');
+			}
+		}
+
+		// Server-side normalization for `location` if provided directly
+		if (data.location) {
+			// If the client provided a single string, normalize each comma-separated part
+			const raw = String(data.location).split(',').map(p => normalizeLocationPartServer(p));
+			data.location = raw.filter(Boolean).join(', ');
+		}
+
+		if (data.university) {
+			// If graduationYear is provided separately we'll append the ('YY) format below
+			data.university = normalizeUniversityServer(data.university);
+		}
+
+		if (data.graduationYear) {
+			const digits = String(data.graduationYear).replace(/[^0-9]/g, '');
+			if (digits.length) {
+				const yy = digits.slice(-2);
+				// append or replace trailing ('YY) pattern
+				if (data.university && /\('\d{2}\)$/.test(data.university)) {
+					// replace existing trailing pattern
+					data.university = data.university.replace(/\('\d{2}\)$/, '(' + "'" + yy + ')');
+				} else if (data.university) {
+					data.university = data.university + ' (\'' + yy + ')';
+				} else {
+					// no university text but grad year provided; set a small placeholder
+					data.university = 'Graduation (\'' + yy + ')';
+				}
+			}
+		}
+
 		await validateData(uid, data);
 
 		const oldData = await User.getUserFields(updateUid, fields);

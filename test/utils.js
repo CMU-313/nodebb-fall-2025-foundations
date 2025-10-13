@@ -7,7 +7,10 @@ const { JSDOM } = require('jsdom');
 const slugify = require('../src/slugify');
 const db = require('./mocks/databasemock');
 
-describe('Utility Methods', () => {
+describe('Utility Methods', function () {
+	// Increase timeout for CI environments where some tests (file IO, user creation)
+	// may take longer than the default Mocha timeout.
+	this.timeout(60000);
 	// https://gist.github.com/robballou/9ee108758dc5e0e2d028
 	// create some jsdom magic to allow jQuery to work
 	const dom = new JSDOM('<html><body></body></html>');
@@ -562,10 +565,11 @@ describe('Utility Methods', () => {
 			assert.strictEqual(el.find('#search').attr('title'), 'Search');
 		});
 
-		it('should not error', (done) => {
-			shim.flush();
-			shim.flushNamespace();
-			done();
+		it('should not error', async () => {
+			await Promise.all([
+				shim.flush(),
+				shim.flushNamespace(),
+			]);
 		});
 	});
 });

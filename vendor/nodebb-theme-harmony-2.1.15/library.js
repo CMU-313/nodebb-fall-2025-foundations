@@ -44,7 +44,7 @@ async function buildSkins() {
 	try {
 		const plugins = require.main.require('./src/plugins');
 		await plugins.prepareForBuild(['client side styles']);
-		for (const skin of meta.css.supportedSkins) {			 
+		for (const skin of meta.css.supportedSkins) {
 			await meta.css.buildBundle(`client-${skin}`, true);
 		}
 		require.main.require('./src/meta/minifier').killAll();

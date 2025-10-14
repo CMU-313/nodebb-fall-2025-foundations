@@ -31,43 +31,22 @@ module.exports = function (Categories) {
 		const isCommentsAndFeedback = categoryData && categoryName === 'Comments & Feedback';
 		
 		if (isCommentsAndFeedback) {
-			// Get all resolved statuses and needs attention flags in parallel
-			const statusPromises = topicsData
+			// Get all resolved statuses in parallel to avoid await in loop
+			const resolvedPromises = topicsData
 				.filter(topic => topic && topic.mainPid)
 				.map(async (topic) => {
 					const postData = await db.getObject(`post:${topic.mainPid}`);
 					const resolved = postData ? postData.resolved : null;
-					const isResolved = parseInt(resolved, 10) === 1;
-					
-					// Check if topic needs attention
-					const needsAttention = await topics.needsAttention(topic.tid);
-					
-					return { topic, resolved: isResolved, needsAttention };
+					return { topic, resolved: parseInt(resolved, 10) === 1 };
 				});
 			
-			const statusResults = await Promise.all(statusPromises);
+			const resolvedResults = await Promise.all(resolvedPromises);
 			
-			// Apply the status to topics
-			statusResults.forEach(({ topic, resolved, needsAttention }) => {
+			// Apply the resolved status to topics
+			resolvedResults.forEach(({ topic, resolved }) => {
 				topic.resolved = resolved;
 				topic.showUnresolved = true;
-				topic.needsAttention = needsAttention;
 			});
-
-			// For admins and moderators, pin posts needing attention at the top
-			const privileges = require('../privileges');
-			const isAdminOrMod = await privileges.categories.isAdminOrMod(data.cid, data.uid);
-			
-			if (isAdminOrMod) {
-				const needsAttentionTopics = topicsData.filter(topic => topic.needsAttention);
-				const normalTopics = topicsData.filter(topic => !topic.needsAttention);
-				
-				// Sort needs attention topics by age (oldest first)
-				needsAttentionTopics.sort((a, b) => a.timestamp - b.timestamp);
-				
-				// Combine: needs attention first, then normal topics
-				topicsData = needsAttentionTopics.concat(normalTopics);
-			}
 		}
 
 		results = await plugins.hooks.fire('filter:category.topics.get', { cid: data.cid, topics: topicsData, uid: data.uid });

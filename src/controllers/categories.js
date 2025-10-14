@@ -9,10 +9,90 @@ const pagination = require('../pagination');
 const helpers = require('./helpers');
 const privileges = require('../privileges');
 const widgets = require('../widgets');
+const user = require('../user');
 
 const categoriesController = module.exports;
 
 // user module not required here; privileges.global.can is used instead
+// Category creation endpoint
+categoriesController.create = async function (req, res) {
+	try {
+		const canCreate = await privileges.global.can('category:create', req.uid);
+		if (!canCreate) {
+			return res.status(403).json({ error: 'Not allowed to create categories' });
+		}
+
+		const category = await categories.create({
+			name: req.body.name || 'Untitled Category',
+			description: req.body.description || '',
+			uid: req.uid,
+		});
+
+		return res.json({ category });
+	} catch (err) {
+		console.error(err);
+		return res.status(500).json({ error: err.message });
+	}
+};
+
+// Category update endpoint
+categoriesController.update = async function (req, res) {
+	try {
+		const { cid } = req.params;
+		
+		// Check if user can edit this category (admin or moderator)
+		const [isAdmin, isModerator] = await Promise.all([
+			user.isAdministrator(req.uid),
+			user.isModerator(req.uid, cid),
+		]);
+		
+		if (!isAdmin && !isModerator) {
+			return res.status(403).json({ error: 'Not allowed to edit this category' });
+		}
+
+		//CHATGPT and create-category copied over
+		const updateData = {};
+		if (req.body.name !== undefined) {
+			// Validate category name (same as in create)
+			if (!req.body.name) {
+				return res.status(400).json({ error: '[[error:invalid-data]]' });
+			}
+			
+			if (typeof req.body.name !== 'string') {
+				return res.status(400).json({ error: '[[error:invalid-data]]' });
+			}
+			
+			if (req.body.name.length > 50) {
+				return res.status(400).json({ error: '[[error:category-name-too-long]]' });
+			}
+			
+			if (req.body.name.includes('/') || req.body.name.includes(':') || !require('../slugify')(req.body.name)) {
+				return res.status(400).json({ error: '[[error:invalid-category-name]]' });
+			}
+			
+			// Check for duplicate names (excluding current category)
+			const exists = await categories.existsByName(req.body.name, cid);
+			if (exists) {
+				return res.status(400).json({ error: '[[error:category-already-exists]]' });
+			}
+			
+			updateData.name = req.body.name;
+		}
+		if (req.body.description !== undefined) {
+			updateData.description = req.body.description;
+		}
+
+		const payload = {};
+		payload[cid] = updateData;
+		await categories.update(payload);
+		const updatedCategory = await categories.getCategoryData(cid);
+
+		return res.json({ category: updatedCategory });
+	} catch (err) {
+		console.error(err);
+		return res.status(500).json({ error: err.message });
+	}
+};
 
 categoriesController.list = async function (req, res) {
 	res.locals.metaTags = [
@@ -42,6 +122,7 @@ categoriesController.list = async function (req, res) {
 		categories.setUnread(tree, pageCids.concat(childCids), req.uid),
 	]);
 
+
 	// Category creation endpoint
 	categoriesController.create = async function (req, res) {
 		try {
@@ -65,6 +146,7 @@ categoriesController.list = async function (req, res) {
 			return res.status(500).json({ error: err.message });
 		}
 	};
+
 
 	const data = {
 		title: meta.config.homePageTitle || '[[pages:home]]',
@@ -156,39 +238,20 @@ categoriesController.list = async function (req, res) {
 
 	console.log(`[categories] uid=${req.uid} allowPurgePrivilege=${allowPurgePrivilege} allowPurgeCount=${countAllowPurge(data.categories)}`);
 
-	//COPILOT
-	// API route — JSON response
-	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api`)) {
-		data.title = '[[pages:categories]]';
-		data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
-		res.locals.metaTags.push({ property: 'og:title', content: '[[pages:categories]]' });
-
-		data.loggedIn = !!req.uid;
-		data.loggedInUser = req.uid ? { uid: req.uid } : {};
-		data.relative_path = String(nconf.get('relative_path') || '');
-		data.template = { name: 'categories' };
-		data.url = String(nconf.get('url') || meta.config.url || '');
-		data.bodyClass = 'categories-page';
-
-		// Set cache-control header for logged-in users
-		if (req.loggedIn) {
-			res.set('cache-control', 'private');
+	// Add edit privileges for each category
+	await Promise.all(data.categories.map(async (category) => {
+		if (category) {
+			// Check if user can edit this category (admin or moderator)
+			const [isAdmin, isModerator] = await Promise.all([
+				user.isAdministrator(req.uid),
+				user.isModerator(req.uid, category.cid),
+			]);
+			category.editable = isAdmin || isModerator;
 		}
-		// Ensure API responses include session info expected by the schema/tests
-		data._header = {
-			tags: {
-				meta: [
-					{ name: 'description', content: meta.config.description || '' },
-					{ name: 'title', content: meta.config.title || 'NodeBB' },
-					{ property: 'og:type', content: 'website' },
-				],
-				link: [
-					{ rel: 'canonical', href: String(nconf.get('url') || meta.config.url || '') },
-				],
-			},
-		};
+	}));
 
-		// Compute privilege flag for template rendering and API schema
+
+	// Compute privilege flag for template rendering and API schema
 		const allowCategoryCreation = await privileges.global.can('category:create', req.uid);
 		// Include in JSON to support client-side (schema updated to allow it)
 		data.allowCategoryCreation = allowCategoryCreation;

@@ -70,6 +70,32 @@ categoriesAPI.update = async function (caller, data) {
 	}
 	const { cid, values } = data;
 
+	// Validate category name if provided
+	if (values.name !== undefined) {
+		// Validate category name (same as in create)
+		if (!values.name) {
+			throw new Error('[[error:invalid-data]]');
+		}
+		
+		if (typeof values.name !== 'string') {
+			throw new Error('[[error:invalid-data]]');
+		}
+		
+		if (values.name.length > 50) {
+			throw new Error('[[error:category-name-too-long]]');
+		}
+		
+		if (values.name.includes('/') || values.name.includes(':') || !require('../slugify')(values.name)) {
+			throw new Error('[[error:invalid-category-name]]');
+		}
+		
+		// Check for duplicate names (excluding current category)
+		const exists = await categories.existsByName(values.name, cid);
+		if (exists) {
+			throw new Error('[[error:category-already-exists]]');
+		}
+	}
+
 	const payload = {};
 	payload[cid] = values;
 	await categories.update(payload);

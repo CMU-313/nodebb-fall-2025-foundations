@@ -311,6 +311,7 @@ module.exports = function (Categories) {
 		await privileges.categories.give(givePrivs, toCid, group);
 		await privileges.categories.rescind(rescindPrivs, toCid, group);
 	}
+
 	//COPILOT
 	// Category name validation (similar to Groups.validateGroupName)
 	Categories.validateCategoryName = function (name) {

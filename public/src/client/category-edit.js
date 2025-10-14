@@ -1,4 +1,4 @@
-//COPILOT
+//COPILOT and CHATGPT
 'use strict';
 
 define('forum/category-edit', [
@@ -45,17 +45,64 @@ define('forum/category-edit', [
 					callback: function () {
 						const form = document.getElementById('edit-category-form');
 						const formData = new FormData(form);
+						const name = formData.get('name');
 						
-						const data = {
-							name: formData.get('name'),
-						};
+						// Client-side validation
+						const validationError = CategoryEdit.validateCategoryName(name);
+						if (validationError) {
+							alerts.alert({
+								type: 'danger',
+								title: 'Invalid Category Name',
+								message: validationError,
+								timeout: 5000,
+							});
+							return false; // Keep modal open
+						}
 						
+						const data = { name: name };
 						CategoryEdit.updateCategory(cid, data);
 						return false; // Keep modal open
 					},
 				},
 			},
 		});
+	};
+	//CHATGPT
+	CategoryEdit.validateCategoryName = function (name) {
+		// Empty/null check
+		if (!name || name.trim() === '') {
+			return 'Category name cannot be empty.';
+		}
+		
+		// Type check (should be string)
+		if (typeof name !== 'string') {
+			return 'Category name must be text.';
+		}
+		
+		// Length check
+		if (name.length > 50) {
+			return 'Category name cannot be longer than 50 characters.';
+		}
+		
+		// Invalid characters check
+		if (name.includes('/') || name.includes(':')) {
+			return 'Category name cannot contain "/" or ":" characters.';
+		}
+		
+		// Check for duplicate names (client-side check)
+		const existingNames = [];
+		$('.edit-category-btn').each(function () {
+			const existingName = $(this).data('name');
+			if (existingName && existingName.toLowerCase() === name.toLowerCase()) {
+				existingNames.push(existingName);
+			}
+		});
+		
+		if (existingNames.length > 0) {
+			return 'A category with this name already exists.';
+		}
+		
+		return null; // No validation errors
 	};
 
 	CategoryEdit.updateCategory = function (cid, data) {
@@ -71,8 +118,31 @@ define('forum/category-edit', [
 				// Close the modal
 				$('.bootbox').modal('hide');
 				
-				// Refresh the page to show updated data
-				ajaxify.refresh();
+				// Update the button's data attribute to reflect the new name
+				const $btn = $(`.edit-category-btn[data-cid="${cid}"]`);
+				$btn.data('name', data.name);
+				
+				// Update the displayed category name in the UI
+				const $categoryItem = $btn.closest('[component="categories/category"]');
+				const $categoryTitle = $categoryItem.find('.title');
+				
+				if ($categoryTitle.length) {
+					// Check if it's a section (just text) or a link
+					const $link = $categoryTitle.find('a');
+					if ($link.length) {
+						// It's a link, update the link text
+						$link.text(data.name);
+					} else {
+						// It's just text, update the title text
+						$categoryTitle.text(data.name);
+					}
+				}
+				
+				// Also update the meta tag if it exists
+				const $metaName = $categoryItem.find('meta[itemprop="name"]');
+				if ($metaName.length) {
+					$metaName.attr('content', data.name);
+				}
 			})
 			.catch(function (err) {
 				alerts.alert({

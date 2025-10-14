@@ -45,6 +45,26 @@ Categories.existsByHandle = async function (handle) {
 	return await db.isSortedSetMember('categoryhandle:cid', handle);
 };
 
+//CHATGPT
+Categories.existsByName = async function (name, excludeCid = null) {
+	if (!name) {
+		return false;
+	}
+	
+	// Get all category names and check for duplicates
+	const allNames = await db.getSortedSetRange('categories:name', 0, -1);
+	const normalizedName = name.toLowerCase();
+	
+	for (const entry of allNames) {
+		const [entryName, entryCid] = entry.split(':');
+		if (entryName === normalizedName && (!excludeCid || entryCid !== excludeCid.toString())) {
+			return true;
+		}
+	}
+	
+	return false;
+};
+
 Categories.getCategoryById = async function (data) {
 	const categories = await Categories.getCategories([data.cid]);
 	if (!categories[0]) {

@@ -6,9 +6,16 @@
 		{buildCategoryIcon(@value, "40px", "rounded-1")}
 		</div>
 		<div class="flex-grow-1 d-flex flex-wrap gap-1 me-0 me-lg-2">
-			<h2 class="title text-break fs-4 fw-semibold m-0 tracking-tight w-100">
-				<!-- IMPORT partials/categories/link.tpl -->
-			</h2>
+			<div class="d-flex justify-content-between align-items-start w-100">
+				<h2 class="title text-break fs-4 fw-semibold m-0 tracking-tight flex-grow-1">
+					<!-- IMPORT partials/categories/link.tpl -->
+				</h2>
+				{{{ if ./editable }}}
+				<button class="btn btn-sm btn-outline-secondary ms-2 edit-category-btn" data-cid="{./cid}" data-name="{./name}" data-description="{./description}" title="Edit Category">
+					<i class="fa fa-edit"></i>
+				</button>
+				{{{ end }}}
+			</div>
 			{{{ if ./descriptionParsed }}}
 			<div class="description text-muted text-sm w-100 line-clamp-sm-5">
 				{./descriptionParsed}

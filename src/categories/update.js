@@ -145,6 +145,16 @@ module.exports = function (Categories) {
 
 	async function updateName(cid, newName) {
 		const oldName = await Categories.getCategoryField(cid, 'name');
+		
+		// Validate the new name
+		Categories.validateCategoryName(newName);
+		
+		// Check for duplicate names (excluding current category)
+		const exists = await Categories.existsByName(newName, cid);
+		if (exists) {
+			throw new Error('[[error:category-already-exists]]');
+		}
+		
 		await db.sortedSetRemove('categories:name', `${oldName.slice(0, 200).toLowerCase()}:${cid}`);
 		await db.sortedSetAdd('categories:name', 0, `${newName.slice(0, 200).toLowerCase()}:${cid}`);
 		await db.setObjectField(`category:${cid}`, 'name', newName);

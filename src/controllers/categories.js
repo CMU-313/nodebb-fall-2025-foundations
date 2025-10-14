@@ -122,7 +122,6 @@ categoriesController.list = async function (req, res) {
 		categories.setUnread(tree, pageCids.concat(childCids), req.uid),
 	]);
 
-
 	// Category creation endpoint
 	categoriesController.create = async function (req, res) {
 		try {
@@ -146,7 +145,6 @@ categoriesController.list = async function (req, res) {
 			return res.status(500).json({ error: err.message });
 		}
 	};
-
 
 	const data = {
 		title: meta.config.homePageTitle || '[[pages:home]]',
@@ -250,8 +248,39 @@ categoriesController.list = async function (req, res) {
 		}
 	}));
 
+	//COPILOT
+	// API route — JSON response
+	if (req.originalUrl.startsWith(`${nconf.get('relative_path')}/api`)) {
+		data.title = '[[pages:categories]]';
+		data.breadcrumbs = helpers.buildBreadcrumbs([{ text: data.title }]);
+		res.locals.metaTags.push({ property: 'og:title', content: '[[pages:categories]]' });
 
-	// Compute privilege flag for template rendering and API schema
+		data.loggedIn = !!req.uid;
+		data.loggedInUser = req.uid ? { uid: req.uid } : {};
+		data.relative_path = String(nconf.get('relative_path') || '');
+		data.template = { name: 'categories' };
+		data.url = String(nconf.get('url') || meta.config.url || '');
+		data.bodyClass = 'categories-page';
+
+		// Set cache-control header for logged-in users
+		if (req.loggedIn) {
+			res.set('cache-control', 'private');
+		}
+		// Ensure API responses include session info expected by the schema/tests
+		data._header = {
+			tags: {
+				meta: [
+					{ name: 'description', content: meta.config.description || '' },
+					{ name: 'title', content: meta.config.title || 'NodeBB' },
+					{ property: 'og:type', content: 'website' },
+				],
+				link: [
+					{ rel: 'canonical', href: String(nconf.get('url') || meta.config.url || '') },
+				],
+			},
+		};
+
+		// Compute privilege flag for template rendering and API schema
 		const allowCategoryCreation = await privileges.global.can('category:create', req.uid);
 		// Include in JSON to support client-side (schema updated to allow it)
 		data.allowCategoryCreation = allowCategoryCreation;

@@ -1,0 +1,54 @@
+put:
+  tags:
+    - posts
+  summary: set resolved status
+  description: This operation sets the resolved status of a post
+  parameters:
+    - in: path
+      name: pid
+      schema:
+        type: string
+      required: true
+      description: a valid post id
+      example: 1
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            resolved:
+              type: boolean
+              description: Whether the post is resolved
+              example: true
+          required:
+            - resolved
+  responses:
+    '200':
+      description: Post resolved status successfully updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: ../../../components/schemas/Status.yaml#/Status
+              response:
+                type: object
+                properties:
+                  resolved:
+                    type: boolean
+                    description: The new resolved status
+    '404':
+      description: Post not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: ../../../components/schemas/Status.yaml#/Status
+              response:
+                type: object
+                properties: {}

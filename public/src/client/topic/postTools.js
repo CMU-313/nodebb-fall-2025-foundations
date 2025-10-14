@@ -298,6 +298,34 @@ define('forum/topic/postTools', [
 			});
 		});
 
+		postContainer.on('click', '[component="post/resolved"]', function () {
+			const btn = $(this);
+			const pid = getData(btn, 'data-pid');
+			const currentResolved = btn.attr('data-resolved') === 'true';
+			const newResolved = !currentResolved;
+			
+			api.put(`/posts/${pid}/resolved`, { resolved: newResolved })
+				.then(() => {
+					// Update the button state
+					btn.attr('data-resolved', newResolved);
+					const icon = btn.find('[component="post/resolved/icon"]');
+					const text = btn.find('[component="post/resolved/text"]');
+					
+					if (newResolved) {
+						icon.removeClass('fa-question-circle text-warning')
+							.addClass('fa-check-circle text-success');
+						text.text('Mark as Unresolved');
+					} else {
+						icon.removeClass('fa-check-circle text-success')
+							.addClass('fa-question-circle text-warning');
+						text.text('Mark as Resolved');
+					}
+
+					alerts.success(newResolved ? 'Marked as resolved' : 'Marked as unresolved');
+				})
+				.catch(alerts.error);
+		});
+
 		postContainer.on('click', '[component="post/ban-ip"]', function () {
 			const ip = $(this).attr('data-ip');
 			socket.emit('blacklist.addRule', ip, function (err) {
@@ -594,6 +622,73 @@ define('forum/topic/postTools', [
 			});
 		}
 	}
+
+	// Show/hide resolved button based on category and initialize button text
+	function initializeResolvedButton() {
+		if (ajaxify.data && ajaxify.data.category) {
+			// Handle HTML entities in category name
+			const categoryName = ajaxify.data.category.name.replace(/&amp;/g, '&');
+			if (categoryName === 'Comments & Feedback') {
+				$('.resolved-tools').show();
+
+				// Initialize button text based on current resolved status
+				const btn = $('[component="topic/resolved"]');
+				if (btn.length) {
+					const isResolved = btn.attr('data-resolved') === 'true';
+					const icon = btn.find('[component="topic/resolved/icon"]');
+					const text = btn.find('[component="topic/resolved/text"]');
+
+					if (isResolved) {
+						icon.removeClass('fa-question-circle text-warning')
+							.addClass('fa-check-circle text-success');
+						text.text('Mark as Unresolved');
+					} else {
+						icon.removeClass('fa-check-circle text-success')
+							.addClass('fa-question-circle text-warning');
+						text.text('Mark as Resolved');
+					}
+				} else {
+					// Button not found, try again after a short delay
+					setTimeout(initializeResolvedButton, 100);
+				}
+			} else {
+				$('.resolved-tools').hide();
+			}
+		}
+	}
+
+	// Initialize on document ready
+	$(document).ready(initializeResolvedButton);
+	$(window).on('action:ajaxify.end', initializeResolvedButton);
+
+	// Handle topic-level resolved button
+	$(document).on('click', '[component="topic/resolved"]', function () {
+		const btn = $(this);
+		const mainPid = ajaxify.data.mainPid;
+		const currentResolved = btn.attr('data-resolved') === 'true';
+		const newResolved = !currentResolved;
+
+		api.put(`/posts/${mainPid}/resolved`, { resolved: newResolved })
+			.then(() => {
+				// Update the button state
+				btn.attr('data-resolved', newResolved);
+				const icon = btn.find('[component="topic/resolved/icon"]');
+				const text = btn.find('[component="topic/resolved/text"]');
+
+				if (newResolved) {
+					icon.removeClass('fa-question-circle text-warning')
+						.addClass('fa-check-circle text-success');
+					text.text('Mark as Unresolved');
+				} else {
+					icon.removeClass('fa-check-circle text-success')
+						.addClass('fa-question-circle text-warning');
+					text.text('Mark as Resolved');
+				}
+
+				alerts.success(newResolved ? 'Marked as resolved' : 'Marked as unresolved');
+			})
+			.catch(alerts.error);
+	});
 
 	return PostTools;
 });

@@ -152,6 +152,24 @@ module.exports = function (Topics) {
 			}
 		});
 
+		// Add showUnresolved flag and display_resolved_tools for posts in Comments & Feedback category
+		if (postData.length > 0 && postData[0].cid) {
+			const db = require('../database');
+			const categoryData = await db.getObject(`category:${postData[0].cid}`);
+			const categoryName = categoryData ? categoryData.name.replace(/&amp;/g, '&') : '';
+			const isCommentsAndFeedback = categoryData && categoryName === 'Comments & Feedback';
+			
+			postData.forEach((postObj) => {
+				if (postObj) {
+					postObj.showUnresolved = isCommentsAndFeedback;
+					// Add display_resolved_tools flag for posts in Comments & Feedback category
+					if (isCommentsAndFeedback) {
+						postObj.display_resolved_tools = true;
+					}
+				}
+			});
+		}
+
 		const result = await plugins.hooks.fire('filter:topics.addPostData', {
 			posts: postData,
 			uid: uid,
@@ -159,8 +177,31 @@ module.exports = function (Topics) {
 		return result.posts;
 	};
 
-	Topics.modifyPostsByPrivilege = function (topicData, topicPrivileges) {
+	Topics.modifyPostsByPrivilege = async function (topicData, topicPrivileges) {
 		const loggedIn = parseInt(topicPrivileges.uid, 10) > 0;
+		
+		// Check if this is the Comments & Feedback category
+		const categoryName = topicData.category ? topicData.category.name.replace(/&amp;/g, '&') : '';
+		const isCommentsAndFeedback = topicData.category && categoryName === 'Comments & Feedback';
+		
+		// Handle resolved tools permissions for Comments & Feedback category
+		if (isCommentsAndFeedback) {
+			const resolvePermissions = await Promise.all(
+				topicData.posts.map(async (post) => {
+					if (post && post.pid) {
+						return await posts.canResolve(post.pid, topicPrivileges.uid);
+					}
+					return false;
+				})
+			);
+			
+			topicData.posts.forEach((post, index) => {
+				if (post) {
+					post.display_resolved_tools = resolvePermissions[index];
+				}
+			});
+		}
+		
 		topicData.posts.forEach((post) => {
 			if (post) {
 				post.topicOwnerPost = parseInt(topicData.uid, 10) === parseInt(post.uid, 10);

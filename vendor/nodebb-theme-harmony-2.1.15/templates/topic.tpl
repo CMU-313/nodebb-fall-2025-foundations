@@ -103,6 +103,7 @@
 									<!-- IMPORT partials/topic/watch.tpl -->
 									<!-- IMPORT partials/topic/sort.tpl -->
 									<!-- IMPORT partials/topic/tools.tpl -->
+									<!-- IMPORT partials/topic/resolved-button.tpl -->
 								</div>
 								{{{ end }}}
 								{{{ if config.theme.topicSidebarTools }}}<hr class="my-0" style="min-width: 170px;"/>{{{ end }}}

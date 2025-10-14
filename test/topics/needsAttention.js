@@ -72,9 +72,13 @@ describe('Topics - Needs Attention', () => {
 		await createTestTopics();
 	});
 
-	after(() => {
-		// Reset mockdate to avoid affecting other tests
+	after(async () => {
+		// Explicit teardown to prevent cross-test interference
+		// Reset mockdate to real time to avoid affecting subsequent tests
 		mockdate.reset();
+		
+		// Note: Test database is automatically cleaned between test suites
+		// No manual cleanup of test data needed
 	});
 
 	async function createTestTopics() {
@@ -298,20 +302,33 @@ describe('Topics - Needs Attention', () => {
 		});
 
 		it('should not reorder topics for non-admin users', async () => {
-			const categoryTopics = await categories.getCategoryTopics({
+		// AI Assistance: This test was improved with Claude assistance to add proper assertions
+		// by comparing admin vs regular user topic ordering instead of just checking without assertion
+		
+			// Get topics as admin
+			const adminTopics = await categories.getCategoryTopics({
+				cid: commentsCid,
+				uid: adminUid,
+				start: 0,
+				stop: 10,
+			});
+
+			// Get topics as regular user
+			const regularTopics = await categories.getCategoryTopics({
 				cid: commentsCid,
 				uid: regularUserUid,
 				start: 0,
 				stop: 10,
 			});
 
-			const needsAttentionTopics = categoryTopics.topics.filter(topic => topic.needsAttention);
-			
-			// Topics needing attention should not be pinned at top for non-admins
-			if (needsAttentionTopics.length > 0) {
-				const firstTopic = categoryTopics.topics[0];
-				// First topic might or might not need attention (normal ordering)
-				// The key is that we don't enforce needs attention topics at the top
+			// Admin should see needs attention topics at the top
+			const adminFirstTopic = adminTopics.topics[0];
+			if (adminFirstTopic && adminFirstTopic.needsAttention) {
+			// Regular user should NOT have needs attention topic at top
+				const regularFirstTopic = regularTopics.topics[0];
+				// The order should be different (regular user sees normal chronological order)
+				assert.notStrictEqual(regularFirstTopic.tid, adminFirstTopic.tid,
+					'Regular users should not see the same reordered view as admins');
 			}
 		});
 	});

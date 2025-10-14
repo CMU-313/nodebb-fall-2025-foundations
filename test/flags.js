@@ -57,11 +57,11 @@ describe('Flags', () => {
 			username: 'unprivileged', password: 'abcdef', email: 'd@e.com',
 		});
 
-		// COPILOT
 		// Ensure uid3 won't be blocked by new-user/post throttles
 		await User.setUserField(uid3, 'joindate', Date.now() - (1000 * 60 * 60));
 		await User.setUserField(uid3, 'lastposttime', Date.now() - (1000 * 60 * 60));
-		await User.setUserField(uid3, 'reputation', 1000);
+		// Leave reputation low so reputation-based flag tests exercise min:rep:flag
+		await User.setUserField(uid3, 'reputation', 0);
 
 		moderatorUid = await User.create({
 			username: 'moderator', password: 'abcdef',

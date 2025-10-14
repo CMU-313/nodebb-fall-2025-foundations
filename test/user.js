@@ -1329,7 +1329,7 @@ describe('User', () => {
 
 		it('should be able to post in category for banned users', async () => {
 			const { cid } = await Categories.create({
-				name: 'Test Category',
+				name: 'Test Category 12321',
 				description: 'A test',
 				order: 1,
 			});

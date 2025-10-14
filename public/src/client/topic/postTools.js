@@ -128,6 +128,28 @@ define('forum/topic/postTools', [
 		postContainer.on('click', '[component="post/bookmark"]', function () {
 			return bookmarkPost($(this), getData($(this), 'data-pid'));
 		});
+		// pin UI
+		postContainer.on('click', '[component="post/pin"]', function () {
+			const pid = getData($(this), 'data-pid');
+			api.put(`/posts/${encodeURIComponent(pid)}/pin`, undefined, function (err) {
+				if (err) {
+					return alerts.error(err);
+				}
+				hooks.fire('action:post.pinned', { pid: pid });
+			});
+			return false;
+		});
+		// unpin UI
+		postContainer.on('click', '[component="post/unpin"]', function () {
+			const pid = getData($(this), 'data-pid');
+			api.del(`/posts/${encodeURIComponent(pid)}/pin`, undefined, function (err) {
+				if (err) {
+					return alerts.error(err);
+				}
+				hooks.fire('action:post.unpinned', { pid: pid });
+			});
+			return false;
+		});
 
 		postContainer.on('click', '[component="post/upvote"]', function () {
 			return votes.toggleVote($(this), '.upvoted', 1);

@@ -18,6 +18,9 @@ get:
                   title:
                     type: string
                     description: The page title
+                  allowCategoryCreation:
+                    type: boolean
+                    description: Whether the current user can create categories
                   selectCategoryLabel:
                     type: string
                     description: Label to use for the category selector
@@ -257,4 +260,7 @@ get:
                             imageClass:
                               type: string
               - $ref: ../components/schemas/Pagination.yaml#/Pagination
+              - $ref: ../components/schemas/CommonProps.yaml#/CommonProps
+              - $ref: ../components/schemas/Pagination.yaml#/Pagination
+              - $ref: ../components/schemas/Breadcrumbs.yaml#/Breadcrumbs
               - $ref: ../components/schemas/CommonProps.yaml#/CommonProps

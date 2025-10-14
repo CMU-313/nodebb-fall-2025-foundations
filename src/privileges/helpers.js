@@ -30,6 +30,11 @@ helpers.isUsersAllowedTo = async function (privilege, uids, cid) {
 		groups.isMembersOfGroupList(uids, `cid:${cid}:privileges:groups:${privilege}`),
 	]);
 	const allowed = uids.map((uid, index) => hasUserPrivilege[index] || hasGroupPrivilege[index]);
+	// Targeted debug for failing test scenario
+	// no-op debug removed
+	// Targeted debug: log internal arrays for failing test case to diagnose why
+	// group-based privileges are being applied unexpectedly.
+	// debug removed
 	const result = await plugins.hooks.fire('filter:privileges:isUsersAllowedTo', { allowed: allowed, privilege: privilege, uids: uids, cid: cid });
 	return result.allowed;
 };

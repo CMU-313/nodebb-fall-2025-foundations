@@ -54,6 +54,7 @@ module.exports = function (Categories) {
 
 		let category = {
 			cid: cid,
+			uid: data.uid ? data.uid : 0,
 			name: data.name,
 			handle,
 			description: data.description ? data.description : '',
@@ -329,5 +330,25 @@ module.exports = function (Categories) {
 		if (name.includes('/') || name.includes(':') || !slugify(name)) {
 			throw new Error('[[error:invalid-category-name]]');
 		}
+	};
+
+	// Check if category name already exists
+	Categories.existsByName = async function (name) {
+		if (!name) {
+			return false;
+		}
+		
+		// Get all category names and check for duplicates
+		const allNames = await db.getSortedSetRange('categories:name', 0, -1);
+		const normalizedName = name.toLowerCase();
+		
+		for (const entry of allNames) {
+			const [entryName] = entry.split(':');
+			if (entryName === normalizedName) {
+				return true;
+			}
+		}
+		
+		return false;
 	};
 };

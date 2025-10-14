@@ -1,6 +1,6 @@
 <ul data-cid="{cid}" class="m-0 p-0 list-unstyled user-select-none">
 {{{ each categories }}}
-	<li data-cid="{categories.cid}" data-parent-cid="{categories.parentCid}" data-name="{categories.name}" class="{{{ if categories.disabled }}}disabled{{{ end }}}">
+	<li data-cid="{categories.cid}" data-parent-cid="{categories.parentCid}" data-name="{categories.name}" data-topic-count="{categories.topic_count}" class="{{{ if categories.disabled }}}disabled{{{ end }}}">
 		<hr/>
 		<div class="category-row d-flex justify-content-between mb-1">
 			<div class="flex-grow-1 align-items-start d-flex gap-2">
@@ -28,6 +28,11 @@
 
 				<a href="./categories/{./cid}" class="btn btn-light btn-sm d-none d-sm-block">[[admin/manage/categories:edit]]</a>
 
+				<!-- Visible purge button for quick access on larger screens -->
+				<button class="btn btn-danger btn-sm" data-action="purge" data-cid="{categories.cid}" title="[[admin/manage/categories:purge]]">
+					<i class="fa fa-fw fa-trash"></i>
+				</button>
+
 				<div class="category-tools">
 					<button class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button"><i class="fa fa-fw fa-gear text-primary"></i></button>
 					<ul class="dropdown-menu dropdown-menu-end p-1" role="menu">
@@ -36,6 +41,7 @@
 						</li>
 
 						<li><a href="./categories/{./cid}" class="dropdown-item rounded-1 d-block d-sm-none" role="menuitem">[[admin/manage/categories:edit]]</a></li>
+						<li><a href="#" class="dropdown-item rounded-1 d-block d-sm-none" data-action="purge" data-cid="{categories.cid}" role="menuitem">[[admin/manage/categories:purge]]</a></li>
 
 						<li><a class="dropdown-item rounded-1" href="./categories/{categories.cid}/analytics" role="menuitem">[[admin/manage/categories:analytics]]</a></li>
 						<li><a class="dropdown-item rounded-1" href="{config.relative_path}/admin/manage/privileges/{categories.cid}" role="menuitem">[[admin/manage/categories:privileges]]</a></li>
@@ -50,6 +56,9 @@
 							[[admin/manage/categories:disable]]
 							{{{end}}}
 							</a>
+						</li>
+						<li>
+							<a class="dropdown-item rounded-1" href="#" data-action="purge" data-cid="{categories.cid}" role="menuitem">[[admin/manage/categories:purge]]</a>
 						</li>
 					</ul>
 				</div>

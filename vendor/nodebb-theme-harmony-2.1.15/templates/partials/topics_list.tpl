@@ -60,6 +60,18 @@
 						{{{ end }}}
 					</span>
 
+				{{{ if ./resolved }}}
+				<span class="badge bg-success rounded-1" title="This question has been resolved">
+					<i class="fa fa-check-circle"></i> Resolved
+				</span>
+				{{{ else }}}
+				{{{ if ./showUnresolved }}}
+				<span class="badge bg-warning rounded-1" title="This question is unresolved">
+					<i class="fa fa-question-circle"></i> Unresolved
+				</span>
+				{{{ end }}}
+				{{{ end }}}
+
 					<div class="d-flex gap-1 d-block d-lg-none w-100">
 						<span class="badge text-body border stats text-xs text-muted">
 							<i class="fa-regular fa-fw fa-message"></i>

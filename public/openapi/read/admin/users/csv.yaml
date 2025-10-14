@@ -17,3 +17,5 @@ get:
           schema:
             type: string
             format: binary
+    "404":
+      description: "CSV file not found"

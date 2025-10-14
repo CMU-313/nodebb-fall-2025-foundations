@@ -67,12 +67,7 @@ module.exports = function (User) {
 			throw new Error(`[[error:user-too-new, ${meta.config.initialPostDelay}]]`);
 		}
 
-		let lasttime = userData[field] || 0;
-
-		// Defensive: if lasttime is in the future (scheduled posts), ignore it
-		if (lasttime > now) {
-			lasttime = 0;
-		}
+		const lasttime = userData[field] || 0;
 
 		if (
 			!isMemberOfExempt &&
@@ -80,7 +75,7 @@ module.exports = function (User) {
 			meta.config.newbieReputationThreshold > userData.reputation &&
 			now - lasttime < meta.config.newbiePostDelay * 1000
 		) {
-			if (meta.config.newbiePostDelay % 60 === 0) {
+			if (meta.config.newbiewPostDelay % 60 === 0) {
 				throw new Error(`[[error:too-many-posts-newbie-minutes, ${Math.floor(meta.config.newbiePostDelay / 60)}, ${meta.config.newbieReputationThreshold}]]`);
 			} else {
 				throw new Error(`[[error:too-many-posts-newbie, ${meta.config.newbiePostDelay}, ${meta.config.newbieReputationThreshold}]]`);

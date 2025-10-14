@@ -192,7 +192,6 @@ privsCategories.filterUids = async function (privilege, cid, uids) {
 		helpers.isUsersAllowedTo(privilege, uids, cid),
 		user.isAdministrator(uids),
 	]);
-	// debug removed
 	return uids.filter((uid, index) => allowedTo[index] || isAdmins[index]);
 };
 

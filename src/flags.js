@@ -301,10 +301,7 @@ Flags.validate = async function (payload) {
 
 	if (payload.type === 'post') {
 		const editable = await privileges.posts.canEdit(payload.id, payload.uid);
-		// Also check explicit flagging privileges which consider reputation and admin/mod status.
-		const canFlagRes = await privileges.posts.canFlag(payload.id, payload.uid);
-		// If user cannot flag (by privileges) and they also don't have edit-bypass, enforce reputation threshold.
-		if (!canFlagRes.flag && !editable.flag && !meta.config['reputation:disabled'] && reporter.reputation < meta.config['min:rep:flag']) {
+		if (!editable.flag && !meta.config['reputation:disabled'] && reporter.reputation < meta.config['min:rep:flag']) {
 			throw new Error(`[[error:not-enough-reputation-to-flag, ${meta.config['min:rep:flag']}]]`);
 		}
 	} else if (payload.type === 'user') {

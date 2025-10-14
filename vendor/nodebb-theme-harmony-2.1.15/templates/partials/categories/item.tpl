@@ -12,9 +12,24 @@
 				</h2>
 				{{{ if ./editable }}}
 				<button class="btn btn-sm btn-outline-secondary ms-2 edit-category-btn" data-cid="{./cid}" data-name="{./name}" data-description="{./description}" title="Edit Category">
-					<i class="fa fa-edit"></i>
+					<i class="fa fa-fw fa-edit"></i>
 				</button>
 				{{{ end }}}
+			</div>
+			<div class="d-flex align-items-start justify-content-end gap-2 mb-2 w-100">
+				{{{ if allowPurge }}}
+				<!-- Visible purge button for admins/global-mods (top-level) -->
+				<button class="btn btn-danger btn-sm ms-2" data-action="purge" data-cid="{./cid}" title="[[admin/manage/categories:purge]]">
+					<i class="fa fa-fw fa-trash"></i>
+				</button>
+				{{{ else }}}
+				{{{ if ./allowPurge }}}
+				<!-- Visible purge button for owners -->
+				<button class="btn btn-danger btn-sm ms-2" data-action="purge" data-cid="{./cid}" title="[[admin/manage/categories:purge]]">
+					<i class="fa fa-fw fa-trash"></i>
+				</button>
+				{{{ end }}}
+			{{{ end }}}
 			</div>
 			{{{ if ./descriptionParsed }}}
 			<div class="description text-muted text-sm w-100 line-clamp-sm-5">
@@ -73,21 +88,6 @@
 			<!-- IMPORT partials/categories/lastpost.tpl -->
 		</div>
 		{{{ end }}}
-		<div class="d-flex align-items-start justify-content-end gap-2 mb-2 w-100">
-			{{{ if allowPurge }}}
-			<!-- Visible purge button for admins/global-mods (top-level) -->
-			<button class="btn btn-danger btn-sm ms-2" data-action="purge" data-cid="{./cid}" title="[[admin/manage/categories:purge]]">
-				<i class="fa fa-fw fa-trash"></i>
-			</button>
-			{{{ else }}}
-				{{{ if ./allowPurge }}}
-				<!-- Visible purge button for owners -->
-				<button class="btn btn-danger btn-sm ms-2" data-action="purge" data-cid="{./cid}" title="[[admin/manage/categories:purge]]">
-					<i class="fa fa-fw fa-trash"></i>
-				</button>
-				{{{ end }}}
-			{{{ end }}}
-		</div>
 	</div>
 	{{{ end }}}
 </li>

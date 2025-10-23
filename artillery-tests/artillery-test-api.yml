@@ -1,0 +1,26 @@
+# Artillery API Load Test Configuration
+# Created with AI assistance (Claude/Cursor)
+
+config:
+  target: "http://localhost:4567"
+  phases:
+    - duration: 60
+      arrivalRate: 15
+      name: "API load test"
+
+scenarios:
+  - name: "API endpoints testing"
+    flow:
+      - get:
+          url: "/api/recent"
+      - get:
+          url: "/api/popular"
+      - get:
+          url: "/api/categories"
+      - get:
+          url: "/api/tags"
+      - get:
+          url: "/api/users"
+      - get:
+          url: "/api/config"
+

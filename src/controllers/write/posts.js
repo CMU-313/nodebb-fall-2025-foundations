@@ -163,6 +163,16 @@ Posts.unbookmark = async (req, res) => {
 	helpers.formatApiResponse(200, res);
 };
 
+Posts.pin = async (req, res) => {
+	await api.posts.pin(req, { pid: req.params.pid });
+	helpers.formatApiResponse(200, res);
+};
+
+Posts.unpin = async (req, res) => {
+	await api.posts.unpin(req, { pid: req.params.pid });
+	helpers.formatApiResponse(200, res);
+};
+
 Posts.getDiffs = async (req, res) => {
 	helpers.formatApiResponse(200, res, await api.posts.getDiffs(req, { ...req.params }));
 };
@@ -209,4 +219,12 @@ Posts.notifyQueuedPostOwner = async (req, res) => {
 	const { id } = req.params;
 	await api.posts.notifyQueuedPostOwner(req, { id, message: req.body.message });
 	helpers.formatApiResponse(200, res);
+};
+
+Posts.setResolved = async (req, res) => {
+	const result = await api.posts.setResolved(req, {
+		pid: req.params.pid,
+		resolved: req.body.resolved,
+	});
+	helpers.formatApiResponse(200, res, result);
 };

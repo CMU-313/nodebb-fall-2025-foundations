@@ -68,7 +68,6 @@ define('forum/category-edit', [
 		});
 	};
 	//CHATGPT
-
 	CategoryEdit.validateCategoryName = function (name) {
 		// Empty/null check
 		if (!name || name.trim() === '') {

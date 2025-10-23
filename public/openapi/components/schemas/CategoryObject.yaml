@@ -1,6 +1,8 @@
 CategoryObject:
   allOf:
     - type: object
+      required:
+        - cid
       properties:
         cid:
           type: number
@@ -83,6 +85,9 @@ CategoryObject:
         subCategoriesPerPage:
           type: number
           description: The number of subcategories to display on the categories and category page
+        uid:
+          type: number
+          description: The user id of the category creator/owner
     - type: object
       description: Optional properties that may or may not be present (except for `cid`, which is always present, and is only here as a hack to pass validation)
       properties:
@@ -92,6 +97,12 @@ CategoryObject:
         backgroundImage:
           type: string
           description: Relative URL to the category's background image
+        allowPurge:
+          type: boolean
+          description: Whether the currently-viewing user may purge (delete) this category (per-category permission; true for owners/mods as appropriate).
+        purgable:
+          type: boolean
+          description: Alias for `allowPurge` (kept for backward-compatibility).
         editable:
           type: boolean
           description: Whether the current user can edit this category (only present when user has edit permissions)

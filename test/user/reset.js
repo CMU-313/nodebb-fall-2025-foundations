@@ -121,6 +121,11 @@ describe('locks', () => {
 		email = `${username}@nodebb.org`;
 		await user.setUserField(uid, 'email', email);
 		await user.email.confirmByUid(uid);
+
+		// COPILOT
+		// Ensure no lingering reset locks or timestamps from other tests
+		await db.deleteObjectField('locks', `reset${uid}`);
+		await db.sortedSetRemove('reset:issueDate:uid', uid);
 	});
 
 	it('should disallow reset request if one was made within the minute', async () => {

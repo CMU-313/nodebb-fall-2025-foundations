@@ -49,7 +49,14 @@ categoriesAPI.get = async function (caller, data) {
 };
 
 categoriesAPI.create = async function (caller, data) {
-	await hasAdminPrivilege(caller.uid);
+	// Changed to allow any authenticated user to create a category. Guests (no uid)
+	// are rejected. Record the creating uid as the owner.
+	if (!caller || !caller.uid) {
+		throw new Error('[[error:no-privileges]]');
+	}
+
+	// Ensure the creating uid is set to the caller
+	data.uid = caller.uid;
 
 	const response = await categories.create(data);
 	const categoryObjs = await categories.getCategories([response.cid]);
@@ -96,7 +103,27 @@ categoriesAPI.update = async function (caller, data) {
 };
 
 categoriesAPI.delete = async function (caller, { cid }) {
-	await hasAdminPrivilege(caller.uid);
+	// Allow global admins to delete any category. Otherwise, allow any
+	// authenticated user to delete a category only if they are its creator
+	// (owner).
+	// Check global admin first
+	const hasGlobalAdmin = await (async () => {
+		try {
+			await hasAdminPrivilege(caller.uid);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	})();
+
+	if (!hasGlobalAdmin) {
+		// Not a global admin: allow deletion only if the caller is the
+		// creator (owner) of the category.
+		const ownerUid = await categories.getCategoryField(cid, 'uid');
+		if (parseInt(ownerUid, 10) !== parseInt(caller.uid, 10)) {
+			throw new Error('[[error:no-privileges]]');
+		}
+	}
 
 	const name = await categories.getCategoryField(cid, 'name');
 	await categories.purge(cid, caller.uid);

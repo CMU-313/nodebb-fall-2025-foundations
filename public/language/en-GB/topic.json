@@ -113,6 +113,8 @@
 	"thread-tools.markAsUnreadForAll": "Mark Unread For All",
 	"thread-tools.pin": "Pin Topic",
 	"thread-tools.unpin": "Unpin Topic",
+	"pin-comment": "Pin Comment",
+	"unpin-comment": "Unpin Comment",
 	"thread-tools.lock": "Lock Topic",
 	"thread-tools.unlock": "Unlock Topic",
 	"thread-tools.move": "Move Topic",
@@ -254,5 +256,14 @@
 	"thumb-image": "Topic thumbnail image",
 
 	"announcers": "Shares",
-	"announcers-x": "Shares (%1)"
+	"announcers-x": "Shares (%1)",
+
+	"resolved": "Resolved",
+	"unresolved": "Unresolved",
+	"mark-resolved": "Mark as Resolved",
+	"mark-unresolved": "Mark as Unresolved",
+	"question-resolved": "This question has been resolved",
+	"question-unresolved": "This question is unresolved",
+	"question-marked-resolved": "Question marked as resolved",
+	"question-marked-unresolved": "Question marked as unresolved"
 }

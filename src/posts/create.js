@@ -28,7 +28,7 @@ module.exports = function (Posts) {
 		}
 
 		const pid = data.pid || await db.incrObjectField('global', 'nextPid');
-		let postData = { pid, uid, tid, content, sourceContent, timestamp };
+		let postData = { pid, uid, tid, content, sourceContent, timestamp, resolved: 0 };
 
 		if (data.toPid) {
 			postData.toPid = data.toPid;
@@ -60,7 +60,6 @@ module.exports = function (Posts) {
 					if (!tag.name.endsWith(':')) {
 						tag.name = `${tag.name}:`;
 					}
-
 					postData.content = postData.content.replace(new RegExp(tag.name, 'g'), `<img class="not-responsive emoji" src="${tag.icon.url}" title="${tag.name}" />`);
 				});
 		}

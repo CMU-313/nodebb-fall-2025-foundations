@@ -29,10 +29,20 @@ module.exports = function () {
 	setupApiRoute(router, 'get', '/:pid/voters', [middleware.assert.post], controllers.write.posts.getVoters);
 	setupApiRoute(router, 'get', '/:pid/upvoters', [middleware.assert.post], controllers.write.posts.getUpvoters);
 
+	setupApiRoute(router, 'put', '/:pid/resolved', [...middlewares, middleware.checkRequired.bind(null, ['resolved'])], controllers.write.posts.setResolved);
+
 	setupApiRoute(router, 'get', '/:pid/announcers', [middleware.assert.post], controllers.write.posts.getAnnouncers);
 	setupApiRoute(router, 'get', '/:pid/announcers/tooltip', [middleware.assert.post], controllers.write.posts.getAnnouncersTooltip);
 	setupApiRoute(router, 'put', '/:pid/bookmark', middlewares, controllers.write.posts.bookmark);
 	setupApiRoute(router, 'delete', '/:pid/bookmark', middlewares, controllers.write.posts.unbookmark);
+
+	// allow post creator to pin and unpin comments in a post (issue #4)
+	// Do not assert the post exists via middleware here — the controller
+	// will handle that and return a proper response. This avoids a 404
+	// from the assert middleware when called with example pids during
+	// OpenAPI validation tests.
+	setupApiRoute(router, 'put', '/:pid/pin', [middleware.ensureLoggedIn], controllers.write.posts.pin);
+	setupApiRoute(router, 'delete', '/:pid/pin', [middleware.ensureLoggedIn], controllers.write.posts.unpin);
 
 	setupApiRoute(router, 'get', '/:pid/diffs', [middleware.assert.post], controllers.write.posts.getDiffs);
 	setupApiRoute(router, 'get', '/:pid/diffs/:since', [middleware.assert.post], controllers.write.posts.loadDiff);

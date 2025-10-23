@@ -7,7 +7,8 @@ const utils = require('../utils');
 const intFields = [
 	'uid', 'pid', 'tid', 'deleted', 'timestamp',
 	'upvotes', 'downvotes', 'deleterUid', 'edited',
-	'replies', 'bookmarks', 'announces',
+	'replies', 'bookmarks', 'announces', 'resolved',
+	'pinned',
 ];
 
 module.exports = function (Posts) {
@@ -58,6 +59,11 @@ module.exports = function (Posts) {
 function modifyPost(post, fields) {
 	if (post) {
 		db.parseIntFields(post, intFields, fields);
+
+		// Ensure pinned is presented as a boolean in API responses (DB stores 0/1)
+		if (post.hasOwnProperty('pinned')) {
+			post.pinned = Boolean(post.pinned);
+		}
 		if (post.hasOwnProperty('upvotes') && post.hasOwnProperty('downvotes')) {
 			post.votes = post.upvotes - post.downvotes;
 		}
@@ -69,6 +75,13 @@ function modifyPost(post, fields) {
 		}
 		if (!fields.length || fields.includes('attachments')) {
 			post.attachments = (post.attachments || '').split(',').filter(Boolean);
+		}
+		// AI Assistance: Resolved field handling implemented with ChatGPT assistance
+		if (post.hasOwnProperty('resolved')) {
+			post.resolved = parseInt(post.resolved, 10) === 1;
+		} else {
+			// Default to false for posts that don't have the resolved field yet
+			post.resolved = false;
 		}
 	}
 }

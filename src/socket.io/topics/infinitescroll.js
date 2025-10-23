@@ -49,7 +49,7 @@ module.exports = function (SocketTopics) {
 		topicData['reputation:disabled'] = meta.config['reputation:disabled'] === 1;
 		topicData['downvote:disabled'] = meta.config['downvote:disabled'] === 1;
 
-		topics.modifyPostsByPrivilege(topicData, userPrivileges);
+		await topics.modifyPostsByPrivilege(topicData, userPrivileges);
 		return topicData;
 	};
 };

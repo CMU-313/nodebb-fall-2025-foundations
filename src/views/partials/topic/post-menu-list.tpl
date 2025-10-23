@@ -16,6 +16,18 @@
 	</a>
 </li>
 {{{ end }}}
+{{{ if posts.canPin }}}
+<li {{{ if posts.pinned }}}hidden{{{ end }}}>
+	<a class="dropdown-item rounded-1 d-flex align-items-center gap-2" component="post/pin" role="menuitem" href="#" data-pid="{posts.pid}">
+		<span class="menu-icon"><i class="fa fa-fw text-secondary fa-thumb-tack"></i></span> [[topic:pin-comment]]
+	</a>
+</li>
+<li {{{ if !posts.pinned }}}hidden{{{ end }}}>
+	<a class="dropdown-item rounded-1 d-flex align-items-center gap-2" component="post/unpin" role="menuitem" href="#" data-pid="{posts.pid}">
+		<span class="menu-icon"><i class="fa fa-fw text-secondary fa-thumb-tack fa-rotate-90"></i></span> [[topic:unpin-comment]]
+	</a>
+</li>
+{{{ end }}}
 {{{ if posts.display_purge_tools }}}
 <li {{{ if !posts.deleted }}}hidden{{{ end }}}>
 	<a class="dropdown-item rounded-1 d-flex align-items-center gap-2" component="post/purge" role="menuitem" href="#" class="{{{ if !posts.deleted }}}hidden{{{ end }}}">
@@ -44,6 +56,17 @@
 <li>
 	<a class="dropdown-item rounded-1 d-flex align-items-center gap-2" component="post/manage-editors" role="menuitem" href="#">
 		<span class="menu-icon"><i class="fa fa-fw text-secondary fa-user-pen"></i></span> [[topic:manage-editors]]
+	</a>
+</li>
+{{{ end }}}
+
+{{{ if posts.display_resolved_tools }}}
+<li>
+	<a class="dropdown-item rounded-1 d-flex align-items-center gap-2" component="post/resolved" role="menuitem" href="#" data-resolved="{posts.resolved}">
+		<span class="menu-icon">
+			<i component="post/resolved/icon" class="fa fa-fw text-secondary {{{ if posts.resolved }}}fa-check-circle text-success{{{ else }}}fa-question-circle text-warning{{{ end }}}"></i>
+		</span>
+		<span component="post/resolved/text">{{{ if posts.resolved }}}[[topic:mark-unresolved]]{{{ else }}}[[topic:mark-resolved]]{{{ end }}}</span>
 	</a>
 </li>
 {{{ end }}}

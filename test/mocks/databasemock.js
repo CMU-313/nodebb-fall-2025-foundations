@@ -5,16 +5,16 @@
  * ATTENTION: testing db is flushed before every use!
  */
 
+// Always load require-main for proper module resolution
 require('../../require-main');
+
+process.env.NODE_ENV = 'production';
+global.env = 'production';
 
 const path = require('path');
 const nconf = require('nconf');
 const url = require('url');
 const util = require('util');
-
-process.env.NODE_ENV = process.env.TEST_ENV || 'production';
-global.env = process.env.NODE_ENV || 'production';
-
 
 const winston = require('winston');
 const packageInfo = require('../../package.json');
@@ -194,6 +194,8 @@ async function setupMockDefaults() {
 	meta.config.newbiePostDelay = 0;
 	meta.config.autoDetectLang = 0;
 
+	meta.config.minifyJs = true;
+
 	require('../../src/groups').cache.reset();
 	require('../../src/posts/cache').getOrCreate().reset();
 	require('../../src/cache').reset();
@@ -261,5 +263,6 @@ async function enableDefaultPlugins() {
 
 	winston.info('[install/enableDefaultPlugins] activating default plugins', defaultEnabled);
 
-	await db.sortedSetAdd('plugins:active', Object.keys(defaultEnabled), defaultEnabled);
+	const order = defaultEnabled.map((plugin, index) => index);
+	await db.sortedSetAdd('plugins:active', order, defaultEnabled);
 }

@@ -31,55 +31,37 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm install --production
+        run: npm ci
+      
+      - name: Setup NodeBB
+        run: |
+          node app --setup='{"url":"http://localhost:4567","secret":"test-secret","database":"redis","redis:host":"localhost","redis:port":6379,"admin:username":"admin","admin:email":"admin@example.com","admin:password":"adminPassword123"}'
+        env:
+          CI: true
       
       - name: Start Redis
         uses: supercharge/redis-github-action@1.5.0
         with:
           redis-version: 7
       
-      - name: Setup NodeBB config
-        run: |
-          cat > config.json << 'EOF'
-          {
-            "url": "http://localhost:4567",
-            "secret": "test-secret",
-            "database": "redis",
-            "redis": {
-              "host": "127.0.0.1",
-              "port": 6379
-            }
-          }
-          EOF
-      
       - name: Build NodeBB
         run: ./nodebb build
-        env:
-          CI: true
       
       - name: Start NodeBB in background
         run: |
-          node app &
-          # Wait for NodeBB to be ready (max 60 seconds)
-          for i in {1..30}; do
-            if curl -f http://localhost:4567/ > /dev/null 2>&1; then
-              echo "✅ NodeBB is ready!"
-              exit 0
-            fi
-            echo "Waiting for NodeBB... ($i/30)"
-            sleep 2
-          done
-          echo "❌ NodeBB failed to start"
-          exit 1
+          ./nodebb start
+          # Wait for NodeBB to be ready
+          timeout 60 bash -c 'until curl -f http://localhost:4567/ > /dev/null 2>&1; do sleep 2; done'
+          echo "NodeBB is ready!"
       
       - name: Install Artillery
         run: npm install -g artillery@latest
       
-      - name: Run CI Performance Test
+      - name: Run Basic Performance Test
         run: |
           cd artillery-tests
-          timeout 5m artillery run artillery-test-ci.yml --output ../artillery-results.json || echo "Test completed with warnings"
-        continue-on-error: true  # Don't block PR merge on performance issues
+          artillery run artillery-test-basic.yml --output ../artillery-results.json
+        continue-on-error: false
       
       - name: Display Test Results
         if: always()
@@ -98,30 +80,25 @@ jobs:
               console.log('P99 Response Time:', summary.latency.p99 + 'ms');
               console.log('Error Rate:', ((summary.scenariosCreated - summary.scenariosCompleted) / summary.scenariosCreated * 100).toFixed(2) + '%');
               
-              // Check thresholds but only report, don't fail
-              const errorRate = (summary.scenariosCreated - summary.scenariosCompleted) / summary.scenariosCreated;
-              const failedErrorRate = errorRate > 0.05;
-              const failedP99 = summary.latency.p99 > 1000;
-              
-              if (failedErrorRate) {
-                console.warn('⚠️ WARNING: Error rate exceeds 5% threshold');
+              // Fail if error rate > 5% or P99 > 1000ms
+              if (summary.scenariosCompleted / summary.scenariosCreated < 0.95) {
+                console.error('❌ FAILED: Error rate exceeds 5%');
+                process.exit(1);
               }
-              if (failedP99) {
-                console.warn('⚠️ WARNING: P99 exceeds 1000ms threshold');
+              if (summary.latency.p99 > 1000) {
+                console.error('❌ FAILED: P99 exceeds 1000ms threshold');
+                process.exit(1);
               }
-              if (!failedErrorRate && !failedP99) {
-                console.log('✅ Performance test PASSED!');
-              } else {
-                console.log('⚠️ Performance test completed with warnings');
-              }
+              console.log('✅ Performance test PASSED!');
             "
           else
-            echo "⚠️ No results file found"
+            echo "❌ No results file found"
+            exit 1
           fi
       
       - name: Upload Artillery Results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: artillery-performance-results
           path: |
@@ -155,12 +132,10 @@ jobs:
             const errorRate = ((summary.scenariosCreated - summary.scenariosCompleted) / summary.scenariosCreated * 100).toFixed(2);
             const passed = summary.scenariosCompleted / summary.scenariosCreated >= 0.95 && summary.latency.p99 <= 1000;
             
-            const emoji = passed ? '✅' : '⚠️';
-            const status = passed ? 'PASSED' : 'ADVISORY';
+            const emoji = passed ? '✅' : '❌';
+            const status = passed ? 'PASSED' : 'FAILED';
             
             const comment = `## ${emoji} Artillery Performance Test Results - ${status}
-            
-            > **Note**: This is an informational check only. Results do not block PR merging.
             
             ### Load Test Summary
             - **Total Scenarios**: ${summary.scenariosCreated}
@@ -175,11 +150,11 @@ jobs:
             - **P99**: ${summary.latency.p99}ms
             - **Max**: ${summary.latency.max}ms
             
-            ### Threshold Analysis (Advisory)
-            - Error Rate: ${errorRate}% ${errorRate <= 5 ? '✅' : '⚠️'} (recommended: <5%)
-            - P99 Latency: ${summary.latency.p99}ms ${summary.latency.p99 <= 1000 ? '✅' : '⚠️'} (recommended: <1000ms)
+            ### Thresholds
+            - Error Rate: ${errorRate}% ${errorRate <= 5 ? '✅' : '❌'} (threshold: 5%)
+            - P99 Latency: ${summary.latency.p99}ms ${summary.latency.p99 <= 1000 ? '✅' : '❌'} (threshold: 1000ms)
             
-            ${passed ? '✅ **Performance metrics look great!**' : '⚠️ **Performance metrics show potential concerns. Merge is not blocked, but review is strongly recommended.**'}
+            ${passed ? '✅ **All performance checks passed!**' : '❌ **Performance degradation detected. Review required.**'}
             
             <details>
             <summary>HTTP Response Codes</summary>

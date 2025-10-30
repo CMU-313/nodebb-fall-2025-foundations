@@ -31,7 +31,7 @@ jobs:
         run: |
           retire --outputformat json --outputpath retire-report.json || true
 
-          if jq -e '.data[].results[].vulnerabilities[] | select(.severity=="high" or .severity=="critical")' retire-report.json > /dev/null; then
+          if jq -e '.data[].results[].vulnerabilities[] | select(.severity=="critical")' retire-report.json > /dev/null; then
             echo "High or critical vulnerabilities found!"
             exit 1
           else

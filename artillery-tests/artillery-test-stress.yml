@@ -1,0 +1,66 @@
+# Artillery High Concurrency Stress Test
+# Created with AI assistance (Claude/Cursor)
+
+# PURPOSE: Find NodeBB's breaking point and capacity limits
+# CONCURRENT USERS: Ramps from ~80 to ~1200 concurrent users
+# DURATION: 7 minutes (gradual ramp-up + peak + cooldown)
+# TOTAL SCENARIOS: ~28,200 user sessions
+# TOTAL REQUESTS: ~90,000+
+# USE CASE: Capacity planning, infrastructure testing, finding performance limits
+# WARNING: Expect failures at peak load - this is intentional to find breaking point
+
+config:
+  target: "http://localhost:4567"
+  phases:
+    # Gradual ramp-up to avoid overwhelming the server immediately
+    - duration: 60
+      arrivalRate: 10      # 10/sec × 8sec = ~80 concurrent users
+      name: "Warm up - 10/sec (~80 concurrent)"
+    - duration: 120
+      arrivalRate: 50      # 50/sec × 8sec = ~400 concurrent users
+      name: "Moderate load - 50/sec (~400 concurrent)"
+    - duration: 120
+      arrivalRate: 100     # 100/sec × 8sec = ~800 concurrent users
+      name: "Heavy load - 100/sec (~800 concurrent)"
+    - duration: 60
+      arrivalRate: 150     # 150/sec × 8sec = ~1200 concurrent users
+      name: "Peak load - 150/sec (~1200 concurrent)"
+    - duration: 60
+      arrivalRate: 10      # Return to baseline to verify recovery
+      name: "Cool down - 10/sec"
+
+scenarios:
+  # 80% of users follow realistic browsing pattern
+  - name: "Realistic user journey"
+    weight: 80
+    flow:
+      - get:
+          url: "/"
+      - think: 2
+      - get:
+          url: "/recent"
+      - think: 3
+      - get:
+          url: "/popular"
+      - think: 2
+      - get:
+          url: "/tags"
+      - think: 1
+      - get:
+          url: "/users"
+
+  # 20% of users hit API endpoints quickly
+  - name: "API user"
+    weight: 20
+    flow:
+      - get:
+          url: "/api/recent"
+      - think: 1
+      - get:
+          url: "/api/categories"
+      - think: 1
+      - get:
+          url: "/api/popular"
+      - think: 1
+      - get:
+          url: "/api/config"

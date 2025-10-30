@@ -29,11 +29,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       
-      - name: Install dependencies
-        run: |
-          cp install/package.json package.json
-          npm install --omit=dev --no-audit --no-fund
-      
       - name: Start Redis
         uses: supercharge/redis-github-action@1.5.0
         with:
@@ -52,6 +47,11 @@ jobs:
             }
           }
           EOF
+      
+      - name: Install dependencies
+        run: |
+          cp install/package.json package.json
+          npm install --omit=dev --no-audit --no-fund
       
       - name: Build NodeBB
         run: ./nodebb build

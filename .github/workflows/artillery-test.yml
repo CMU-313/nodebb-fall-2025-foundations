@@ -1,0 +1,179 @@
+name: Artillery Performance Testing
+
+on:
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.gitignore'
+  push:
+    branches: [main]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  performance-test:
+    name: Load Testing with Artillery
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Setup NodeBB
+        run: |
+          node app --setup='{"url":"http://localhost:4567","secret":"test-secret","database":"redis","redis:host":"localhost","redis:port":6379,"admin:username":"admin","admin:email":"admin@example.com","admin:password":"adminPassword123"}'
+        env:
+          CI: true
+      
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.5.0
+        with:
+          redis-version: 7
+      
+      - name: Build NodeBB
+        run: ./nodebb build
+      
+      - name: Start NodeBB in background
+        run: |
+          ./nodebb start
+          # Wait for NodeBB to be ready
+          timeout 60 bash -c 'until curl -f http://localhost:4567/ > /dev/null 2>&1; do sleep 2; done'
+          echo "NodeBB is ready!"
+      
+      - name: Install Artillery
+        run: npm install -g artillery@latest
+      
+      - name: Run CI Performance Test
+        run: |
+          cd artillery-tests
+          artillery run artillery-test-ci.yml --output ../artillery-results.json
+        continue-on-error: true  # Don't block PR merge on performance issues
+      
+      - name: Display Test Results
+        if: always()
+        run: |
+          echo "=== Artillery Test Results ==="
+          if [ -f artillery-results.json ]; then
+            node -e "
+              const fs = require('fs');
+              const data = JSON.parse(fs.readFileSync('artillery-results.json'));
+              const summary = data.aggregate;
+              console.log('Total Scenarios:', summary.scenariosCreated);
+              console.log('Completed:', summary.scenariosCompleted);
+              console.log('Requests:', summary.requestsCompleted);
+              console.log('Median Response Time:', summary.latency.median + 'ms');
+              console.log('P95 Response Time:', summary.latency.p95 + 'ms');
+              console.log('P99 Response Time:', summary.latency.p99 + 'ms');
+              console.log('Error Rate:', ((summary.scenariosCreated - summary.scenariosCompleted) / summary.scenariosCreated * 100).toFixed(2) + '%');
+              
+              // Check thresholds but only report, don't fail
+              const errorRate = (summary.scenariosCreated - summary.scenariosCompleted) / summary.scenariosCreated;
+              const failedErrorRate = errorRate > 0.05;
+              const failedP99 = summary.latency.p99 > 1000;
+              
+              if (failedErrorRate) {
+                console.warn('⚠️ WARNING: Error rate exceeds 5% threshold');
+              }
+              if (failedP99) {
+                console.warn('⚠️ WARNING: P99 exceeds 1000ms threshold');
+              }
+              if (!failedErrorRate && !failedP99) {
+                console.log('✅ Performance test PASSED!');
+              } else {
+                console.log('⚠️ Performance test completed with warnings');
+              }
+            "
+          else
+            echo "⚠️ No results file found"
+          fi
+      
+      - name: Upload Artillery Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: artillery-performance-results
+          path: |
+            artillery-results.json
+            logs/
+          retention-days: 30
+      
+      - name: Stop NodeBB
+        if: always()
+        run: ./nodebb stop
+      
+      - name: Comment PR with Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            
+            if (!fs.existsSync('artillery-results.json')) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '## ⚠️ Artillery Performance Test - No Results\n\nTest did not produce results file. Check logs for errors.'
+              });
+              return;
+            }
+            
+            const data = JSON.parse(fs.readFileSync('artillery-results.json', 'utf8'));
+            const summary = data.aggregate;
+            const errorRate = ((summary.scenariosCreated - summary.scenariosCompleted) / summary.scenariosCreated * 100).toFixed(2);
+            const passed = summary.scenariosCompleted / summary.scenariosCreated >= 0.95 && summary.latency.p99 <= 1000;
+            
+            const emoji = passed ? '✅' : '⚠️';
+            const status = passed ? 'PASSED' : 'ADVISORY';
+            
+            const comment = `## ${emoji} Artillery Performance Test Results - ${status}
+            
+            > **Note**: This is an informational check only. Results do not block PR merging.
+            
+            ### Load Test Summary
+            - **Total Scenarios**: ${summary.scenariosCreated}
+            - **Completed**: ${summary.scenariosCompleted}
+            - **Failed**: ${summary.scenariosCreated - summary.scenariosCompleted}
+            - **Total Requests**: ${summary.requestsCompleted}
+            - **Error Rate**: ${errorRate}%
+            
+            ### Response Times
+            - **Median**: ${summary.latency.median}ms
+            - **P95**: ${summary.latency.p95}ms
+            - **P99**: ${summary.latency.p99}ms
+            - **Max**: ${summary.latency.max}ms
+            
+            ### Threshold Analysis (Advisory)
+            - Error Rate: ${errorRate}% ${errorRate <= 5 ? '✅' : '⚠️'} (recommended: <5%)
+            - P99 Latency: ${summary.latency.p99}ms ${summary.latency.p99 <= 1000 ? '✅' : '⚠️'} (recommended: <1000ms)
+            
+            ${passed ? '✅ **Performance metrics look great!**' : '⚠️ **Performance metrics show potential concerns. Merge is not blocked, but review is strongly recommended.**'}
+            
+            <details>
+            <summary>HTTP Response Codes</summary>
+            
+            ${Object.entries(summary.codes || {}).map(([code, count]) => `- ${code}: ${count} requests`).join('\n')}
+            </details>
+            `;
+            
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+

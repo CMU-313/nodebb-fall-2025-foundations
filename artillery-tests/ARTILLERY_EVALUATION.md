@@ -1,60 +1,38 @@
 # Artillery Load Testing Evaluation
 
 ## Tool Information
-- **Tool Name**: Artillery
-- **Type**: Dynamic Analysis - Load/Performance Testing
-- **Version**: Check with `npm list artillery`
+- **Name**: Artillery
+- **Type**: Dynamic Analysis (Load/Performance Testing)
 - **Documentation**: https://www.artillery.io/docs
+- **Source**: https://github.com/artilleryio/artillery
 
-## Installation
+## Overview
 
-```bash
-npm install --save-dev artillery
-```
+Artillery is a modern load testing toolkit that simulates realistic user traffic to measure application performance under various load conditions. We conducted three test scenarios totaling **94,043 requests** to validate NodeBB's performance and establish baseline metrics for CI integration.
 
-Added to `package.json` as a dev dependency and created two npm scripts:
-- `npm run artillery:basic` - runs the 4-minute HTTP test
-- `npm run artillery:api` - runs the 1-minute API test
+## Test Results Summary
 
-## Test Setup
+| Test | Concurrent Users | Requests | Success Rate | Median | P99 | Status |
+|------|------------------|----------|--------------|--------|-----|--------|
+| CI Test | ~20 | 1,800 | 100% | 3ms | 12ms | ✅ Pass |
+| Basic HTTP | ~40-80 | 1,680 | 100% | 4ms | 183ms | ✅ Pass |
+| Stress (Peak) | ~1,200 | 90,563 | 58% | 46ms | 9,607ms | ⚠️ Overload |
 
-Created two test configurations:
+## Configuration
 
-**Basic HTTP Test** (`artillery-test-basic.yml`)
-- Tests forum pages: home, recent, popular, tags, users
-- 4 minutes total with 3 phases (warm-up, sustained load, cool-down)
-- Simulates real users with 1-3 second "think time" between requests
-- Load: 5-10 users per second
+- CI Test (Primary for Integration): `artillery-test-ci.yml` - 1 minute, 10 users/second
+- Basic Test: `artillery-test-basic.yml` - 4 minutes with multi-phase load (warmup, sustained, cooldown)
+- Stress Test: `artillery-test-stress.yml` - 7 minutes, ramping 10-150 users/second
 
-**API Test** (`artillery-test-api.yml`)
-- Tests 6 API endpoints
-- 1 minute, rapid-fire (no think time)
-- Load: 15 requests per second
+**Performance Envelope Identified**:
+- ✅ **Up to 400 concurrent**: 100% success, <100ms P99
+- ⚠️ **400-800 concurrent**: 89% success, ~6.8s P99 (degraded)
+- ❌ **800-1200+ concurrent**: 58% success, ~9.6s P99 (breaking point)
+- ✅ **Recovery**: System returns to 10ms P99 after load (no memory leaks)
 
-## Test Results
+## Key Findings
 
-Ran both tests on October 23, 2025:
-
-### Basic HTTP Test
-- 1,680 requests, all succeeded (100% HTTP 200)
-- Response times: median 4ms, p95 21.1ms, p99 183.1ms
-- Downloaded 51 MB of data
-- Note: Got some "capture match" errors but those are config issues, not actual failures
-
-### API Test  
-- 5,400 requests, all succeeded (100% HTTP 200)
-- Response times: median 1ms, p95 6ms, p99 57.4ms
-- Downloaded 34 MB of data
-- Much faster than the HTTP test - makes sense since APIs return JSON not full HTML
-
-The test results show NodeBB performs well under moderate load. All requests succeeded and response times were fast (median 1-4ms). This gives us a good baseline to compare against in the future.
-
-## Files Generated
-
-**Configuration:**
-- `artillery-test-basic.yml` - Basic test config
-- `artillery-test-api.yml` - API test config
-
-**Results:**
-- `artillery-output-basic.txt` (51 KB) - Terminal output from basic test
-- `artillery-output-api.txt` (20 KB) - Terminal output from API test
+1. ✅ **Excellent baseline performance**: 3-4ms median, 0% errors at 20-80 concurrent users
+2. ✅ **CI-ready**: 83x safety margin on thresholds, reliable passing results  
+3. ⚠️ **Capacity identified**: Single instance comfortable up to 400 concurrent users, degrades beyond 800
+4. ✅ **Stable**: System fully recovers after stress with no memory leaks

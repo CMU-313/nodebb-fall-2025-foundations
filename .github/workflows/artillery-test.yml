@@ -29,12 +29,17 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       
+      - name: Install dependencies
+        run: |
+          cp install/package.json package.json
+          npm install --omit=dev --no-audit --no-fund
+      
       - name: Start Redis
         uses: supercharge/redis-github-action@1.5.0
         with:
           redis-version: 7
       
-      - name: Setup NodeBB config
+      - name: Setup NodeBB database
         run: |
           cat > config.json << 'EOF'
           {
@@ -43,15 +48,13 @@ jobs:
             "database": "redis",
             "redis": {
               "host": "127.0.0.1",
-              "port": 6379
+              "port": "6379",
+              "database": "0"
             }
           }
           EOF
-      
-      - name: Install dependencies
-        run: |
-          cp install/package.json package.json
-          npm install --omit=dev --no-audit --no-fund
+          # Wait for Redis to be ready
+          sleep 2
       
       - name: Build NodeBB
         run: ./nodebb build

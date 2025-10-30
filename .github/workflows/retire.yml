@@ -14,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
         with:
           node-version: '20.17.0'
           
@@ -28,7 +28,15 @@ jobs:
 
       - name: Run Retire.js scan
         working-directory: ./install
-        run: retire --outputformat json --outputpath retire-report.json || true
+        run: |
+          retire --outputformat json --outputpath retire-report.json || true
+
+          if jq -e '.data[].results[].vulnerabilities[] | select(.severity=="high" or .severity=="critical")' retire-report.json > /dev/null; then
+            echo "High or critical vulnerabilities found!"
+            exit 1
+          else
+            echo "No high or critical vulnerabilities found."
+          fi
 
       - name: Upload report as artifact
         uses: actions/upload-artifact@v4

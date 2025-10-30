@@ -90,37 +90,10 @@ jobs:
         run: |
           echo "=== Artillery Test Results ==="
           if [ -f artillery-results.json ]; then
-            node -e "
-              const fs = require('fs');
-              const data = JSON.parse(fs.readFileSync('artillery-results.json'));
-              const summary = data.aggregate;
-              console.log('Total Scenarios:', summary.scenariosCreated);
-              console.log('Completed:', summary.scenariosCompleted);
-              console.log('Requests:', summary.requestsCompleted);
-              console.log('Median Response Time:', summary.latency.median + 'ms');
-              console.log('P95 Response Time:', summary.latency.p95 + 'ms');
-              console.log('P99 Response Time:', summary.latency.p99 + 'ms');
-              console.log('Error Rate:', ((summary.scenariosCreated - summary.scenariosCompleted) / summary.scenariosCreated * 100).toFixed(2) + '%');
-              
-              // Check thresholds but only report, don't fail
-              const errorRate = (summary.scenariosCreated - summary.scenariosCompleted) / summary.scenariosCreated;
-              const failedErrorRate = errorRate > 0.05;
-              const failedP99 = summary.latency.p99 > 1000;
-              
-              if (failedErrorRate) {
-                console.warn('⚠️ WARNING: Error rate exceeds 5% threshold');
-              }
-              if (failedP99) {
-                console.warn('⚠️ WARNING: P99 exceeds 1000ms threshold');
-              }
-              if (!failedErrorRate && !failedP99) {
-                console.log('✅ Performance test PASSED!');
-              } else {
-                console.log('⚠️ Performance test completed with warnings');
-              }
-            "
+            echo "Results file found, displaying contents:"
+            cat artillery-results.json || echo "Could not read file"
           else
-            echo "⚠️ No results file found"
+            echo "⚠️ No results file found - test likely failed"
           fi
       
       - name: Upload Artillery Results
@@ -155,9 +128,12 @@ jobs:
             }
             
             const data = JSON.parse(fs.readFileSync('artillery-results.json', 'utf8'));
-            const summary = data.aggregate;
-            const errorRate = ((summary.scenariosCreated - summary.scenariosCompleted) / summary.scenariosCreated * 100).toFixed(2);
-            const passed = summary.scenariosCompleted / summary.scenariosCreated >= 0.95 && summary.latency.p99 <= 1000;
+            const summary = data.aggregate || {};
+            const created = summary.scenariosCreated || 0;
+            const completed = summary.scenariosCompleted || 0;
+            const errorRate = created > 0 ? ((created - completed) / created * 100).toFixed(2) : '0.00';
+            const p99 = (summary.latency && summary.latency.p99) || 0;
+            const passed = (created > 0) && (completed / created >= 0.95) && (p99 <= 1000);
             
             const emoji = passed ? '✅' : '⚠️';
             const status = passed ? 'PASSED' : 'ADVISORY';
@@ -167,21 +143,21 @@ jobs:
             > **Note**: This is an informational check only. Results do not block PR merging.
             
             ### Load Test Summary
-            - **Total Scenarios**: ${summary.scenariosCreated}
-            - **Completed**: ${summary.scenariosCompleted}
-            - **Failed**: ${summary.scenariosCreated - summary.scenariosCompleted}
-            - **Total Requests**: ${summary.requestsCompleted}
+            - **Total Scenarios**: ${created}
+            - **Completed**: ${completed}
+            - **Failed**: ${created - completed}
+            - **Total Requests**: ${summary.requestsCompleted || 0}
             - **Error Rate**: ${errorRate}%
             
             ### Response Times
-            - **Median**: ${summary.latency.median}ms
-            - **P95**: ${summary.latency.p95}ms
-            - **P99**: ${summary.latency.p99}ms
-            - **Max**: ${summary.latency.max}ms
+            - **Median**: ${(summary.latency && summary.latency.median) || 0}ms
+            - **P95**: ${(summary.latency && summary.latency.p95) || 0}ms
+            - **P99**: ${p99}ms
+            - **Max**: ${(summary.latency && summary.latency.max) || 0}ms
             
             ### Threshold Analysis (Advisory)
-            - Error Rate: ${errorRate}% ${errorRate <= 5 ? '✅' : '⚠️'} (recommended: <5%)
-            - P99 Latency: ${summary.latency.p99}ms ${summary.latency.p99 <= 1000 ? '✅' : '⚠️'} (recommended: <1000ms)
+            - Error Rate: ${errorRate}% ${parseFloat(errorRate) <= 5 ? '✅' : '⚠️'} (recommended: <5%)
+            - P99 Latency: ${p99}ms ${p99 <= 1000 ? '✅' : '⚠️'} (recommended: <1000ms)
             
             ${passed ? '✅ **Performance metrics look great!**' : '⚠️ **Performance metrics show potential concerns. Merge is not blocked, but review is strongly recommended.**'}
             

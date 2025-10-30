@@ -31,11 +31,20 @@ jobs:
         run: |
           retire --outputformat json --outputpath retire-report.json || true
 
-          if jq -e '.data[].results[].vulnerabilities[] | select(.severity=="critical")' retire-report.json > /dev/null; then
-            echo "High or critical vulnerabilities found!"
+          # pretty print the json
+          jq . retire-report.json > retire-report-pretty.json
+          mv retire-report-pretty.json retire-report.json
+
+          #  print summary of vulnerabilities in github actions log
+          echo "=== Retire.js Vulnerability Summary ==="
+          jq -r '.data[].results[] | "\(.component): \(.version)\n\(.vulnerabilities[]?.severity): \(.vulnerabilities[]?.summary)\n---"' retire-report.json || echo "No vulnerabilities found."
+
+          # fail condition for critical vulnerabilities
+          if jq -e '.data[]?.results[]?.vulnerabilities[]? | select(.severity=="critical")' retire-report.json > /dev/null; then
+            echo "Critical vulnerabilities found!"
             exit 1
           else
-            echo "No high or critical vulnerabilities found."
+            echo "No critical vulnerabilities found."
           fi
 
       - name: Upload report as artifact

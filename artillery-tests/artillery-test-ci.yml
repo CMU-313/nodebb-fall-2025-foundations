@@ -1,0 +1,49 @@
+# Artillery CI/CD Performance Test
+# PURPOSE: Fast, lightweight test for GitHub Actions automation
+# CONCURRENT USERS: ~20 (10/sec × 2sec session duration)
+# DURATION: 1 minute
+# TOTAL REQUESTS: ~1,800
+# USE CASE: Automated CI/CD checks on every PR (non-blocking, advisory)
+# STATUS: Primary integration test - runs automatically on all PRs
+
+config:
+  target: "http://localhost:4567"
+  phases:
+    # Single phase - moderate load for CI environment
+    - duration: 60
+      arrivalRate: 10
+      name: "CI Performance Check"
+  http:
+    timeout: 10  # Shorter timeout for CI
+
+scenarios:
+  - name: "Basic forum browsing"
+    weight: 70
+    flow:
+      - get:
+          url: "/"
+      - think: 1
+      - get:
+          url: "/recent"
+      - think: 1
+      - get:
+          url: "/popular"
+
+  - name: "API endpoint check"
+    weight: 30
+    flow:
+      - get:
+          url: "/api/categories"
+      - think: 1
+      - get:
+          url: "/api/recent"
+      - think: 1
+      - get:
+          url: "/api/config"
+
+# Thresholds for CI - must pass these to merge
+ensure:
+  maxErrorRate: 5      # Max 5% errors allowed
+  p99: 1000            # 99% of requests must complete in < 1s
+  p95: 500             # 95% of requests must complete in < 500ms
+

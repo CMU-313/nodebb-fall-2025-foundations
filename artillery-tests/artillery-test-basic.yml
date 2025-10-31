@@ -1,0 +1,43 @@
+# Artillery Basic HTTP Load Test Configuration
+# Created with AI assistance (Claude/Cursor)
+
+# PURPOSE: Baseline performance test with realistic user behavior
+# CONCURRENT USERS: ~40-80 (during sustained load phase)
+# DURATION: 4 minutes (60s warmup + 120s sustained + 60s cooldown)
+# TOTAL REQUESTS: ~1,680
+# USE CASE: Local development testing, establishing performance baselines
+
+config:
+  target: "http://localhost:4567"
+  phases:
+    - duration: 60
+      arrivalRate: 5      # 5/sec × 8sec session = ~40 concurrent
+      name: "Warm up phase"
+    - duration: 120
+      arrivalRate: 10     # 10/sec × 8sec session = ~80 concurrent
+      name: "Sustained load"
+    - duration: 60
+      arrivalRate: 3      # 3/sec × 8sec session = ~24 concurrent
+      name: "Cool down"
+
+scenarios:
+  - name: "Browse forum pages"
+    flow:
+      - get:
+          url: "/"
+          capture:
+            - json: "$.status"
+              as: "status"
+      - think: 2
+      - get:
+          url: "/recent"
+      - think: 3
+      - get:
+          url: "/popular"
+      - think: 2
+      - get:
+          url: "/tags"
+      - think: 1
+      - get:
+          url: "/users"
+

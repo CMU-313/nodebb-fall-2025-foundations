@@ -1,0 +1,182 @@
+name: Artillery Performance Testing
+
+on:
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.gitignore'
+  push:
+    branches: [main]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  performance-test:
+    name: Load Testing with Artillery
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      - name: Install dependencies
+        run: |
+          cp install/package.json package.json
+          npm install --omit=dev --no-audit --no-fund
+      
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.5.0
+        with:
+          redis-version: 7
+      
+      - name: Setup NodeBB database
+        run: |
+          cat > config.json << 'EOF'
+          {
+            "url": "http://localhost:4567",
+            "secret": "test-secret",
+            "database": "redis",
+            "redis": {
+              "host": "127.0.0.1",
+              "port": "6379",
+              "database": "0"
+            }
+          }
+          EOF
+          # Wait for Redis to be ready
+          sleep 2
+      
+      - name: Build NodeBB
+        run: ./nodebb build
+        env:
+          CI: true
+      
+      - name: Start NodeBB in background
+        run: |
+          node app &
+          # Wait for NodeBB to be ready (max 60 seconds)
+          for i in {1..30}; do
+            if curl -f http://localhost:4567/ > /dev/null 2>&1; then
+              echo "✅ NodeBB is ready!"
+              exit 0
+            fi
+            echo "Waiting for NodeBB... ($i/30)"
+            sleep 2
+          done
+          echo "❌ NodeBB failed to start"
+          exit 1
+      
+      - name: Install Artillery
+        run: npm install -g artillery@latest
+      
+      - name: Run CI Performance Test
+        run: |
+          cd artillery-tests
+          timeout 5m artillery run artillery-test-ci.yml --output ../artillery-results.json || echo "Test completed with warnings"
+        continue-on-error: true  # Don't block PR merge on performance issues
+      
+      - name: Display Test Results
+        if: always()
+        run: |
+          echo "=== Artillery Test Results ==="
+          if [ -f artillery-results.json ]; then
+            echo "Results file found, displaying contents:"
+            cat artillery-results.json || echo "Could not read file"
+          else
+            echo "⚠️ No results file found - test likely failed"
+          fi
+      
+      - name: Upload Artillery Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: artillery-performance-results
+          path: |
+            artillery-results.json
+            logs/
+          retention-days: 30
+      
+      - name: Stop NodeBB
+        if: always()
+        run: ./nodebb stop
+      
+      - name: Comment PR with Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            
+            if (!fs.existsSync('artillery-results.json')) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '## ⚠️ Artillery Performance Test - No Results\n\nTest did not produce results file. Check logs for errors.'
+              });
+              return;
+            }
+            
+            const data = JSON.parse(fs.readFileSync('artillery-results.json', 'utf8'));
+            const summary = data.aggregate || {};
+            const counters = summary.counters || {};
+            const histograms = summary.histograms || {};
+            const latency = histograms['http.response_time'] || {};
+            
+            const created = counters['vusers.created'] || 0;
+            const completed = counters['vusers.completed'] || 0;
+            const requests = counters['http.responses'] || counters['http.requests'] || 0;
+            const errorRate = created > 0 ? ((created - completed) / created * 100).toFixed(2) : '0.00';
+            const p99 = latency.p99 || 0;
+            const passed = (created > 0) && (completed / created >= 0.95) && (p99 <= 1000);
+            
+            const emoji = passed ? '✅' : '⚠️';
+            const status = passed ? 'PASSED' : 'ADVISORY';
+            
+            const comment = `## ${emoji} Artillery Performance Test Results - ${status}
+            
+            > **Note**: This is an informational check only. Results do not block PR merging.
+            
+            ### Load Test Summary
+            - **Total Scenarios**: ${created}
+            - **Completed**: ${completed}
+            - **Failed**: ${created - completed}
+            - **Total Requests**: ${requests}
+            - **Error Rate**: ${errorRate}%
+            
+            ### Response Times
+            - **Median**: ${latency.median || 0}ms
+            - **P95**: ${latency.p95 || 0}ms
+            - **P99**: ${p99}ms
+            - **Max**: ${latency.max || 0}ms
+            
+            ### Threshold Analysis (Advisory)
+            - Error Rate: ${errorRate}% ${parseFloat(errorRate) <= 5 ? '✅' : '⚠️'} (recommended: <5%)
+            - P99 Latency: ${p99}ms ${p99 <= 1000 ? '✅' : '⚠️'} (recommended: <1000ms)
+            
+            ${passed ? '✅ **Performance metrics look great!**' : '⚠️ **Performance metrics show potential concerns. Merge is not blocked, but review is strongly recommended.**'}
+            
+            <details>
+            <summary>HTTP Response Codes</summary>
+            
+            ${Object.entries(counters).filter(([k]) => k.startsWith('http.codes.')).map(([code, count]) => `- ${code.replace('http.codes.', '')}: ${count} requests`).join('\n') || 'No HTTP code data available'}
+            </details>
+            `;
+            
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+

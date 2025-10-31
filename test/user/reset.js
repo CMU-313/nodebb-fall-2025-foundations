@@ -162,6 +162,9 @@ describe('locks', () => {
 		const util = require('util');
 		const sleep = util.promisify(setTimeout);
 		await sleep(4 * 1000); // wait 4 seconds
+		// Clear the rate limit timestamp from the database
+		const uid = await user.getUidByEmail(email);
+		await db.sortedSetRemove('reset:issueDate:uid', uid);
 		await user.reset.send(email);
 		user.reset.minSecondsBetweenEmails = 60;
 	});

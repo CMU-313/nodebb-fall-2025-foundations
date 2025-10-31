@@ -129,10 +129,15 @@ jobs:
             
             const data = JSON.parse(fs.readFileSync('artillery-results.json', 'utf8'));
             const summary = data.aggregate || {};
-            const created = summary.scenariosCreated || 0;
-            const completed = summary.scenariosCompleted || 0;
+            const counters = summary.counters || {};
+            const histograms = summary.histograms || {};
+            const latency = histograms['http.response_time'] || {};
+            
+            const created = counters['vusers.created'] || 0;
+            const completed = counters['vusers.completed'] || 0;
+            const requests = counters['http.responses'] || counters['http.requests'] || 0;
             const errorRate = created > 0 ? ((created - completed) / created * 100).toFixed(2) : '0.00';
-            const p99 = (summary.latency && summary.latency.p99) || 0;
+            const p99 = latency.p99 || 0;
             const passed = (created > 0) && (completed / created >= 0.95) && (p99 <= 1000);
             
             const emoji = passed ? '✅' : '⚠️';
@@ -146,14 +151,14 @@ jobs:
             - **Total Scenarios**: ${created}
             - **Completed**: ${completed}
             - **Failed**: ${created - completed}
-            - **Total Requests**: ${summary.requestsCompleted || 0}
+            - **Total Requests**: ${requests}
             - **Error Rate**: ${errorRate}%
             
             ### Response Times
-            - **Median**: ${(summary.latency && summary.latency.median) || 0}ms
-            - **P95**: ${(summary.latency && summary.latency.p95) || 0}ms
+            - **Median**: ${latency.median || 0}ms
+            - **P95**: ${latency.p95 || 0}ms
             - **P99**: ${p99}ms
-            - **Max**: ${(summary.latency && summary.latency.max) || 0}ms
+            - **Max**: ${latency.max || 0}ms
             
             ### Threshold Analysis (Advisory)
             - Error Rate: ${errorRate}% ${parseFloat(errorRate) <= 5 ? '✅' : '⚠️'} (recommended: <5%)
@@ -164,7 +169,7 @@ jobs:
             <details>
             <summary>HTTP Response Codes</summary>
             
-            ${Object.entries(summary.codes || {}).map(([code, count]) => `- ${code}: ${count} requests`).join('\n')}
+            ${Object.entries(counters).filter(([k]) => k.startsWith('http.codes.')).map(([code, count]) => `- ${code.replace('http.codes.', '')}: ${count} requests`).join('\n') || 'No HTTP code data available'}
             </details>
             `;
             

@@ -23,15 +23,6 @@ get:
                   title:
                     description: The page title
                     type: string
-                  allowCategoryCreation:
-                    type: boolean
-                    description: Whether the current user can create categories
-                  allowPurge:
-                    type: boolean
-                    description: Whether the current user can purge categories
-                  purgable:
-                    type: boolean
-                    description: Alias for `allowPurge` kept for backwards compatibility
                   selectCategoryLabel:
                     type: string
                     description: Label to use for the category selector
@@ -52,7 +43,6 @@ get:
                               description: True if category or it's children have unread topics
                             unread-class:
                               type: string
-                            # per-category purge flags are defined in CategoryObject
                             children:
                               type: array
                               items:
@@ -91,6 +81,10 @@ get:
                                             timestamp:
                                               type: number
                                             content:
+                                              type: string
+                                            isEnglish:
+                                              type: boolean
+                                            translatedContent:
                                               type: string
                                             timestampISO:
                                               type: string
@@ -135,9 +129,6 @@ get:
                                                   type: string
                                                 title:
                                                   type: string
-                                            resolved:
-                                              type: boolean
-                                              description: Whether the post is marked as resolved (only for posts in the Comments & Feedback category)
                                       imageClass:
                                         type: string
                                       timesClicked:
@@ -155,6 +146,10 @@ get:
                                     type: number
                                   content:
                                     type: string
+                                  isEnglish:
+                                    type: boolean
+                                  translatedContent:
+                                    type: string 
                                   sourceContent:
                                     type: string
                                     nullable: true
@@ -209,9 +204,6 @@ get:
                                         type: string
                                       title:
                                         type: string
-                                  resolved:
-                                    type: boolean
-                                    description: Whether the post is marked as resolved (only for posts in the Comments & Feedback category)
                             teaser:
                               type: object
                               properties:

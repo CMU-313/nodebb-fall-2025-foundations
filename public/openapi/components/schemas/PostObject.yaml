@@ -18,6 +18,10 @@ PostObject:
         For posts received via ActivityPub, it is the url of the original piece of content.
     content:
       type: string
+    isEnglish:
+      type: boolean
+    translatedContent:
+      type: string
     sourceContent:
       type: string
       nullable: true
@@ -155,10 +159,6 @@ PostObject:
       type: boolean
     replies:
       type: number
-    # AI Assistance: Added resolved field to support mark-as-resolved feature for Comments & Feedback category
-    resolved:
-      type: boolean
-      description: Whether the post is marked as resolved (only for posts in the Comments & Feedback category)
 PostDataObject:
   description: The output as returned from `Posts.getPostsData`
   allOf:
@@ -174,13 +174,14 @@ PostDataObject:
           description: A topic identifier
         content:
           type: string
+        isEnglish:
+          type: boolean
+        translatedContent:
+          type: string
         timestamp:
           type: number
         votes:
           type: number
-        pinned:
-          type: boolean
-          description: Whether this post is pinned within the topic
         deleted:
           type: number
         upvotes:
@@ -202,10 +203,6 @@ PostDataObject:
           type: string
         index:
           type: number
-        # AI Assistance: Added resolved field to support mark-as-resolved feature for Comments & Feedback category
-        resolved:
-          type: boolean
-          description: Whether the post is marked as resolved (only for posts in the Comments & Feedback category)
         user:
           type: object
           properties:

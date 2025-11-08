@@ -27,9 +27,7 @@ const activitypub = require('../src/activitypub');
 const utils = require('../src/utils');
 const api = require('../src/api');
 
-describe('API', function () {
-	// Increase timeout for CI environments where setup may take longer than Mocha's default
-	this.timeout(60000);
+describe('API', async () => {
 	let readApi = false;
 	let writeApi = false;
 	const readApiPath = path.resolve(__dirname, '../public/openapi/read.yaml');
@@ -185,12 +183,6 @@ describe('API', function () {
 		if (setup) {
 			return;
 		}
-		// Attach an emailer hook early so user creation (which may attempt to send emails)
-		// does not try to use the sendmail transport in CI environments.
-		plugins.hooks.register('emailer-test', {
-			hook: 'static:email.send',
-			method: dummyEmailerHook,
-		});
 
 		// Create sample users
 		const adminUid = await user.create({ username: 'admin', password: '123456' });
@@ -293,28 +285,9 @@ describe('API', function () {
 		// Create a new chat room
 		await messaging.newRoom(adminUid, { uids: [unprivUid] });
 
-		// Create a small text file and a valid 1x1 PNG to test DELETE /files and thumb deletion.
-		// Creating an actual PNG avoids CI image-processing errors caused by empty files.
+		// Create an empty file to test DELETE /files and thumb deletion
 		fs.closeSync(fs.openSync(path.resolve(nconf.get('upload_path'), 'files/test.txt'), 'w'));
-		const pngPath = path.resolve(nconf.get('upload_path'), 'files/test.png');
-		const pngDir = path.dirname(pngPath);
-		try {
-			fs.mkdirSync(pngDir, { recursive: true });
-		} catch (e) {
-			// ignore
-		}
-		// 1x1 transparent PNG
-		const onePxPngBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=';
-		fs.writeFileSync(pngPath, Buffer.from(onePxPngBase64, 'base64'));
-
-		// Ensure logs output file exists to avoid ENOENT in admin log reads in CI
-		try {
-			const logsDir = path.resolve(__dirname, '../logs');
-			fs.mkdirSync(logsDir, { recursive: true });
-			fs.closeSync(fs.openSync(path.resolve(logsDir, 'output.log'), 'a'));
-		} catch (e) {
-			// ignore
-		}
+		fs.closeSync(fs.openSync(path.resolve(nconf.get('upload_path'), 'files/test.png'), 'w'));
 
 		// Associate thumb with topic to test thumb reordering
 		await topics.thumbs.associate({
@@ -368,21 +341,8 @@ describe('API', function () {
 		}
 	});
 
-
-	before(async function () {
-		// Allow extra time for schema parsing in CI
-		this.timeout(60000);
-		try {
-			readApi = await SwaggerParser.dereference(readApiPath);
-			writeApi = await SwaggerParser.dereference(writeApiPath);
-		} catch (e) {
-			assert.ifError(e);
-		}
-    
-		// Generate the tests for all documented paths once schemas are loaded
-		generateTests(readApi, Object.keys(readApi.paths));
-		generateTests(writeApi, Object.keys(writeApi.paths), writeApi.servers[0].url);
-	});
+	readApi = await SwaggerParser.dereference(readApiPath);
+	writeApi = await SwaggerParser.dereference(writeApiPath);
 
 	it('should grab all mounted routes and ensure a schema exists', async () => {
 		const webserver = require('../src/webserver');
@@ -446,6 +406,9 @@ describe('API', function () {
 			});
 		});
 	});
+
+	generateTests(readApi, Object.keys(readApi.paths));
+	generateTests(writeApi, Object.keys(writeApi.paths), writeApi.servers[0].url);
 
 	function generateTests(api, paths, prefix) {
 		// Iterate through all documented paths, make a call to it,
@@ -570,11 +533,7 @@ describe('API', function () {
 				});
 
 				// Recursively iterate through schema properties, comparing type
-				
 				it('response body should match schema definition', () => {
-					if (!context[method]) {
-						return; // Skip if method is not defined in schema
-					}
 					const http302 = context[method].responses['302'];
 					if (http302 && result.response.statusCode === 302) {
 						// Compare headers instead
@@ -593,12 +552,6 @@ describe('API', function () {
 
 					if (result.response.statusCode === 400 && context[method].responses['400']) {
 						// TODO: check 400 schema to response.body?
-						return;
-					}
-
-					// AI Assistance: Handle 404 responses for async operations like CSV export
-					if (result.response.statusCode === 404 && context[method].responses['404']) {
-						// Skip body validation for 404 responses
 						return;
 					}
 
@@ -682,8 +635,7 @@ describe('API', function () {
 		// Compare the schema to the response
 		required.forEach((prop) => {
 			if (schema.hasOwnProperty(prop)) {
-				assert(response.hasOwnProperty(prop), `"${prop}" is a required property (path: ${method} ${path}, context: ${context})`);
-
+				assert(response.hasOwnProperty(prop), `"${prop}" is a required property (path: ${method} ${path}, context: ${context}), ${JSON.stringify(response)}`);
 				// Don't proceed with type-check if the value could possibly be unset (nullable: true, in spec)
 				if (response[prop] === null && schema[prop].nullable === true) {
 					return;
@@ -732,7 +684,6 @@ describe('API', function () {
 				return;
 			}
 
-			assert(schema[prop], `"${prop}" was found in response, but is not defined in schema (path: ${method} ${path}, context: ${context})`);
-		});
+			assert(schema[prop], `"${prop}" was found in response, but is not defined in schema (path: ${method} ${path}, context: ${context}), SCHEMA ${JSON.stringify(schema)}`);});
 	}
 });

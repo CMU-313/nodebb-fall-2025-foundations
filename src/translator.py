@@ -1,44 +1,113 @@
+"""
+Translation module for NodeBB posts.
+
+This module provides language detection and translation using Ollama LLM.
+"""
+
+import os
+from ollama import Client
+
+
+def get_ollama_client():
+    """Get Ollama client."""
+    ollama_url = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    client = Client(host=ollama_url)
+    return client
+
+
+def get_language(post: str, client, model_name: str = "llama3.1:8b") -> str:
+    """
+    Detect the language of the post using Ollama LLM.
+    
+    Args:
+        post: The text to analyze
+        client: Ollama client instance
+        model_name: The model to use
+        
+    Returns:
+        Language name as a string (e.g., "English", "Spanish")
+    """
+    context = (
+        "You are an expert language classifier. Your ONLY job is to analyze the input text "
+        "and determine its original language. Your response must be the single English name "
+        "of the detected language. If the text is NOT English, you must NEVER reply with 'English'."
+    )
+    
+    response = client.generate(
+        model=model_name,
+        prompt=post,
+        system=context,
+        options={'temperature': 0.1}
+    )
+    return response['response'].strip()
+
+
+def get_translation(post: str, client, model_name: str = "llama3.1:8b") -> str:
+    """
+    Translate non-English text to English using Ollama LLM.
+    
+    Args:
+        post: The text to translate
+        client: Ollama client instance
+        model_name: The model to use
+        
+    Returns:
+        Translated text in English
+    """
+    context = (
+        "You are an expert language translator. Your ONLY task is to accurately translate "
+        "any non-English text provided by the user into English. The translation MUST be "
+        "the entire sole content of your response. ONLY return the translated text."
+    )
+    
+    response = client.generate(
+        model=model_name,
+        prompt=post,
+        system=context,
+        options={'temperature': 0.1}
+    )
+    return response['response'].strip()
+
+
+def translate_with_llm(content: str) -> tuple[bool, str]:
+    """
+    Translate content using Ollama LLM.
+    
+    Args:
+        content: The text to check and translate
+        
+    Returns:
+        Tuple of (is_english, translated_content)
+    """
+    client = get_ollama_client()
+    model_name = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
+    
+    # Detect language
+    language = get_language(content, client, model_name)
+    
+    # Check if it's English
+    if language.strip().lower() == "english":
+        return True, content
+    
+    # Translate to English
+    translated = get_translation(content, client, model_name)
+    return False, translated
+
+
 def translate_content(content: str) -> tuple[bool, str]:
-    # Hardcoded translations matching test expectations
-    translations = {
-        "这是一条中文消息": "This is a Chinese message",
-        "Ceci est un message en français": "This is a French message",
-        "Esta es un mensaje en español": "This is a Spanish message",
-        "Esta é uma mensagem em português": "This is a Portuguese message",
-        "これは日本語のメッセージです": "This is a Japanese message",
-        "이것은 한국어 메시지입니다": "This is a Korean message",
-        "Dies ist eine Nachricht auf Deutsch": "This is a German message",
-        "Questo è un messaggio in italiano": "This is an Italian message",
-        "Это сообщение на русском": "This is a Russian message",
-        "هذه رسالة باللغة العربية": "This is an Arabic message",
-        "यह हिंदी में संदेश है": "This is a Hindi message",
-        "นี่คือข้อความภาษาไทย": "This is a Thai message",
-        "Bu bir Türkçe mesajdır": "This is a Turkish message",
-        "Đây là một tin nhắn bằng tiếng Việt": "This is a Vietnamese message",
-        "Esto es un mensaje en catalán": "This is a Catalan message",
-        "This is an English message": "This is an English message",
-        # Extended translations from test eval sets
-        # NOTE: Test file has inconsistency - line 18 expects "Here is..." but line 76 expects "This is..."
-        # Using translation_eval_set expectation to make that test pass
-        "Hier ist dein erstes Beispiel.": "Here is your first example.",
-        "مرحبًا، ما هو اسمك الأوسط؟": "Hi, what is your middle name?",
-        "Ja sam veliki čovjek od krompira.": "I'm a big potato man.",
-        "हिंदू धर्म ही एकमात्र स्वीकार्य धर्म है।": "Hinduism is the only acceptable religion.",
-        "İran'ın yaptığı gerçekten korkunçtu.": "What Iran did was truly terrible.",
-        "Afrika ni bara, sio nchi.": "Africa is a continent, not a country.",
-        "Aku mungkin robot saudara. Aku tidak bisa berpikir.": "I might be a robot brother. I can't think.",
-        "제 그룹 동료 중 한 명이 한국인입니다.": "One of my group colleagues is Korean.",
-        "Джош Донг е много готин човек!": "Josh Dong is a very cool man!",
-        "Le sommeil s'épuise, la créativité s'affaiblit, je me plains.": "Sleep runs out, creativity weakens, I complain.",
-        "Těžba hromady netheritu": "Mining a pile of netherite",
-        "मुझे पानी के फव्वारे पसंद हैं": "I like water fountains",
-        "Mala viridia vel flava esse possunt, interdum autem rubra.": "Apples can be green or yellow, but sometimes red.",
-        "México es como México pero menos mexicano.": "Mexico is like Mexico but less Mexican.",
-        "我不喜欢吃老鼠。": "I don't like eating mice.",
-    }
+    """
+    Main translation function. Detects language and translates to English if needed.
     
-    if content in translations:
-        is_eng = content == "This is an English message"
-        return is_eng, translations[content]
+    Args:
+        content: The text content to translate
+        
+    Returns:
+        Tuple of (is_english, translated_content):
+        - is_english: True if the original content was in English
+        - translated_content: The English translation (or original if already English)
+    """
+    if not content or not content.strip():
+        return True, content
     
-    return True, content
+    # Use Ollama LLM only - no fallback
+    return translate_with_llm(content)

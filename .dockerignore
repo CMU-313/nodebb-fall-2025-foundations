@@ -1,4 +1,19 @@
-.*
+# Git and IDE
+.git
+.gitignore
+.vscode
+.idea
+.env
+
+# Build artifacts
+build
+build/**
+build.bak
+build.bak/**
+.docker
+.docker/**
+
+# Other
 logs
 test
 node_modules
@@ -8,3 +23,10 @@ renovate.json
 *.yml
 *.md
 Dockerfile
+public/uploads
+coverage
+reports
+__pycache__
+*.pyc
+.pytest_cache
+.venv

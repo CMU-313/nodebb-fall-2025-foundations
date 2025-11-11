@@ -1,0 +1,41 @@
+# Dockerfile for Python Translation Microservice
+# This service runs separately from the main NodeBB application
+
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv (fast Python package installer)
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Copy Python project configuration
+COPY pyproject.toml .
+
+# Install Python dependencies using uv
+RUN uv pip install --system --no-cache .
+
+# Copy application code
+COPY app.py .
+COPY src/ src/
+
+# Expose port 8080 for the Flask service
+EXPOSE 8080
+
+# Set environment variables
+ENV PORT=8080
+ENV FLASK_ENV=production
+ENV PYTHONUNBUFFERED=1
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+# Run the Flask application
+CMD ["python", "app.py"]

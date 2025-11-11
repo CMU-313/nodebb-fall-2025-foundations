@@ -32,6 +32,7 @@ pidfile
 
 /public/uploads
 /test/uploads
+/build/
 
 # compiled files
 /public/stylesheet.css

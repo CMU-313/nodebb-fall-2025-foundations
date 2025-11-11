@@ -60,10 +60,6 @@ services:
       - '11434:11434'
     volumes:
       - ollama-data:/root/.ollama
-      - ./init-ollama.sh:/init-ollama.sh
-    environment:
-      OLLAMA_MODEL: 'llama3.1:8b'
-    entrypoint: ["/bin/bash", "/init-ollama.sh"]
     # For GPU support on systems with NVIDIA GPU, uncomment:
     # deploy:
     #   resources:

@@ -65,6 +65,21 @@ tx.exe
 coverage
 .nyc_output
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+*.egg-info/
+.eggs/
+*.egg
+
 *.log
 test/files/normalise.jpg.png
 test/files/normalise-resized.jpg

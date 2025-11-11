@@ -13,13 +13,12 @@ RUN apt-get update && apt-get install -y \
 
 # Install uv (fast Python package installer)
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Copy Python project configuration
 COPY pyproject.toml .
 
-# Install Python dependencies using uv
-RUN uv pip install --system --no-cache .
+# Install Python dependencies using uv (use full path)
+RUN /root/.cargo/bin/uv pip install --system --no-cache .
 
 # Copy application code
 COPY app.py .

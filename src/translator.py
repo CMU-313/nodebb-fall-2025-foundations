@@ -80,7 +80,7 @@ def translate_with_llm(content: str) -> tuple[bool, str]:
         Tuple of (is_english, translated_content)
     """
     client = get_ollama_client()
-    model_name = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
+    model_name = os.getenv("OLLAMA_MODEL", "llama3.2:3b")
     
     # Detect language
     language = get_language(content, client, model_name)

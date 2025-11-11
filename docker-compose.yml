@@ -49,7 +49,7 @@ services:
       PORT: 8080
       USE_LLM: 'true' # Using Ollama LLM for translation
       OLLAMA_HOST: 'http://ollama:11434'
-      OLLAMA_MODEL: 'llama3.1:8b'
+      OLLAMA_MODEL: 'llama3.2:3b'
     depends_on:
       - ollama
 

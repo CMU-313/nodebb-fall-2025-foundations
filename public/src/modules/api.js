@@ -106,11 +106,11 @@ async function xhr(options) {
 		
 		// Only treat as network error if it's a TypeError (connection failed)
 		// or explicitly mentions network/CORS issues
-		const isNetworkError = (errName === 'TypeError' && 
-			(errMessage.toLowerCase().includes('fetch') || 
-			 errMessage.toLowerCase().includes('network') ||
-			 errMessage.toLowerCase().includes('failed to fetch') ||
-			 errMessage.toLowerCase().includes('load failed'))) ||
+		const isNetworkError = (errName === 'TypeError' &&
+			(errMessage.toLowerCase().includes('fetch') ||
+				errMessage.toLowerCase().includes('network') ||
+				errMessage.toLowerCase().includes('failed to fetch') ||
+				errMessage.toLowerCase().includes('load failed'))) ||
 			errMessage.toLowerCase().includes('cors') ||
 			errMessage.toLowerCase().includes('networkerror');
 		
@@ -119,7 +119,7 @@ async function xhr(options) {
 				url: url,
 				method: options.method || 'GET',
 				error: errMessage,
-				name: errName
+				name: errName,
 			});
 			const networkErr = new Error('[[error:no-connection]]');
 			networkErr.originalError = err;
@@ -131,7 +131,7 @@ async function xhr(options) {
 			url: url,
 			method: options.method || 'GET',
 			error: errMessage,
-			name: errName
+			name: errName,
 		});
 		throw err;
 	}
@@ -158,7 +158,7 @@ async function xhr(options) {
 				status: res.status,
 				statusText: res.statusText,
 				contentType: contentType,
-				error: parseErr.message
+				error: parseErr.message,
 			});
 			throw new Error('[[error:invalid-json]]');
 		}

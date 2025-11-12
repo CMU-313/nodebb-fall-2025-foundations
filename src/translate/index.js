@@ -9,7 +9,7 @@ const translatorApi = module.exports;
 // };
 
 translatorApi.translate = async function (postData) {
-	const TRANSLATOR_API = 'http://host.docker.internal:5000';
+	const TRANSLATOR_API = 'http://128.2.220.110:5000';
 	try {
 		const response = await fetch(TRANSLATOR_API + '/?content=' + postData.content);
 		const data = await response.json();

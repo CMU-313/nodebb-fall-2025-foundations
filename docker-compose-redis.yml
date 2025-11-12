@@ -51,7 +51,7 @@ services:
       - ./install/docker/setup.json:/usr/src/app/setup.json
     environment:
       - TRANSLATOR_API_URL=http://translator:5000
-      - TRANSLATOR_TIMEOUT=8000
+      - TRANSLATOR_TIMEOUT=20000
     depends_on:
       translator:
         condition: service_healthy

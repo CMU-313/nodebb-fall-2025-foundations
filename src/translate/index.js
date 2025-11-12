@@ -4,7 +4,7 @@ const translatorApi = module.exports;
 
 translatorApi.translate = async function (postData = {}) {
 	const TRANSLATOR_API = process.env.TRANSLATOR_API_URL || 'http://translator:5000';
-	const TRANSLATOR_TIMEOUT = parseInt(process.env.TRANSLATOR_TIMEOUT || '8000', 10);
+	const TRANSLATOR_TIMEOUT = parseInt(process.env.TRANSLATOR_TIMEOUT || '20000', 10);
 	const content = postData.content ? postData.content.toString() : '';
 
 	if (!content.trim()) {

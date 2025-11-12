@@ -18,6 +18,20 @@ const topics = require('../src/topics');
 const posts = require('../src/posts');
 const activitypub = require('../src/activitypub');
 
+async function getWithRetry(url, options = {}, retries = 5, delayMs = 200) {
+	try {
+		return await request.get(url, options);
+	} catch (err) {
+		const code = err && err.cause && err.cause.code;
+		const transient = code && ['ECONNREFUSED', 'ECONNRESET'].includes(code);
+		if (!transient || retries <= 1) {
+			throw err;
+		}
+		await new Promise((resolve) => setTimeout(resolve, delayMs));
+		return getWithRetry(url, options, retries - 1, delayMs);
+	}
+}
+
 describe('ActivityPub integration', () => {
 	before(async () => {
 		meta.config.activitypubEnabled = 1;
@@ -57,8 +71,7 @@ describe('ActivityPub integration', () => {
 		});
 
 		it('request for an activitypub route should return 404 Not Found', async () => {
-			const uid = user.create({ username: utils.generateUUID() });
-			const { response } = await request.get(`${nconf.get('url')}/uid/${uid}`, {
+			const { response } = await getWithRetry(`${nconf.get('url')}/actor`, {
 				headers: {
 					Accept: 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"',
 				},
@@ -288,6 +301,7 @@ describe('ActivityPub integration', () => {
 
 			assert(response);
 			assert.strictEqual(response.statusCode, 200);
+			// DEBUG
 			assert(body.startsWith('<!DOCTYPE html>'));
 
 			meta.config.activitypubEnabled = 1;

@@ -1,3 +1,7 @@
+# Admin Login Information:
+username: team17
+password: Josh1234$
+
 # Feature: Create Category
 1. Go to the Categories page on the frontend
 2. Login as admin

@@ -1,0 +1,1407 @@
+<svg height="1030" width="970" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect fill="#CCE4CC" height="99.5%" rx="4.5" stroke="#003D00" width="99.5%" x="0.5" y="0.5"/>
+<defs>
+<image height="100" id="heesunp" width="100" xlink:href="data:image/png;base64,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"/>
+<image height="100" id="github-actions" width="100" xlink:href="data:image/png;base64,Tm90IEZvdW5k"/>
+<image height="100" id="tedgershon" width="100" xlink:href="data:image/png;base64,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"/>
+<image height="100" id="jxd23" width="100" xlink:href="data:image/png;base64,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"/>
+<image height="100" id="rebeccals05" width="100" xlink:href="data:image/png;base64,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"/>
+</defs>
+<g transform="translate(0, 30)">
+<g transform="translate(25, 10)">
+<text class="header">
+Project 2A (2025-09-08–2025-09-15)
+
+</text>
+</g>
+<g transform="translate(0, 25)">
+<g transform="translate(0, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/rebeccals05">
+<text class="stat bold">
+rebeccals05
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#rebeccals05"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=rebeccals05&amp;amp;since=2025-09-08T00:00:00+00:00&amp;amp;until=2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+2
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+10
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+6
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Arebeccals05+type%3Aissue+created%3A2025-09-08T00:00:00+00:00..2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+8
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Arebeccals05+type%3Apr+created%3A2025-09-08T00:00:00+00:00..2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(190, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/heesunp">
+<text class="stat bold">
+heesunp
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#heesunp"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=heesunp&amp;amp;since=2025-09-08T00:00:00+00:00&amp;amp;until=2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Aheesunp+type%3Aissue+created%3A2025-09-08T00:00:00+00:00..2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+1
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Aheesunp+type%3Apr+created%3A2025-09-08T00:00:00+00:00..2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(380, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/jxd23">
+<text class="stat bold">
+jxd23
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#jxd23"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=jxd23&amp;amp;since=2025-09-08T00:00:00+00:00&amp;amp;until=2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Ajxd23+type%3Aissue+created%3A2025-09-08T00:00:00+00:00..2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+9
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Ajxd23+type%3Apr+created%3A2025-09-08T00:00:00+00:00..2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(570, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/tedgershon">
+<text class="stat bold">
+tedgershon
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#tedgershon"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=tedgershon&amp;amp;since=2025-09-08T00:00:00+00:00&amp;amp;until=2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Atedgershon+type%3Aissue+created%3A2025-09-08T00:00:00+00:00..2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+5
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Atedgershon+type%3Apr+created%3A2025-09-08T00:00:00+00:00..2025-09-15T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform="translate(0, 230)">
+<g transform="translate(25, 10)">
+<text class="header">
+Project 2B (2025-09-16–2025-09-26)
+
+</text>
+</g>
+<g transform="translate(0, 25)">
+<g transform="translate(0, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/heesunp">
+<text class="stat bold">
+heesunp
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#heesunp"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=heesunp&amp;amp;since=2025-09-16T00:00:00+00:00&amp;amp;until=2025-09-26T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+10
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+340
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+41
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Aheesunp+type%3Aissue+created%3A2025-09-16T00:00:00+00:00..2025-09-26T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+7
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Aheesunp+type%3Apr+created%3A2025-09-16T00:00:00+00:00..2025-09-26T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(190, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/tedgershon">
+<text class="stat bold">
+tedgershon
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#tedgershon"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=tedgershon&amp;amp;since=2025-09-16T00:00:00+00:00&amp;amp;until=2025-09-26T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+2
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+180
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+5
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Atedgershon+type%3Aissue+created%3A2025-09-16T00:00:00+00:00..2025-09-26T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+2
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Atedgershon+type%3Apr+created%3A2025-09-16T00:00:00+00:00..2025-09-26T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(380, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/jxd23">
+<text class="stat bold">
+jxd23
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#jxd23"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=jxd23&amp;amp;since=2025-09-16T00:00:00+00:00&amp;amp;until=2025-09-26T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+2
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+39
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+20
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Ajxd23+type%3Aissue+created%3A2025-09-16T00:00:00+00:00..2025-09-26T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+1
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Ajxd23+type%3Apr+created%3A2025-09-16T00:00:00+00:00..2025-09-26T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform="translate(0, 430)">
+<g transform="translate(25, 10)">
+<text class="header">
+Project 2C (2025-09-27–2025-10-10)
+
+</text>
+</g>
+<g transform="translate(0, 25)">
+<g transform="translate(0, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/jxd23">
+<text class="stat bold">
+jxd23
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#jxd23"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=jxd23&amp;amp;since=2025-09-27T00:00:00+00:00&amp;amp;until=2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+32
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+1645
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+695
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Ajxd23+type%3Aissue+created%3A2025-09-27T00:00:00+00:00..2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+6
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Ajxd23+type%3Apr+created%3A2025-09-27T00:00:00+00:00..2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+2
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+10
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(190, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/rebeccals05">
+<text class="stat bold">
+rebeccals05
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#rebeccals05"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=rebeccals05&amp;amp;since=2025-09-27T00:00:00+00:00&amp;amp;until=2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+14
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+325
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+26
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Arebeccals05+type%3Aissue+created%3A2025-09-27T00:00:00+00:00..2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Arebeccals05+type%3Apr+created%3A2025-09-27T00:00:00+00:00..2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+1
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+2
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(380, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/tedgershon">
+<text class="stat bold">
+tedgershon
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#tedgershon"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=tedgershon&amp;amp;since=2025-09-27T00:00:00+00:00&amp;amp;until=2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+11
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+579
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+44
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Atedgershon+type%3Aissue+created%3A2025-09-27T00:00:00+00:00..2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+8
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Atedgershon+type%3Apr+created%3A2025-09-27T00:00:00+00:00..2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+5
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+5
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(570, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/heesunp">
+<text class="stat bold">
+heesunp
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#heesunp"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=heesunp&amp;amp;since=2025-09-27T00:00:00+00:00&amp;amp;until=2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+11
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+566
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+136
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Aheesunp+type%3Aissue+created%3A2025-09-27T00:00:00+00:00..2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+5
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Aheesunp+type%3Apr+created%3A2025-09-27T00:00:00+00:00..2025-10-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+2
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+9
+</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform="translate(0, 630)">
+<g transform="translate(25, 10)">
+<text class="header">
+Project 3 (2025-10-11–2025-10-28)
+
+</text>
+</g>
+<g transform="translate(0, 25)">
+<g transform="translate(0, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/rebeccals05">
+<text class="stat bold">
+rebeccals05
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#rebeccals05"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=rebeccals05&amp;amp;since=2025-10-11T00:00:00+00:00&amp;amp;until=2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+26
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+19781
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+113
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Arebeccals05+type%3Aissue+created%3A2025-10-11T00:00:00+00:00..2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Arebeccals05+type%3Apr+created%3A2025-10-11T00:00:00+00:00..2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+2
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+2
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(190, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/tedgershon">
+<text class="stat bold">
+tedgershon
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#tedgershon"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=tedgershon&amp;amp;since=2025-10-11T00:00:00+00:00&amp;amp;until=2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+16
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+853
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+65
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Atedgershon+type%3Aissue+created%3A2025-10-11T00:00:00+00:00..2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Atedgershon+type%3Apr+created%3A2025-10-11T00:00:00+00:00..2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+3
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(380, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/heesunp">
+<text class="stat bold">
+heesunp
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#heesunp"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=heesunp&amp;amp;since=2025-10-11T00:00:00+00:00&amp;amp;until=2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+15
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+1818
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+75
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Aheesunp+type%3Aissue+created%3A2025-10-11T00:00:00+00:00..2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Aheesunp+type%3Apr+created%3A2025-10-11T00:00:00+00:00..2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+3
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+4
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(570, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/jxd23">
+<text class="stat bold">
+jxd23
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#jxd23"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=jxd23&amp;amp;since=2025-10-11T00:00:00+00:00&amp;amp;until=2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+7
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+306
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+59
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Ajxd23+type%3Aissue+created%3A2025-10-11T00:00:00+00:00..2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Ajxd23+type%3Apr+created%3A2025-10-11T00:00:00+00:00..2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+2
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+1
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(760, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/github-actions">
+<text class="stat bold">
+github-actions
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#github-actions"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=github-actions&amp;amp;since=2025-10-11T00:00:00+00:00&amp;amp;until=2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Agithub-actions+type%3Aissue+created%3A2025-10-11T00:00:00+00:00..2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Agithub-actions+type%3Apr+created%3A2025-10-11T00:00:00+00:00..2025-10-28T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+3
+</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform="translate(0, 830)">
+<g transform="translate(25, 10)">
+<text class="header">
+Project 4 (2025-10-28–2025-11-10)
+
+</text>
+</g>
+<g transform="translate(0, 25)">
+<g transform="translate(0, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/heesunp">
+<text class="stat bold">
+heesunp
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#heesunp"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=heesunp&amp;amp;since=2025-10-28T00:00:00+00:00&amp;amp;until=2025-11-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+13
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+2602
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+625
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Aheesunp+type%3Aissue+created%3A2025-10-28T00:00:00+00:00..2025-11-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Aheesunp+type%3Apr+created%3A2025-10-28T00:00:00+00:00..2025-11-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(190, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/rebeccals05">
+<text class="stat bold">
+rebeccals05
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#rebeccals05"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=rebeccals05&amp;amp;since=2025-10-28T00:00:00+00:00&amp;amp;until=2025-11-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+6
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+63
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+9
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Arebeccals05+type%3Aissue+created%3A2025-10-28T00:00:00+00:00..2025-11-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Arebeccals05+type%3Apr+created%3A2025-10-28T00:00:00+00:00..2025-11-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+1
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(380, 0)">
+<g transform="translate(25, 20)">
+<g>
+<a xlink:href="https://github.com/github-actions">
+<text class="stat bold">
+github-actions
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<use xlink:href="#github-actions"/>
+</g>
+</g>
+<g transform="translate(140, 25)">
+<g transform="translate(0, 0)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/commits?author=github-actions&amp;amp;since=2025-10-28T00:00:00+00:00&amp;amp;until=2025-11-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 20)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+<g transform="translate(0, 40)">
+<svg class="icon" height="15" viewBox="0 0 25 25" width="15" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10h24v4h-24z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</g>
+<g transform="translate(0, 60)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/issues?q=author%3Agithub-actions+type%3Aissue+created%3A2025-10-28T00:00:00+00:00..2025-11-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 80)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill-rule="evenodd"/>
+</svg>
+<a xlink:href="https://github.com/CMU-313/nodebb-fall-2025-foundations/pulls?q=author%3Agithub-actions+type%3Apr+created%3A2025-10-28T00:00:00+00:00..2025-11-10T23:59:59+00:00">
+<text class="stat" x="25" y="12.5">
+0
+</text>
+</a>
+</g>
+<g transform="translate(0, 100)">
+<svg class="icon" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z" fill-rule="evenodd"/>
+</svg>
+<text class="stat" x="25" y="12.5">
+1
+</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+<style>
+
+.header {
+    font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
+    fill: #007A00;
+    animation: fadeInAnimation 0.8s ease-in-out forwards;
+}
+.stat {
+    font: 600 14px 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif; fill: #444;
+}
+.bold { font-weight: 700 }
+.icon {
+    fill: #003D00;
+    display: block;
+}
+
+</style>
+</svg>
